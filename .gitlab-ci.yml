@@ -1,0 +1,18 @@
+image: microsoft/dotnet:latest
+
+stages:
+  - test
+
+variables:
+  project: "src/SimulationApplication"
+
+before_script:
+  - "dotnet restore"
+
+test:
+  stage: test
+  variables:
+    test_path: "$project/tests/Tests"
+  script:
+    - "cd $test_path"
+- "dotnet test"
