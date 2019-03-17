@@ -6,11 +6,13 @@ namespace SimulationApplication.ClassLibrary
 {
 	public abstract class Building
 	{
-		protected Location location;
+		
 
-		public Location GetLocation()
-		{
-			throw new NotImplementedException();
-		}
+
+        public Building()
+        {
+            
+        }
+
 	}
 }

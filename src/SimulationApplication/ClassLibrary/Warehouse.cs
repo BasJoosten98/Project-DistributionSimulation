@@ -8,5 +8,10 @@ namespace SimulationApplication.ClassLibrary
 	{
 		List<Vehicle> vehicles;
 		List<Shop> queue;
-	}
+
+        public Warehouse():base()
+        {
+            
+        }
+    }
 }

@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfGUI", "WpfGUI\WpfGUI.csproj", "{E95D7A6F-E0AF-4539-89B8-BA7F93D48524}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "SimulationApplicationTests\Tests.csproj", "{0D948629-F064-454A-A082-B8D687286E68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests.csproj", "{0D948629-F064-454A-A082-B8D687286E68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapLayout", "MapLayout\MapLayout.csproj", "{9FD02E11-9065-4853-B2B8-AEA4ED5815C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{0D948629-F064-454A-A082-B8D687286E68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D948629-F064-454A-A082-B8D687286E68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D948629-F064-454A-A082-B8D687286E68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FD02E11-9065-4853-B2B8-AEA4ED5815C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FD02E11-9065-4853-B2B8-AEA4ED5815C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FD02E11-9065-4853-B2B8-AEA4ED5815C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FD02E11-9065-4853-B2B8-AEA4ED5815C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

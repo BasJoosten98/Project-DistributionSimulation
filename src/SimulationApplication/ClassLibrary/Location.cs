@@ -6,7 +6,25 @@ namespace SimulationApplication.ClassLibrary
 {
 	public class Location
 	{
-		public Building building;
+        private static int locationID;
+		public int LocationID { get; set; }
 		public int Demand;
+        public Building Building { get; set; }
+
+
+        public int PositionX { get; }
+        public int PositionY { get; }
+
+        public Location(int x, int y)
+        {
+            LocationID = ++locationID;
+            PositionX = x;
+            PositionY = y;
+        }
+
+       
+        
+
+        
 	}
 }

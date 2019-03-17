@@ -19,5 +19,10 @@ namespace SimulationApplication.ClassLibrary
 		}
 
 		public event EventHandler RestockEvent;
+
+        public Shop() : base()
+        {
+
+        }
 	}
 }
