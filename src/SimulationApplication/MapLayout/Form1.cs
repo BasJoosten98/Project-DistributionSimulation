@@ -17,7 +17,15 @@ namespace MapLayout
         {
             InitializeComponent();
             int w = pictureBox1.Width / 50;
-            map = new Map(w, 50);
+            map = new Map(10, w, 50);
+
+            foreach (Cell c in map.GetCells())
+            {
+                if (c.Location != null)
+                {
+                    Console.WriteLine($"Row: {c.Row}, Col: {c.Column}");
+                }
+            }
         }
 
         private void pictureBox1_Paint_1(object sender, PaintEventArgs e)

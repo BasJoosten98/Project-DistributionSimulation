@@ -12,7 +12,7 @@ namespace SimulationApplication.ClassLibrary
 
         public int NumOfCells { get; set; }
 
-        public Map(int numOfCells, int cellSize)
+        public Map(int numberOfLocations, int numOfCells, int cellSize)
         {
             NumOfCells = numOfCells;
 
@@ -29,6 +29,16 @@ namespace SimulationApplication.ClassLibrary
             }
             rng = new Random(0);
 
+            while (numberOfLocations > 0)
+            {
+                Cell c = GenerateRandomLocation();
+                if (c.Location == null)
+                {
+                    // set location and decrement number of locations.
+                    c.Location = new Location(c.Column, c.Row);
+                    numberOfLocations--;
+                }
+            }
         }
 
         public List<Cell> GetCells()
@@ -36,9 +46,9 @@ namespace SimulationApplication.ClassLibrary
             return new List<Cell>(cells);
         }
 
-        private void GenerateRandomLocation()
+        private Cell GenerateRandomLocation()
         {
-
+            return cells[rng.Next(0, cells.Count)]; 
         }
     }
 }
