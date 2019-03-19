@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Building.cs" />
+    <Compile Include="Cell.cs" />
     <Compile Include="Delivery.cs" />
     <Compile Include="DistributionManager.cs" />
     <Compile Include="Location.cs" />

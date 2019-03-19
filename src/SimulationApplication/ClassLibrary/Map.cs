@@ -4,46 +4,41 @@ using System.Text;
 
 namespace SimulationApplication.ClassLibrary
 {
-	public class Map
-	{
-        
-        public int Length { get; }
-        public int Width { get; }
-        public List<Location> Locations { get; private set; }
+    public class Map
+    {
+        Random rng;
+        //atributes for the map
+        private List<Cell> cells;
 
-        public Map()
-        {
-            
-            Locations = new List<Location>();
-            
-        }
+        public int NumOfCells { get; set; }
 
-        public void AddLocation(Location location)
+        public Map(int numOfCells, int cellSize)
         {
-            //TODO: Restrict this to agreed canvas size
-            Locations.Add(location);
- 
-        }
-        
-        
+            NumOfCells = numOfCells;
 
-        public Location GetLocation(int locationID)
-        {
-            foreach (Location item in Locations)
+            Cell.CellSize = cellSize;
+
+            cells = new List<Cell>();
+
+            for (int i = 0; i < numOfCells; i++)
             {
-                if(item.LocationID == locationID)
+                for (int j = 0; j < numOfCells; j++)
                 {
-                    return item;
+                    cells.Add(new Cell(i, j));
                 }
             }
-            return null;
+            rng = new Random(0);
+
         }
 
-        public void PlaceBuilding(int locationID)
+        public List<Cell> GetCells()
         {
-            Location l = GetLocation(locationID);
-            l.Building = new Shop();
+            return new List<Cell>(cells);
+        }
+
+        private void GenerateRandomLocation()
+        {
 
         }
-	}
+    }
 }

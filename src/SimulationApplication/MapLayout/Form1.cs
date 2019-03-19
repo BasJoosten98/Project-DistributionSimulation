@@ -16,76 +16,27 @@ namespace MapLayout
         public Form1()
         {
             InitializeComponent();
-            map = new Map();
-            AddLocations();
+            int w = pictureBox1.Width / 50;
+            map = new Map(w, 50);
         }
 
-        private void Form1_Paint(object sender, PaintEventArgs e)
+        private void pictureBox1_Paint_1(object sender, PaintEventArgs e)
         {
-            DrawMap();  
-        }
+            int cellSize = Cell.CellSize;
+            int numOfCells = map.NumOfCells;
 
-       
+            Graphics g = e.Graphics;
+            Pen p = new Pen(Color.Black);
 
-
-        private void AddLocations()
-        {
-            
-            map.AddLocation(new Location(20, 20));
-            map.AddLocation(new Location(90, 180));
-            map.AddLocation(new Location(70, 300));
-            map.AddLocation(new Location(300, 20));
-            map.AddLocation(new Location(140, 400));
-            map.AddLocation(new Location(370, 300));
-            map.AddLocation(new Location(380, 40));
-            
-        }
-
-
-
-        public void DrawMap()
-        {
-            //TODO: A more dynamic way of drawing the map is preferred, but this is a draft for now.
-            
-            Graphics g = this.CreateGraphics();
-            
-            Pen p = new Pen(Brushes.Black, 8);
-            Pen p2 = new Pen(Brushes.Red, 15);
-            for (int i = 0; i < map.Locations.Count; i++)
+            for (int y = 0; y < map.NumOfCells; ++y)
             {
-                
-                
-                if (i >= 1)
-                {
-                    g.DrawEllipse(p, map.Locations[i].PositionX, map.Locations[i].PositionY, 10, 10);
-                    g.DrawLine(p, map.Locations[i].PositionX, map.Locations[i].PositionY, map.Locations[i - 1].PositionX, map.Locations[i - 1].PositionY);
-                }
-                if (i >= 2)
-                {
-                    g.DrawLine(p, map.Locations[i].PositionX, map.Locations[i].PositionY, map.Locations[i - 2].PositionX, map.Locations[i - 2].PositionY);
-                }
-                
-
-                if (map.Locations[i].Building != null)
-                {
-                    g.DrawEllipse(p2, map.Locations[i].PositionX, map.Locations[i].PositionY, 10, 10);
-                }
-                else if (map.Locations[i].Building == null)
-                {
-                    g.DrawEllipse(p, map.Locations[i].PositionX, map.Locations[i].PositionY, 10, 10);
-                }
-
-
+                g.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
             }
-        }
 
-        private void btnSetBuilding_Click(object sender, EventArgs e)
-        {
-            int locationID = Convert.ToInt32(tbLocationID.Text);
-            map.PlaceBuilding(locationID);
-            this.Invalidate();
-            DrawMap();
-            
+            for (int x = 0; x < numOfCells; ++x)
+            {
+                g.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
+            }
         }
     }
 }
