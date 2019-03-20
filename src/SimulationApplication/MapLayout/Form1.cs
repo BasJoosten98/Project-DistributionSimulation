@@ -22,7 +22,7 @@ namespace MapLayout
 
             // The result represents the number of cells we can create in both width and height (Square grid/map) based on the cell size.
             int numberOfCells = mapPictureBox.Width / CELLSIZE;
-            map = new Map(numberOfLocations: 10, numOfCells: numberOfCells, cellSize: CELLSIZE);
+            map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE);
 
             // This loop is for debugging purposes such that we can check which cells have a location added to them.
             foreach (Cell cell in map.GetCells())
@@ -37,20 +37,26 @@ namespace MapLayout
         private void pictureBox1_Paint_1(object sender, PaintEventArgs e)
         {
             int cellSize = Cell.CellSize;
-            int numOfCells = map.NumOfCells;
+            int numOfCells = map.NumberOfCells;
 
             Console.WriteLine($"Number of Cells: {numOfCells}");
 
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.Black);
 
-            for (int y = 0; y <= map.NumOfCells; ++y)
+            for (int y = 0; y <= map.NumberOfCells; ++y)
             {
                 // (x1, y1) to (x2, y2)
-                // 
+                // With cell size 50 and the map picture box having width of 602 pixels.
+                // Number of cells = 602 / 50, truncated thus = 12.
+                // y = 0 || (0, 0) -> (600, 0)
+                // y = 0 || (0, 50) -> (600, 50)
+                // y = 0 || (0, 100) -> (600, 100)
+                // Drawing the horizontal lines first.
                 g.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
             }
 
+            // The same as above but now vertical lines are drawn
             for (int x = 0; x <= numOfCells; ++x)
             {
                 g.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);

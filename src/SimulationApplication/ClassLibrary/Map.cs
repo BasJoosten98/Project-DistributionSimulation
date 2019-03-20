@@ -7,20 +7,18 @@ namespace ClassLibrary
     public class Map
     {
         private Random rng;
-        //atributes for the map
-        //private List<Cell> cells;
         private Cell[,] cells;
 
-        public int NumOfCells { get; set; }
+        public int NumberOfCells { get; set; }
 
-        public Map(int numberOfLocations, int numOfCells, int cellSize)
+        public Map(int numberOfLocations, int numberOfCells, int cellSize)
         {
-            NumOfCells = numOfCells;
+            NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
-            cells = new Cell[NumOfCells, NumOfCells];
-            for (int rowCount = 0; rowCount < NumOfCells; rowCount++)
+            cells = new Cell[NumberOfCells, NumberOfCells];
+            for (int rowCount = 0; rowCount < NumberOfCells; rowCount++)
             {
-                for (int columnCount = 0; columnCount < NumOfCells; columnCount++)
+                for (int columnCount = 0; columnCount < NumberOfCells; columnCount++)
                 {
                     cells[rowCount, columnCount] = new Cell(rowCount, columnCount);
                 }
@@ -50,7 +48,7 @@ namespace ClassLibrary
         private Cell GenerateRandomLocation()
         {
             // Return a cell at index [x, y] where x and y are numbers between 0 and NumOfCells (exclusive)
-            return cells[rng.Next(0, NumOfCells), rng.Next(0, NumOfCells)]; 
+            return cells[rng.Next(0, NumberOfCells), rng.Next(0, NumberOfCells)]; 
         }
     }
 }
