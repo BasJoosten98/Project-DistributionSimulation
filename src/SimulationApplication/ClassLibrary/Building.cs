@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimulationApplication.ClassLibrary
+namespace ClassLibrary
 {
 	public abstract class Building
 	{

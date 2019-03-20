@@ -2,31 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimulationApplication.ClassLibrary
+namespace ClassLibrary
 {
     public class Map
     {
-        Random rng;
+        private Random rng;
         //atributes for the map
-        private List<Cell> cells;
+        //private List<Cell> cells;
+        private Cell[,] cells;
 
         public int NumOfCells { get; set; }
 
         public Map(int numberOfLocations, int numOfCells, int cellSize)
         {
             NumOfCells = numOfCells;
-
             Cell.CellSize = cellSize;
-
-            cells = new List<Cell>();
-
-            for (int i = 0; i < numOfCells; i++)
+            cells = new Cell[NumOfCells, NumOfCells];
+            for (int rowCount = 0; rowCount < NumOfCells; rowCount++)
             {
-                for (int j = 0; j < numOfCells; j++)
+                for (int columnCount = 0; columnCount < NumOfCells; columnCount++)
                 {
-                    cells.Add(new Cell(i, j));
+                    cells[rowCount, columnCount] = new Cell(rowCount, columnCount);
                 }
             }
+            // Seed the random generator to get reproducable results.
             rng = new Random(0);
 
             while (numberOfLocations > 0)
@@ -34,21 +33,24 @@ namespace SimulationApplication.ClassLibrary
                 Cell c = GenerateRandomLocation();
                 if (c.Location == null)
                 {
-                    // set location and decrement number of locations.
-                    c.Location = new Location(c.Column, c.Row);
+                    // Set location object to beparth of this cell 
+                    // and decrement number of locations to be added to the cells/map.
+                    c.Location = new Location(c.Index.Row, c.Index.Column);
                     numberOfLocations--;
                 }
             }
         }
 
-        public List<Cell> GetCells()
+        public Cell[,] GetCells()
         {
-            return new List<Cell>(cells);
+            // Preferably this will be a copy, and perhaps not a shallow one.
+            return cells;
         }
 
         private Cell GenerateRandomLocation()
         {
-            return cells[rng.Next(0, cells.Count)]; 
+            // Return a cell at index [x, y] where x and y are numbers between 0 and NumOfCells (exclusive)
+            return cells[rng.Next(0, NumOfCells), rng.Next(0, NumOfCells)]; 
         }
     }
 }

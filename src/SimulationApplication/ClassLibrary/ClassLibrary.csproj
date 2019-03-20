@@ -60,6 +60,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="Delivery.cs" />
     <Compile Include="DistributionManager.cs" />
+    <Compile Include="Index.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
