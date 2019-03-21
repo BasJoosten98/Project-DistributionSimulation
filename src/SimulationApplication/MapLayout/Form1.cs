@@ -30,6 +30,7 @@ namespace MapLayout
                 if (cell.Location != null)
                 {
                     Console.WriteLine($"Row: {cell.Index.Row}, Col: {cell.Index.Column}");
+                   
                 }
             }
         }
@@ -54,12 +55,25 @@ namespace MapLayout
                 // y = 0 || (0, 100) -> (600, 100)
                 // Drawing the horizontal lines first.
                 g.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
+
+
             }
 
             // The same as above but now vertical lines are drawn
             for (int x = 0; x <= numOfCells; ++x)
             {
                 g.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
+            }
+            int k = 10;
+            foreach (Cell cell in map.GetCells())
+            {
+                if (cell.Location != null)
+                {
+                    g.FillEllipse(new SolidBrush(Color.LightYellow), new Rectangle(cell.Location.Locationn, cell.Location._Size));
+                    g.DrawEllipse(new Pen(Color.Black), new Rectangle(cell.Location.Locationn, cell.Location._Size));
+                    g.DrawString(string.Format("{0,2}", cell.Location.LocationID + 1), this.Font, new SolidBrush(Color.Black), cell.Location.Locationn.X +17, cell.Location.Locationn.Y + 20);
+                    k += 10;
+                }
             }
         }
     }

@@ -1,14 +1,27 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Drawing;
+using System.Windows;
 
 namespace ClassLibrary
 {
-    public class Location
+    public class Location : IComparable
     {
         private static int locationID;
+        public const int CRADIUS = 20; // circle radius
+        public const int CDIAMETER = 50; // circle diameter might have something to do with the diameter of the cell someone should look into it
+
+
         public int LocationID { get; set; }
         public Building Building { get; set; }
+
+        public int source_id { get; set; }
+        public int min_cost { get; set; } // keeps the minimal cost of this vertex
+        public bool permanent { get; set; } // used for deijsktra
+        public bool visited { get; set; } // checks if it has been seen 
+
 
 
         public int PositionX { get; }
@@ -19,55 +32,35 @@ namespace ClassLibrary
             LocationID = ++locationID;
             PositionX = x;
             PositionY = y;
+
+            this.min_cost = int.MaxValue;
+            this.permanent = false;
+            this.visited = false;
         }
 
-        //our own variables
-        //public Building building {get;set;}
+       
 
-        //public int id { get; set; }
-        //public int source_id { get; set; }
-        //public int min_cost { get; set; }
+        /// <summary>
+        /// Returns center point of a Vertex.
+        /// </summary>
+        public Point Center { get { return new Point(PositionX * CDIAMETER + CRADIUS, PositionY * CDIAMETER + CRADIUS); } }
 
-        //public bool permanent { get; set; }
-        //public bool visited { get; set; }
+        /// <summary>
+        /// Return location point of a Vertex.
+        /// </summary>
+        public Point Locationn { get { return new Point(PositionX * CDIAMETER, PositionY * CDIAMETER); } }
+
+        /// <summary>
+        /// Returns default size of a Vertex.
+        /// </summary>
+        public Size _Size { get { return new Size(CDIAMETER, CDIAMETER); } }
 
 
-        //public int x { get; set; }
-        //public int y { get; set; }
+        public int CompareTo(object obj)
+        {
+            return this.LocationID.CompareTo((obj as Location).LocationID);
+        }
 
-        //public Location(int id)
-        //{
-
-        //    this.id = id;
-        //    this.min_cost = int.MaxValue;
-        //    this.permanent = false;
-        //    this.visited = false;
-        //}
-
-        //public int CompareTo(object obj)
-        //{
-        //    return this.id.CompareTo((obj as Vertex).id);
-        //}
-
-        //public static int operator +(Vertex a, Edge b)
-        //{
-        //    return a.min_cost + b.cost;
-        //}
-
-        ///// <summary>
-        ///// Returns center point of a Vertex.
-        ///// </summary>
-        //public Point Center { get { return new Point(x * mainForm.CDIAMETER + mainForm.CRADIUS, y * mainForm.CDIAMETER + mainForm.CRADIUS); } }
-
-        ///// <summary>
-        ///// Return location point of a Vertex.
-        ///// </summary>
-        //public Point Location { get { return new Point(x * mainForm.CDIAMETER, y * mainForm.CDIAMETER); } }
-
-        ///// <summary>
-        ///// Returns default size of a Vertex.
-        ///// </summary>
-        //public Size _Size { get { return new Size(mainForm.CDIAMETER, mainForm.CDIAMETER); } }
     }
 
 
