@@ -1,28 +1,51 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ClassLibrary.Events;
 
 namespace ClassLibrary
 {
 	public class Shop : Building
 	{
-		int stock;
+        public static int id;
+        public int Capacity { get; set; }
+		public int Stock { get; set; }
+        public int RestockAmount { get; set; }
+        public int ID { get; set; }
 
-		public void Restock()
-		{
-			throw new NotImplementedException();
-		}
+        public event EventHandler<LowStockReachedEventArgs> LowStockReached;
+
+        public Shop(int stock, int restockamount)
+        {
+            Stock = stock;
+            Capacity = stock;
+            RestockAmount = restockamount;
+            ID = ++id;
+        }
+
+        public virtual void OnLowStockReached(LowStockReachedEventArgs e)
+        {
+            LowStockReached?.Invoke(this, e);
+        }
 
 		public void Sell(int demand)
 		{
-			throw new NotImplementedException();
-		}
+            Stock -= demand;
+            if (Stock <= RestockAmount)
+            {
+                LowStockReachedEventArgs args = new LowStockReachedEventArgs();
+                args.TimeReached = DateTime.Now;
+                OnLowStockReached(args);
+            }
 
-		public event EventHandler RestockEvent;
+            
+		}
 
         public Shop() : base()
         {
 
         }
+
+        
 	}
 }
