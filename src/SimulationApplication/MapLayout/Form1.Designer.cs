@@ -39,6 +39,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.btnWarehouse = new System.Windows.Forms.Button();
             this.btnShop = new System.Windows.Forms.Button();
+            this.btnCursor = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -51,7 +52,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -63,6 +64,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.splitContainer1.Panel2.Controls.Add(this.btnCursor);
             this.splitContainer1.Panel2.Controls.Add(this.panel1);
             this.splitContainer1.Panel2.Controls.Add(this.btnWarehouse);
             this.splitContainer1.Panel2.Controls.Add(this.btnShop);
@@ -74,7 +76,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(3, 620);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(628, 38);
             this.button1.TabIndex = 0;
@@ -84,12 +86,14 @@
             // mapPictureBox
             // 
             this.mapPictureBox.Location = new System.Drawing.Point(3, 3);
-            this.mapPictureBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.mapPictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.mapPictureBox.Name = "mapPictureBox";
             this.mapPictureBox.Size = new System.Drawing.Size(602, 602);
             this.mapPictureBox.TabIndex = 1;
             this.mapPictureBox.TabStop = false;
             this.mapPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint_1);
+            this.mapPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mapPictureBox_MouseClick);
+            this.mapPictureBox.MouseEnter += new System.EventHandler(this.mapPictureBox_MouseEnter);
             // 
             // panel1
             // 
@@ -98,8 +102,8 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.Vehicle);
             this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Location = new System.Drawing.Point(2, 82);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Location = new System.Drawing.Point(2, 139);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(182, 141);
             this.panel1.TabIndex = 5;
@@ -117,7 +121,7 @@
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(2, 84);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(174, 20);
             this.textBox2.TabIndex = 6;
@@ -145,7 +149,7 @@
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(2, 49);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(176, 20);
             this.textBox1.TabIndex = 3;
@@ -153,22 +157,34 @@
             // btnWarehouse
             // 
             this.btnWarehouse.Location = new System.Drawing.Point(2, 42);
-            this.btnWarehouse.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnWarehouse.Margin = new System.Windows.Forms.Padding(2);
             this.btnWarehouse.Name = "btnWarehouse";
-            this.btnWarehouse.Size = new System.Drawing.Size(194, 35);
+            this.btnWarehouse.Size = new System.Drawing.Size(189, 35);
             this.btnWarehouse.TabIndex = 2;
             this.btnWarehouse.Text = "Warehouse";
             this.btnWarehouse.UseVisualStyleBackColor = true;
+            this.btnWarehouse.Click += new System.EventHandler(this.btnWarehouse_Click);
             // 
             // btnShop
             // 
             this.btnShop.Location = new System.Drawing.Point(2, 2);
-            this.btnShop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnShop.Margin = new System.Windows.Forms.Padding(2);
             this.btnShop.Name = "btnShop";
-            this.btnShop.Size = new System.Drawing.Size(194, 35);
+            this.btnShop.Size = new System.Drawing.Size(189, 35);
             this.btnShop.TabIndex = 1;
             this.btnShop.Text = "Shop";
             this.btnShop.UseVisualStyleBackColor = true;
+            this.btnShop.Click += new System.EventHandler(this.btnShop_Click);
+            // 
+            // btnCursor
+            // 
+            this.btnCursor.Location = new System.Drawing.Point(2, 82);
+            this.btnCursor.Name = "btnCursor";
+            this.btnCursor.Size = new System.Drawing.Size(189, 41);
+            this.btnCursor.TabIndex = 6;
+            this.btnCursor.Text = "Cursor";
+            this.btnCursor.UseVisualStyleBackColor = true;
+            this.btnCursor.Click += new System.EventHandler(this.btnCursor_Click);
             // 
             // Form1
             // 
@@ -202,6 +218,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button btnCursor;
     }
 }
 

@@ -48,6 +48,18 @@ namespace ClassLibrary
             return cells;
         }
 
+        public Location getCellByLocation(Location l)
+        {
+            foreach(Location loc in Vertices)
+            {
+                if(loc.Locationn == l.Locationn)
+                {
+                    return loc;
+                }
+            }
+            return null;
+        }
+
         private Cell GenerateRandomLocation()
         {
             // Return a cell at index [x, y] where x and y are numbers between 0 and NumOfCells (exclusive)
