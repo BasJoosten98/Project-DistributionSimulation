@@ -76,11 +76,11 @@ namespace MapLayout
             {
                 if (cell.Location != null)
                 {
-                    Rectangle rect = new Rectangle(cell.Location.Locationn, cell.Location._Size);
+                    Rectangle rect = new Rectangle(cell.Location.LocationPoint, cell.Location._Size);
 
                     g.FillEllipse(new SolidBrush(Color.LightYellow), rect);
                     g.DrawEllipse(new Pen(Color.Black), rect);
-                    g.DrawString(string.Format("{0,2}", cell.Location.LocationID + 1), this.Font, new SolidBrush(Color.Black), cell.Location.Locationn.X +17, cell.Location.Locationn.Y + 20);
+                    g.DrawString(string.Format("{0,2}", cell.Location.LocationID + 1), this.Font, new SolidBrush(Color.Black), cell.Location.LocationPoint.X +17, cell.Location.LocationPoint.Y + 20);
                     ListofRectangles.Add(rect);
                     k += 10;
                 }

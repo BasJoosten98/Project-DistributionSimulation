@@ -16,7 +16,6 @@ namespace ClassLibrary
 
         public int LocationID { get; set; }
         public Building Building { get; set; }
-
         public int source_id { get; set; }
         public int min_cost { get; set; } // keeps the minimal cost of this vertex
         public bool permanent { get; set; } // used for deijsktra
@@ -48,7 +47,7 @@ namespace ClassLibrary
         /// <summary>
         /// Return location point of a Vertex.
         /// </summary>
-        public Point Locationn { get { return new Point(PositionX * CDIAMETER, PositionY * CDIAMETER); } }
+        public Point LocationPoint { get { return new Point(PositionX * CDIAMETER, PositionY * CDIAMETER); } }
 
         /// <summary>
         /// Returns default size of a Vertex.

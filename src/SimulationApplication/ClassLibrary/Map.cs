@@ -52,7 +52,7 @@ namespace ClassLibrary
         {
             foreach(Location loc in Vertices)
             {
-                if(loc.Locationn == l.Locationn)
+                if(loc.LocationPoint == l.LocationPoint)
                 {
                     return loc;
                 }
