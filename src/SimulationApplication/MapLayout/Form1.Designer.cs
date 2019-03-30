@@ -28,9 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button1 = new System.Windows.Forms.Button();
             this.mapPictureBox = new System.Windows.Forms.PictureBox();
+            this.lbLocationLog = new System.Windows.Forms.Label();
+            this.btnCursor = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -39,7 +42,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.btnWarehouse = new System.Windows.Forms.Button();
             this.btnShop = new System.Windows.Forms.Button();
-            this.btnCursor = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -64,6 +67,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.splitContainer1.Panel2.Controls.Add(this.lbLocationLog);
             this.splitContainer1.Panel2.Controls.Add(this.btnCursor);
             this.splitContainer1.Panel2.Controls.Add(this.panel1);
             this.splitContainer1.Panel2.Controls.Add(this.btnWarehouse);
@@ -95,6 +99,25 @@
             this.mapPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mapPictureBox_MouseClick);
             this.mapPictureBox.MouseEnter += new System.EventHandler(this.mapPictureBox_MouseEnter);
             // 
+            // lbLocationLog
+            // 
+            this.lbLocationLog.AutoSize = true;
+            this.lbLocationLog.Location = new System.Drawing.Point(9, 633);
+            this.lbLocationLog.Name = "lbLocationLog";
+            this.lbLocationLog.Size = new System.Drawing.Size(0, 13);
+            this.lbLocationLog.TabIndex = 7;
+            // 
+            // btnCursor
+            // 
+            this.btnCursor.BackgroundImage = global::MapLayout.Properties.Resources.cursorIcon;
+            this.btnCursor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnCursor.Location = new System.Drawing.Point(128, 4);
+            this.btnCursor.Name = "btnCursor";
+            this.btnCursor.Size = new System.Drawing.Size(66, 57);
+            this.btnCursor.TabIndex = 6;
+            this.btnCursor.UseVisualStyleBackColor = true;
+            this.btnCursor.Click += new System.EventHandler(this.btnCursor_Click);
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.label2);
@@ -111,7 +134,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 67);
+            this.label2.Location = new System.Drawing.Point(2, 71);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(86, 13);
@@ -120,7 +143,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(2, 84);
+            this.textBox2.Location = new System.Drawing.Point(0, 86);
             this.textBox2.Margin = new System.Windows.Forms.Padding(2);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(174, 20);
@@ -156,35 +179,32 @@
             // 
             // btnWarehouse
             // 
-            this.btnWarehouse.Location = new System.Drawing.Point(2, 42);
+            this.btnWarehouse.BackgroundImage = global::MapLayout.Properties.Resources.warehouseIcon1;
+            this.btnWarehouse.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnWarehouse.Location = new System.Drawing.Point(66, 4);
             this.btnWarehouse.Margin = new System.Windows.Forms.Padding(2);
             this.btnWarehouse.Name = "btnWarehouse";
-            this.btnWarehouse.Size = new System.Drawing.Size(189, 35);
+            this.btnWarehouse.Size = new System.Drawing.Size(66, 57);
             this.btnWarehouse.TabIndex = 2;
-            this.btnWarehouse.Text = "Warehouse";
             this.btnWarehouse.UseVisualStyleBackColor = true;
             this.btnWarehouse.Click += new System.EventHandler(this.btnWarehouse_Click);
             // 
             // btnShop
             // 
-            this.btnShop.Location = new System.Drawing.Point(2, 2);
+            this.btnShop.BackgroundImage = global::MapLayout.Properties.Resources.shopIcon;
+            this.btnShop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnShop.Location = new System.Drawing.Point(2, 3);
             this.btnShop.Margin = new System.Windows.Forms.Padding(2);
             this.btnShop.Name = "btnShop";
-            this.btnShop.Size = new System.Drawing.Size(189, 35);
+            this.btnShop.Size = new System.Drawing.Size(66, 58);
             this.btnShop.TabIndex = 1;
-            this.btnShop.Text = "Shop";
             this.btnShop.UseVisualStyleBackColor = true;
             this.btnShop.Click += new System.EventHandler(this.btnShop_Click);
             // 
-            // btnCursor
+            // contextMenuStrip1
             // 
-            this.btnCursor.Location = new System.Drawing.Point(2, 82);
-            this.btnCursor.Name = "btnCursor";
-            this.btnCursor.Size = new System.Drawing.Size(189, 41);
-            this.btnCursor.TabIndex = 6;
-            this.btnCursor.Text = "Cursor";
-            this.btnCursor.UseVisualStyleBackColor = true;
-            this.btnCursor.Click += new System.EventHandler(this.btnCursor_Click);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // Form1
             // 
@@ -196,6 +216,7 @@
             this.Text = "Form1";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).EndInit();
@@ -219,6 +240,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button btnCursor;
+        private System.Windows.Forms.Label lbLocationLog;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
 

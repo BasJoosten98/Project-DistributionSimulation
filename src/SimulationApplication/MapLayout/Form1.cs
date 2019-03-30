@@ -17,6 +17,10 @@ namespace MapLayout
         private bool isShopBtnClicked;
         private bool isWarehouseBtnClicked;
         List<Rectangle> ListofRectangles;
+        //redraw image method
+        //Bitmap bmp;
+        
+
         public Form1()
         {
             InitializeComponent();
@@ -38,6 +42,8 @@ namespace MapLayout
                    
                 }
             }
+            //reDraw image method
+            //bmp = new Bitmap(mapPictureBox.Width,mapPictureBox.Height);
         }
 
         private void pictureBox1_Paint_1(object sender, PaintEventArgs e)
@@ -48,7 +54,7 @@ namespace MapLayout
             Console.WriteLine($"Number of Cells: {numOfCells}");
 
 
-
+            //change to Graphics.FromImage(bmp) for redraw 
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.Black);
 
@@ -61,15 +67,17 @@ namespace MapLayout
                 // y = 0 || (0, 50) -> (600, 50)
                 // y = 0 || (0, 100) -> (600, 100)
                 // Drawing the horizontal lines first.
+         
                 g.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
-
 
             }
 
             // The same as above but now vertical lines are drawn
             for (int x = 0; x <= numOfCells; ++x)
             {
+
                 g.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
+
             }
             int k = 10;
             foreach (Cell cell in map.GetCells())
@@ -80,11 +88,15 @@ namespace MapLayout
 
                     g.FillEllipse(new SolidBrush(Color.LightYellow), rect);
                     g.DrawEllipse(new Pen(Color.Black), rect);
-                    g.DrawString(string.Format("{0,2}", cell.Location.LocationID + 1), this.Font, new SolidBrush(Color.Black), cell.Location.LocationPoint.X +17, cell.Location.LocationPoint.Y + 20);
+                    g.DrawString(string.Format("{0,2}", cell.Location.LocationID), this.Font, new SolidBrush(Color.Black), cell.Location.LocationPoint.X +17, cell.Location.LocationPoint.Y + 20);
+                    //removed +1 from locationid above
                     ListofRectangles.Add(rect);
+                    map.Vertices.Add(cell.Location);
                     k += 10;
                 }
             }
+            //Redraw method.
+            //mapPictureBox.Image = bmp;
         }
 
         private void btnShop_Click(object sender, EventArgs e)
@@ -104,18 +116,71 @@ namespace MapLayout
         {
             //If the shop or warehouse button was clicked AND a rectangle was clicked. Do action.
             Point mousePt = new Point(e.X, e.Y);
+            int CDIAMETER = 50;
             if (isShopBtnClicked)
             {
                 foreach (Rectangle r in ListofRectangles)
                 {
-                    if (r.Contains(mousePt)) MessageBox.Show("Shop Set");
+                    if (r.Contains(mousePt))
+                    {
+                        Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
+                        int id = clickedLocation.LocationID;
+                        clickedLocation.Building = new Shop(100, 10);
+                        PictureBox p = new PictureBox();
+                        Point pPoint = new Point((clickedLocation.PositionX * CDIAMETER) + 4, (clickedLocation.PositionY * CDIAMETER) + 4);
+                        p.Location = pPoint;
+                        p.Size = clickedLocation._Size;
+                        p.Image = Properties.Resources.shopIcon;
+                        p.SizeMode = PictureBoxSizeMode.StretchImage;
+                        splitContainer1.Panel1.Controls.Add(p);
+                        p.BringToFront();
+                        lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
+                    }
                 }
-           
             } else if(isWarehouseBtnClicked)
             {
                 foreach (Rectangle r in ListofRectangles)
                 {
-                    if (r.Contains(mousePt)) MessageBox.Show("Warehouse Set");
+                    if (r.Contains(mousePt))
+                    {
+                        Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
+                        int id = clickedLocation.LocationID;
+                        //clickedLocation.Building = new Warehouse(map.getShops()); 
+
+                        //warehouse expects a list of shops.. each location has a building..
+                        //i can only make a list of buildings
+                        //no clue what to do for now
+                        //check map.GetShops() for the method
+
+                        /*
+                         * So far i've only found 2 ways to do this. Create a picture box at the location clicked
+                         * with the warehouse image on it.
+                         * OR Redraw the image everytime with the new warehouse/shop
+                         * im including both sets of code and you guys tell me what u think
+                         * (picutrebox way still needs a small positioning fix)
+                         * (redraw method is still kinda broken)
+                         * Picturebox method admitted isnt the most efficient but i couldnt get the draw to work so i opted
+                         * for something else temporarily
+                         */
+                        PictureBox p = new PictureBox();
+                        Point pPoint = new Point((clickedLocation.PositionX * CDIAMETER)+4, (clickedLocation.PositionY * CDIAMETER)+4);
+                        p.Location = pPoint;
+                        p.Size = new Size(49,49);
+                        p.Image = Properties.Resources.warehouseIcon;
+                        p.SizeMode = PictureBoxSizeMode.StretchImage;
+                        splitContainer1.Panel1.Controls.Add(p);
+                        p.BringToFront();
+                        lbLocationLog.Text = "Location #: " + id + " has been set to a Warehouse";
+                            
+                        /* Redraw method
+                        using (Graphics g = Graphics.FromImage(bmp))
+                        {
+                            g.DrawRectangle(new Pen(Color.Black), new Rectangle(clickedLocation.LocationPoint, clickedLocation._Size));
+                            g.DrawImage(new Bitmap(Properties.Resources.warehouseIcon, clickedLocation._Size), clickedLocation.LocationPoint);
+                        }
+                        mapPictureBox.Image = bmp;
+                        */
+                    }
                 }
             }
 
@@ -135,5 +200,6 @@ namespace MapLayout
             isShopBtnClicked = false;
             isWarehouseBtnClicked = false;
         }
+
     }
 }

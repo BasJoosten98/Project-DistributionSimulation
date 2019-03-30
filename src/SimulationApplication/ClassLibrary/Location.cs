@@ -35,6 +35,7 @@ namespace ClassLibrary
             this.min_cost = int.MaxValue;
             this.permanent = false;
             this.visited = false;
+
         }
 
        
