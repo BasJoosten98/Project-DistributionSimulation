@@ -29,24 +29,26 @@ namespace MapLayout
             {
                 if (cell.Location != null)
                 {
-                    Console.WriteLine($"Row: {cell.Index.Row}, Col: {cell.Index.Column}");
-                   
+                    Console.WriteLine($"Row: {cell.Index.Row}, Col: {cell.Index.Column}");  
                 }
             }
 
+            // index 0, the first location object from the collection of road.
             Map.Dijkstra(map, 0);
 
             foreach(Location location in map)
             {
-                if (location.LocationID != 1)
+                // Iterate over all location objects but the initial one (our hard coded is one).
+                if (location.LocationID != 0)
                 {
                     if (location.min_cost == int.MaxValue || location.min_cost == int.MaxValue * -1)
                     {
-                        Console.WriteLine($"Shortest path from location 1 to {location.LocationID} is infinite.");
+                        Console.WriteLine($"Shortest path from location 1 to {location.LocationID + 1} is infinite.");
                     }
                     else
                     {
-                        Console.WriteLine($"Shortest path from location 1 to {location.LocationID} is {location.min_cost}.");
+                        // It assigned the min cost during the Dijkstra algo to the destination node, so the weight from source to destination.
+                        Console.WriteLine($"Shortest path from location 1 to {location.LocationID + 1} is {location.min_cost}.");
                     }
                 }
                 
@@ -88,7 +90,7 @@ namespace MapLayout
                 {
                     g.FillEllipse(new SolidBrush(Color.LightYellow), new Rectangle(cell.Location.Locationn, cell.Location._Size));
                     g.DrawEllipse(new Pen(Color.Black), new Rectangle(cell.Location.Locationn, cell.Location._Size));
-                    g.DrawString(string.Format("{0,2}", cell.Location.LocationID), this.Font, new SolidBrush(Color.Black), cell.Location.Locationn.X +17, cell.Location.Locationn.Y + 20);
+                    g.DrawString(string.Format("{0,2}", cell.Location.LocationID + 1), this.Font, new SolidBrush(Color.Black), cell.Location.Locationn.X +17, cell.Location.Locationn.Y + 20);
                     k += 10;
                 }
             }

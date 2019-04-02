@@ -26,7 +26,7 @@ namespace ClassLibrary
 
         public Location(int x, int y)
         {
-            LocationID = ++locationID;
+            LocationID = locationID++;
             PositionX = x;
             PositionY = y;
 
