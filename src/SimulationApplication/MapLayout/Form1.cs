@@ -33,6 +33,24 @@ namespace MapLayout
                    
                 }
             }
+
+            Map.Dijkstra(map, 0);
+
+            foreach(Location location in map)
+            {
+                if (location.LocationID != 1)
+                {
+                    if (location.min_cost == int.MaxValue || location.min_cost == int.MaxValue * -1)
+                    {
+                        Console.WriteLine($"Shortest path from location 1 to {location.LocationID} is infinite.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Shortest path from location 1 to {location.LocationID} is {location.min_cost}.");
+                    }
+                }
+                
+            }
         }
 
         private void pictureBox1_Paint_1(object sender, PaintEventArgs e)

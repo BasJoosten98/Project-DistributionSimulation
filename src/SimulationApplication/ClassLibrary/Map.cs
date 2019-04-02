@@ -37,9 +37,22 @@ namespace ClassLibrary
                     // Set location object to beparth of this cell 
                     // and decrement number of locations to be added to the cells/map.
                     c.Location = new Location(c.Index.Row, c.Index.Column);
+                    // Add the cell's location object to the list of vertices.
+                    // Refactor later, Bas' comment (Location is more specific version of cell) so it can inherit from Cell.
+                    Vertices.Add(c.Location);
                     numberOfLocations--;
                 }
             }
+
+            // Hard coded roads/edges from location 
+            // 1 -> 2, weight: 3
+            // 2 -> 3, weight: 1
+            // 1 -> 3, weight: 1
+            Edges.Add(new Road(Vertices[0], Vertices[1]));
+            Road r = Edges[0];
+            r.initialCost = 3;
+            Edges.Add(new Road(Vertices[1], Vertices[2]));
+            Edges.Add(new Road(Vertices[0], Vertices[2]));
         }
 
         public Cell[,] GetCells()
@@ -201,14 +214,15 @@ namespace ClassLibrary
             for (int i = 0; i < _Graph.V; i++)
             {
 
-                int min_cost = int.MaxValue, index = 0;
+                int min_cost = int.MaxValue;
+                int index = 0;
+
                 foreach (Location v in _Graph.nonPermanent())
                 {
 
                     if (_Graph.Get(initial, v) != null)
                         if (initial + _Graph.Get(initial, v) < v.min_cost)
                         {
-
                             v.min_cost = initial + _Graph.Get(initial, v);
                             v.source_id = initial.LocationID;
                         }
