@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ClassLibrary
 {
-    public class Map : IEnumerable, ICloneable
+    public class Map : IEnumerable
     {
         private Random rng;
         private Cell[,] cells;
@@ -271,11 +271,6 @@ namespace ClassLibrary
                 _Graph[index].permanent = true;
                 initial = _Graph[index];
             }
-        }
-
-        public object Clone()
-        {
-            return MemberwiseClone();
         }
     }
 }

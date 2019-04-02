@@ -92,7 +92,7 @@ namespace MapLayout
                     g.DrawString(string.Format("{0,2}", cell.Location.LocationID + 1), this.Font, new SolidBrush(Color.Black), cell.Location.LocationPoint.X +17, cell.Location.LocationPoint.Y + 20);
                     //removed +1 from locationid above
                     ListofRectangles.Add(rect);
-                    map.Locations.Add(cell.Location);
+                    //map.Locations.Add(cell.Location);
                     k += 10;
                 }
             }
