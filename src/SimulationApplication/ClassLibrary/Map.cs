@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Text;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace ClassLibrary
@@ -61,6 +60,18 @@ namespace ClassLibrary
             return cells;
         }
 
+        public Location getCellByLocation(Location l)
+        {
+            foreach(Location loc in Vertices)
+            {
+                if(loc.LocationPoint == l.LocationPoint)
+                {
+                    return loc;
+                }
+            }
+            return null;
+        }
+
         private Cell GenerateRandomLocation()
         {
             // Return a cell at index [x, y] where x and y are numbers between 0 and NumOfCells (exclusive)
@@ -104,6 +115,11 @@ namespace ClassLibrary
             return (from v in this.OfType<Location>() where v.visited == false select v);
         }
 
+        public List<Building> getShops()
+        {
+            return Vertices.Select(v => v.Building).Where(v => v is Shop).ToList();
+        }
+
         /// <summary>
         /// Streams all vertices whose 'permanent variable' is false.
         /// </summary>
@@ -136,7 +152,7 @@ namespace ClassLibrary
 
             if (this.V < 10) // instead of 10 here we should put the vertex limit
                 this.Vertices.Add(v);
-            else ;
+           
 
             //else
             //    System.Windows.Forms.MessageBox.Show("Vertex limit reached!", "Warning");
