@@ -9,18 +9,26 @@ namespace ClassLibrary
 	public class Warehouse : Building
 	{
 		private List<Vehicle> vehicles;
-		private List<Shop> queue;
+		private List<Shop> shops;
 
-
-
-        public Warehouse(List<Shop> shops): base()
+        public List<Shop> Shops
         {
-            queue = shops;
-            foreach (Shop item in queue)
+            get
             {
-                item.LowStockReached += Item_LowStockReached;
+                return new List<Shop>(shops);
+            }
+            set
+            {
+                shops = value;
+                foreach (Shop shop in this.shops)
+                {
+                    shop.LowStockReached += Item_LowStockReached;
+                }
             }
         }
+
+        public Warehouse()
+        {  }
 
         private void Item_LowStockReached(object sender, LowStockReachedEventArgs e)
         {
@@ -32,7 +40,7 @@ namespace ClassLibrary
 
         public Shop GetShop(int ID)
         {
-            return queue.Find(x => x.ID == ID);
+            return shops.Find(shop => shop.ID == ID);
         }
     }
 }
