@@ -56,7 +56,6 @@ namespace MapLayout
                 // Drawing the horizontal lines first.
                 g.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
 
-
             }
 
             // The same as above but now vertical lines are drawn
@@ -71,7 +70,7 @@ namespace MapLayout
                 {
                     g.FillEllipse(new SolidBrush(Color.LightYellow), new Rectangle(cell.Location.Locationn, cell.Location._Size));
                     g.DrawEllipse(new Pen(Color.Black), new Rectangle(cell.Location.Locationn, cell.Location._Size));
-                    g.DrawString(string.Format("{0,2}", cell.Location.LocationID + 1), this.Font, new SolidBrush(Color.Black), cell.Location.Locationn.X +17, cell.Location.Locationn.Y + 20);
+                    g.DrawString(string.Format("{0,2}", cell.Location.LocationID), this.Font, new SolidBrush(Color.Black), cell.Location.Locationn.X +17, cell.Location.Locationn.Y + 20);
                     k += 10;
                 }
             }

@@ -13,7 +13,6 @@ namespace ClassLibrary
         public const int CRADIUS = 20; // circle radius
         public const int CDIAMETER = 50; // circle diameter might have something to do with the diameter of the cell someone should look into it
 
-
         public int LocationID { get; set; }
         public Building Building { get; set; }
 
@@ -21,8 +20,6 @@ namespace ClassLibrary
         public int min_cost { get; set; } // keeps the minimal cost of this vertex
         public bool permanent { get; set; } // used for deijsktra
         public bool visited { get; set; } // checks if it has been seen 
-
-
 
         public int PositionX { get; }
         public int PositionY { get; }
@@ -37,8 +34,6 @@ namespace ClassLibrary
             this.permanent = false;
             this.visited = false;
         }
-
-       
 
         /// <summary>
         /// Returns center point of a Vertex.
@@ -55,16 +50,9 @@ namespace ClassLibrary
         /// </summary>
         public Size _Size { get { return new Size(CDIAMETER, CDIAMETER); } }
 
-
         public int CompareTo(object obj)
         {
             return this.LocationID.CompareTo((obj as Location).LocationID);
         }
-
     }
-
-
-
-
-
 }
