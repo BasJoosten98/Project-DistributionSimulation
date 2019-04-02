@@ -223,41 +223,38 @@ namespace MapLayout
         {
             // For each warehouse, run Dijkstra, compare for each warehouse to store the shortest path and store those stores/shops
             // only in those warehouses.
-            List<Map> maps = new List<Map>();
-
-            Console.WriteLine($"The number of locations in map: {map.Locations.Count}");
-
             foreach (Location location in map.Locations)
             {
                 if (location.Building != null)
                 {
                     if (location.Building.GetType() == typeof(Warehouse))
                     {
-                        // Map mapClone = (Map)map.Clone();
-                        // Traverse shortest paths from warehouse to all other locations.
-                        //Map.Dijkstra(mapClone, location.LocationID);
-                        //maps.Add(mapClone);
+                        map.Warehouses.Add(location);
                     }
                 }
             }
 
-            foreach(Map map in maps)
+            foreach (Location warehouse in map.Warehouses)
             {
+                // Traverse shortest paths from warehouse to all other locations.
+                Map.Dijkstra(map, warehouse.LocationID);
                 foreach (Location location in map)
                 {
-                    // Iterate over all location objects but the initial one (our hard coded is one).
-                    if (location.LocationID != 0)
+                    if (location.LocationID != warehouse.LocationID)
                     {
                         if (location.min_cost == int.MaxValue || location.min_cost == int.MaxValue * -1)
                         {
-                            Console.WriteLine($"Shortest path from location 1 to {location.LocationID + 1} is infinite.");
+                            Console.WriteLine($"Shortest path from location {warehouse.LocationID + 1} to {location.LocationID + 1} is infinite.");
                         }
                         else
                         {
                             // It assigned the min cost during the Dijkstra algo to the destination node, so the weight from source to destination.
-                            Console.WriteLine($"Shortest path from location 1 to {location.LocationID + 1} is {location.min_cost}.");
+                            Console.WriteLine($"Shortest path from location {warehouse.LocationID + 1} to {location.LocationID + 1} is {location.min_cost}.");
                         }
                     }
+                    location.min_cost = int.MaxValue;
+                    location.permanent = false;
+                    location.visited = false;
                 }
                 Console.WriteLine();
             }
