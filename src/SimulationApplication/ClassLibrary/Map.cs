@@ -189,20 +189,20 @@ namespace ClassLibrary
         /// <summary>
         /// Calculates the shortest distance between vertices using Dijkstra's algorithm.
         /// </summary>
-        public static void Dijkstra(Graph _Graph, int start_id)
+        public static void Dijkstra(Map _Graph, int start_id)
         {
 
-            Vertex initial = _Graph[start_id];
+            Location initial = _Graph[start_id];
 
             initial.min_cost = 0;
             initial.permanent = true;
-            initial.source_id = initial.id;
+            initial.source_id = initial.LocationID;
 
             for (int i = 0; i < _Graph.V; i++)
             {
 
                 int min_cost = int.MaxValue, index = 0;
-                foreach (Vertex v in _Graph.nonPermanent())
+                foreach (Location v in _Graph.nonPermanent())
                 {
 
                     if (_Graph.Get(initial, v) != null)
@@ -210,14 +210,14 @@ namespace ClassLibrary
                         {
 
                             v.min_cost = initial + _Graph.Get(initial, v);
-                            v.source_id = initial.id;
+                            v.source_id = initial.LocationID;
                         }
 
                     if (v.min_cost < min_cost)
                     {
 
                         min_cost = v.min_cost;
-                        index = v.id;
+                        index = v.LocationID;
                     }
                 }
 

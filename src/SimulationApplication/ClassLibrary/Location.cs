@@ -54,5 +54,10 @@ namespace ClassLibrary
         {
             return this.LocationID.CompareTo((obj as Location).LocationID);
         }
+
+        public static int operator +(Location location, Road road)
+        {
+            return location.min_cost + road.initialCost;
+        }
     }
 }
