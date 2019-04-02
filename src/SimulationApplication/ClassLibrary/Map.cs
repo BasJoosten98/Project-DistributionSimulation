@@ -16,7 +16,7 @@ namespace ClassLibrary
 
         public Map(int numberOfLocations, int numberOfCells, int cellSize)
         {
-            NumberOfCells = numberOfCells;
+            NumberOfCells = 4;
             Cell.CellSize = cellSize;
             cells = new Cell[NumberOfCells, NumberOfCells];
             for (int rowCount = 0; rowCount < NumberOfCells; rowCount++)
@@ -49,10 +49,13 @@ namespace ClassLibrary
             // 2 -> 3, weight: 1
             // 1 -> 3, weight: 1
             Edges.Add(new Road(Vertices[0], Vertices[1]));
+            Edges.Add(new Road(Vertices[1], Vertices[0]));
             Road r = Edges[0];
             r.initialCost = 3;
             Edges.Add(new Road(Vertices[1], Vertices[2]));
+            Edges.Add(new Road(Vertices[2], Vertices[1]));
             Edges.Add(new Road(Vertices[0], Vertices[2]));
+            Edges.Add(new Road(Vertices[2], Vertices[2]));
         }
 
         public Cell[,] GetCells()
