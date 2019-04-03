@@ -87,7 +87,7 @@
             this.mapPictureBox.Location = new System.Drawing.Point(3, 3);
             this.mapPictureBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.mapPictureBox.Name = "mapPictureBox";
-            this.mapPictureBox.Size = new System.Drawing.Size(602, 559);
+            this.mapPictureBox.Size = new System.Drawing.Size(602, 538);
             this.mapPictureBox.TabIndex = 1;
             this.mapPictureBox.TabStop = false;
             this.mapPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint_1);

@@ -26,7 +26,7 @@ namespace MapLayout
             InitializeComponent();
 
             // This could be set later on, maybe even via the app config file or by the user.
-            const int CELLSIZE = 50;
+            const int CELLSIZE = 40;
 
             // The result represents the number of cells we can create in both width and height (Square grid/map) based on the cell size.
             int numberOfCells;
@@ -62,13 +62,10 @@ namespace MapLayout
             DrawRoads(e);
 
             Cell[,] allCells = map.GetCells();
-            string holder = "";
             foreach(Cell c in allCells)
             {
                 c.DrawMe(g,p);
-                holder += c.CellRectangle.Location + " ";
             }
-            MessageBox.Show(holder);
             //for (int y = 0; y <= map.NumberOfCells; ++y)
             //{
             //    // (x1, y1) to (x2, y2)
@@ -94,7 +91,8 @@ namespace MapLayout
 
                     g.FillEllipse(new SolidBrush(Color.LightYellow), rect);
                     g.DrawEllipse(new Pen(Color.Black), rect);
-                    g.DrawString(string.Format("{0,2}", ((Location)cell).LocationID + 1), this.Font, new SolidBrush(Color.Black), ((Location)cell).LocationPoint.X + 17, ((Location)cell).LocationPoint.Y + 20);
+                    g.DrawString(string.Format("{0,2}", ((Location)cell).LocationID + 1), this.Font, new SolidBrush(Color.Black), ((Location)cell).Center.X - this.Font.Size, ((Location)cell).Center.Y - this.Font.Size/2);
+                    //g.DrawString(string.Format("{0,2}", ((Location)cell).LocationID + 1), this.Font, new SolidBrush(Color.Black), ((Location)cell).LocationPoint.X + 17, ((Location)cell).LocationPoint.Y + 20);
                     //removed +1 from locationid above
                     ListofRectangles.Add(rect);
                     //map.Locations.Add(cell.Location);
