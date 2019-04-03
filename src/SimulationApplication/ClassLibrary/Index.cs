@@ -11,7 +11,7 @@ namespace ClassLibrary
         public int Row { get; set; }
         public int Column { get; set; }
 
-        public Index (int rowNumber, int columnNumber)
+        public Index (int columnNumber, int rowNumber)
         {
             Row = rowNumber;
             Column = columnNumber;

@@ -25,7 +25,7 @@ namespace ClassLibrary
             {
                 for (int columnCount = 0; columnCount < NumberOfCells; columnCount++)
                 {
-                    cells[rowCount, columnCount] = new Cell(rowCount, columnCount);
+                    cells[columnCount, rowCount] = new Cell(rowCount, columnCount);
                 }
             }
             // Seed the random generator to get reproducable results.
@@ -34,14 +34,16 @@ namespace ClassLibrary
             while (numberOfLocations > 0)
             {
                 Cell c = GenerateRandomLocation();
-                if (c.Location == null)
+                if (!(c is Location))
                 {
                     // Set location object to beparth of this cell 
                     // and decrement number of locations to be added to the cells/map.
-                    c.Location = new Location(c.Index.Row, c.Index.Column);
+                    //c.Location = new Location(c.Index.Row, c.Index.Column);
+                    Location newLocation = new Location(c.Index.Column, c.Index.Row);
+                    cells[c.Index.Column, c.Index.Row] = newLocation;
                     // Add the cell's location object to the list of vertices.
                     // Refactor later, Bas' comment (Location is more specific version of cell) so it can inherit from Cell.
-                    Locations.Add(c.Location);
+                    Locations.Add(newLocation);
                     numberOfLocations--;
                 }
             }
@@ -153,7 +155,7 @@ namespace ClassLibrary
         /// </summary>
         public Location Get(int x, int y)
         {
-            return (from v in this.OfType<Location>() where v.PositionX == x && v.PositionY == y select v).FirstOrDefault();
+            return (from v in this.OfType<Location>() where v.Index.Column == x && v.Index.Row == y select v).FirstOrDefault();
         }
 
         /// <summary>

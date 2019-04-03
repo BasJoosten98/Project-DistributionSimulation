@@ -8,7 +8,7 @@ namespace ClassLibrary
 	{
         public Building()
         {
-            //test comment
+            
         }
 
 	}

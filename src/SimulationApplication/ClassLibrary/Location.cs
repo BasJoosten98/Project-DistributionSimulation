@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace ClassLibrary
 {
-    public class Location : IComparable
+    public class Location : Cell, IComparable
     {
         private static int locationID;
         public const int CRADIUS = 20; // circle radius
@@ -20,14 +20,15 @@ namespace ClassLibrary
         public bool permanent { get; set; } // used for deijsktra
         public bool visited { get; set; } // checks if it has been seen 
 
-        public int PositionX { get; }
-        public int PositionY { get; }
+        //public int PositionX { get; }
+        //public int PositionY { get; }
 
-        public Location(int x, int y)
+        public Location(int column, int row)
+            : base(column, row)
         {
             LocationID = locationID++;
-            PositionX = x;
-            PositionY = y;
+            //PositionX = x;
+            //PositionY = y;
 
             this.min_cost = int.MaxValue;
             this.permanent = false;
@@ -38,12 +39,12 @@ namespace ClassLibrary
         /// <summary>
         /// Returns center point of a Vertex.
         /// </summary>
-        public Point Center { get { return new Point(PositionX * CDIAMETER + CRADIUS, PositionY * CDIAMETER + CRADIUS); } }
+        public Point Center { get { return new Point(base.Index.Column * CDIAMETER + CRADIUS, base.Index.Row * CDIAMETER + CRADIUS); } }
 
         /// <summary>
         /// Return location point of a Vertex.
         /// </summary>
-        public Point LocationPoint { get { return new Point(PositionX * CDIAMETER, PositionY * CDIAMETER); } }
+        public Point LocationPoint { get { return new Point(base.Index.Column * CDIAMETER, base.Index.Row * CDIAMETER); } }
 
         /// <summary>
         /// Returns default size of a Vertex.

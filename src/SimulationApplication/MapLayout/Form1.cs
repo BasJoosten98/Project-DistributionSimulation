@@ -33,14 +33,14 @@ namespace MapLayout
             map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE);
 
 
-            // This loop is for debugging purposes such that we can check which cells have a location added to them.
+            //This loop is for debugging purposes such that we can check which cells have a location added to them.
             foreach (Cell cell in map.GetCells())
-            {
-                if (cell.Location != null)
                 {
-                    Console.WriteLine($"Row: {cell.Index.Row}, Col: {cell.Index.Column}");  
+                    if (cell is Location)
+                    {
+                        Console.WriteLine($"Row: {cell.Index.Row}, Col: {cell.Index.Column}");
+                    }
                 }
-            }
             //reDraw image method
             //bmp = new Bitmap(mapPictureBox.Width,mapPictureBox.Height);
         }
@@ -68,7 +68,7 @@ namespace MapLayout
                 // y = 0 || (0, 50) -> (600, 50)
                 // y = 0 || (0, 100) -> (600, 100)
                 // Drawing the horizontal lines first.
-         
+
                 g.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
 
             }
@@ -83,13 +83,13 @@ namespace MapLayout
             int k = 10;
             foreach (Cell cell in map.GetCells())
             {
-                if (cell.Location != null)
+                if (cell is Location)
                 {
-                    Rectangle rect = new Rectangle(cell.Location.LocationPoint, cell.Location._Size);
+                    Rectangle rect = new Rectangle(((Location)cell).LocationPoint, ((Location)cell)._Size);
 
                     g.FillEllipse(new SolidBrush(Color.LightYellow), rect);
                     g.DrawEllipse(new Pen(Color.Black), rect);
-                    g.DrawString(string.Format("{0,2}", cell.Location.LocationID + 1), this.Font, new SolidBrush(Color.Black), cell.Location.LocationPoint.X +17, cell.Location.LocationPoint.Y + 20);
+                    g.DrawString(string.Format("{0,2}", ((Location)cell).LocationID + 1), this.Font, new SolidBrush(Color.Black), ((Location)cell).LocationPoint.X + 17, ((Location)cell).LocationPoint.Y + 20);
                     //removed +1 from locationid above
                     ListofRectangles.Add(rect);
                     //map.Locations.Add(cell.Location);
@@ -129,7 +129,7 @@ namespace MapLayout
                         int id = clickedLocation.LocationID;
                         clickedLocation.Building = new Shop(100, 10);
                         PictureBox p = new PictureBox();
-                        Point pPoint = new Point((clickedLocation.PositionX * CDIAMETER) + 4, (clickedLocation.PositionY * CDIAMETER) + 4);
+                        Point pPoint = new Point((clickedLocation.Index.Column * CDIAMETER) + 4, (clickedLocation.Index.Row * CDIAMETER) + 4);
                         p.Location = pPoint;
                         p.Size = new Size(49, 49);
                         p.Image = Properties.Resources.shopIcon;
@@ -165,7 +165,7 @@ namespace MapLayout
                          * for something else temporarily
                          */
                         PictureBox p = new PictureBox();
-                        Point pPoint = new Point((clickedLocation.PositionX * CDIAMETER)+4, (clickedLocation.PositionY * CDIAMETER)+4);
+                        Point pPoint = new Point((clickedLocation.Index.Column * CDIAMETER)+4, (clickedLocation.Index.Row * CDIAMETER)+4);
                         p.Location = pPoint;
                         p.Size = new Size(49,49);
                         p.Image = Properties.Resources.warehouseIcon;
