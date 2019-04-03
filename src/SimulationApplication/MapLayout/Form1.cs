@@ -131,7 +131,7 @@ namespace MapLayout
                         PictureBox p = new PictureBox();
                         Point pPoint = new Point((clickedLocation.PositionX * CDIAMETER) + 4, (clickedLocation.PositionY * CDIAMETER) + 4);
                         p.Location = pPoint;
-                        p.Size = clickedLocation._Size;
+                        p.Size = new Size(49, 49);
                         p.Image = Properties.Resources.shopIcon;
                         p.SizeMode = PictureBoxSizeMode.StretchImage;
                         splitContainer1.Panel1.Controls.Add(p);
