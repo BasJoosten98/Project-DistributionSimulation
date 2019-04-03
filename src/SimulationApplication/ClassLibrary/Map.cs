@@ -8,6 +8,7 @@ namespace ClassLibrary
 {
     public class Map : IEnumerable, ICloneable
     {
+        public List<Location> Warehouses { get; }
         private Random rng;
         private Cell[,] cells;
 
@@ -15,6 +16,8 @@ namespace ClassLibrary
 
         public Map(int numberOfLocations, int numberOfCells, int cellSize)
         {
+            Warehouses = new List<Location>();
+
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
             cells = new Cell[NumberOfCells, NumberOfCells];

@@ -92,7 +92,7 @@ namespace MapLayout
                     g.DrawString(string.Format("{0,2}", cell.Location.LocationID + 1), this.Font, new SolidBrush(Color.Black), cell.Location.LocationPoint.X +17, cell.Location.LocationPoint.Y + 20);
                     //removed +1 from locationid above
                     ListofRectangles.Add(rect);
-                    map.Add(cell.Location);
+                    //map.Locations.Add(cell.Location);
                     k += 10;
                 }
             }
@@ -233,33 +233,61 @@ namespace MapLayout
                 {
                     if (location.Building.GetType() == typeof(Warehouse))
                     {
-                        // Map mapClone = (Map)map.Clone();
-                        // Traverse shortest paths from warehouse to all other locations.
-                        //Map.Dijkstra(mapClone, location.LocationID);
-                        //maps.Add(mapClone);
+                        map.Warehouses.Add(location);
                     }
                 }
             }
 
-            foreach(Map map in maps)
+            foreach (Location warehouse in map.Warehouses)
             {
+                // Traverse shortest paths from warehouse to all other locations.
+                Map.Dijkstra(map, warehouse.LocationID);
                 foreach (Location location in map)
                 {
-                    // Iterate over all location objects but the initial one (our hard coded is one).
-                    if (location.LocationID != 0)
+                    if (location.LocationID != warehouse.LocationID)
                     {
-                        if (location.min_cost == int.MaxValue || location.min_cost == int.MaxValue * -1)
+                        if (location.Building != null)
                         {
-                            Console.WriteLine($"Shortest path from location 1 to {location.LocationID + 1} is infinite.");
+                            if (location.Building.GetType() == typeof(Shop))
+                            {
+                                Road r = new Road(warehouse, location);
+                                // This is done as an intermediary step to compare different min costs (which belong to a vertex) later on.
+                                // Otherwise there was no way to compare the distance from different warehouses to the same shop (as information
+                                // gets lost because we have to reset the values of vertices to rerun Dijkstra multiple times.
+                                r.initialCost = location.min_cost;
+                                ((Warehouse)warehouse.Building).Roads.Add(r);
+                            }
                         }
-                        else
+                    }
+                    location.min_cost = int.MaxValue;
+                    location.permanent = false;
+                    location.visited = false;
+                }
+            }
+
+            int shortestPath = int.MaxValue;
+            Road shortestRoad = null;
+
+            for (int i = 0; i < ((Warehouse)map.Warehouses[0].Building).Roads.Count; i++)
+            {
+                for (int j = 0; j < map.Warehouses.Count; j++)
+                {
+                    if (j == 0)
+                    {
+                        shortestPath = ((Warehouse)map.Warehouses[j].Building).Roads[i].initialCost;
+                        shortestRoad = ((Warehouse)map.Warehouses[j].Building).Roads[i];
+                    }
+                    else
+                    {
+                        if (((Warehouse)map.Warehouses[j].Building).Roads[i].initialCost < shortestPath)
                         {
-                            // It assigned the min cost during the Dijkstra algo to the destination node, so the weight from source to destination.
-                            Console.WriteLine($"Shortest path from location 1 to {location.LocationID + 1} is {location.min_cost}.");
+                            shortestPath = ((Warehouse)map.Warehouses[j].Building).Roads[i].initialCost;
+                            shortestRoad = ((Warehouse)map.Warehouses[j].Building).Roads[i];
                         }
                     }
                 }
-                Console.WriteLine();
+                // Display.
+                shortesRoutesRichTbx.Text += $"Warehouses at #{shortestRoad[0].LocationID + 1} to shop at #{shortestRoad[1].LocationID + 1}, takes {shortestRoad.initialCost} km.\n";
             }
         }
     }

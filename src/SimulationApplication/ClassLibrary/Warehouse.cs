@@ -11,6 +11,8 @@ namespace ClassLibrary
 		private List<Vehicle> vehicles;
 		private List<Shop> shops;
 
+        public List<Road> Roads { get; }
+
         public List<Shop> Shops
         {
             get
@@ -28,7 +30,9 @@ namespace ClassLibrary
         }
 
         public Warehouse()
-        {  }
+        {
+            Roads = new List<Road>();
+        }
 
         private void Item_LowStockReached(object sender, LowStockReachedEventArgs e)
         {
