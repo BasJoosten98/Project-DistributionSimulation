@@ -57,6 +57,8 @@ namespace MapLayout
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.Black);
 
+            DrawRoads(e);
+
             for (int y = 0; y <= map.NumberOfCells; ++y)
             {
                 // (x1, y1) to (x2, y2)
@@ -90,10 +92,11 @@ namespace MapLayout
                     g.DrawString(string.Format("{0,2}", cell.Location.LocationID + 1), this.Font, new SolidBrush(Color.Black), cell.Location.LocationPoint.X +17, cell.Location.LocationPoint.Y + 20);
                     //removed +1 from locationid above
                     ListofRectangles.Add(rect);
-                    map.Vertices.Add(cell.Location);
+                    map.Add(cell.Location);
                     k += 10;
                 }
             }
+            DrawRoadWeights(e);
             //Redraw method.
             //mapPictureBox.Image = bmp;
         }
@@ -144,7 +147,7 @@ namespace MapLayout
                     {
                         Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
                         int id = clickedLocation.LocationID;
-                        //clickedLocation.Building = new Warehouse(map.getShops()); 
+                        clickedLocation.Building = new Warehouse(); 
 
                         //warehouse expects a list of shops.. each location has a building..
                         //i can only make a list of buildings
@@ -182,7 +185,6 @@ namespace MapLayout
                     }
                 }
             }
-
         }
 
         private void btnWarehouse_Click(object sender, EventArgs e)
@@ -200,30 +202,64 @@ namespace MapLayout
             isWarehouseBtnClicked = false;
         }
 
+        private void DrawRoads(PaintEventArgs e)
+        {
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            foreach (Road road in map.Edges)
+            {
+                e.Graphics.DrawLine(new Pen(Color.IndianRed, 3), road[0].Center, road[1].Center);
+            }
+        }
+
+        private void DrawRoadWeights(PaintEventArgs e)
+        {
+            foreach (Road road in map.Edges)
+            {
+                e.Graphics.DrawString(road.initialCost.ToString(), Font, new SolidBrush(Color.White), 0.5f * (road[0].Center.X + road[1].Center.X), 0.5f * (road[0].Center.Y + road[1].Center.Y));
+            }
+        }
+
         private void simulateBtn_click(object sender, EventArgs e)
         {
             // For each warehouse, run Dijkstra, compare for each warehouse to store the shortest path and store those stores/shops
             // only in those warehouses.
+            List<Map> maps = new List<Map>();
 
-            // index 0, the first location object from the collection of road.
-            Map.Dijkstra(map, 0);
+            Console.WriteLine($"The number of locations in map: {map.Locations.Count}");
 
-            foreach (Location location in map)
+            foreach (Location location in map.Locations)
             {
-                // Iterate over all location objects but the initial one (our hard coded is one).
-                if (location.LocationID != 0)
+                if (location.Building != null)
                 {
-                    if (location.min_cost == int.MaxValue || location.min_cost == int.MaxValue * -1)
+                    if (location.Building.GetType() == typeof(Warehouse))
                     {
-                        Console.WriteLine($"Shortest path from location 1 to {location.LocationID + 1} is infinite.");
-                    }
-                    else
-                    {
-                        // It assigned the min cost during the Dijkstra algo to the destination node, so the weight from source to destination.
-                        Console.WriteLine($"Shortest path from location 1 to {location.LocationID + 1} is {location.min_cost}.");
+                        // Map mapClone = (Map)map.Clone();
+                        // Traverse shortest paths from warehouse to all other locations.
+                        //Map.Dijkstra(mapClone, location.LocationID);
+                        //maps.Add(mapClone);
                     }
                 }
+            }
 
+            foreach(Map map in maps)
+            {
+                foreach (Location location in map)
+                {
+                    // Iterate over all location objects but the initial one (our hard coded is one).
+                    if (location.LocationID != 0)
+                    {
+                        if (location.min_cost == int.MaxValue || location.min_cost == int.MaxValue * -1)
+                        {
+                            Console.WriteLine($"Shortest path from location 1 to {location.LocationID + 1} is infinite.");
+                        }
+                        else
+                        {
+                            // It assigned the min cost during the Dijkstra algo to the destination node, so the weight from source to destination.
+                            Console.WriteLine($"Shortest path from location 1 to {location.LocationID + 1} is {location.min_cost}.");
+                        }
+                    }
+                }
+                Console.WriteLine();
             }
         }
     }

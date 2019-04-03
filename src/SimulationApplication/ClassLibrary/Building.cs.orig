@@ -6,7 +6,7 @@ namespace ClassLibrary
 {
 	public abstract class Building
 	{
-x
+
         public Building()
         {
             

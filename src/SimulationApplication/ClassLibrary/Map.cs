@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ClassLibrary
 {
-    public class Map : IEnumerable
+    public class Map : IEnumerable, ICloneable
     {
         private Random rng;
         private Cell[,] cells;
@@ -38,20 +38,37 @@ namespace ClassLibrary
                     c.Location = new Location(c.Index.Row, c.Index.Column);
                     // Add the cell's location object to the list of vertices.
                     // Refactor later, Bas' comment (Location is more specific version of cell) so it can inherit from Cell.
-                    Vertices.Add(c.Location);
+                    Locations.Add(c.Location);
                     numberOfLocations--;
                 }
             }
+            Console.WriteLine(V);
 
             // Hard coded roads/edges from location 
             // 1 -> 2, weight: 3
-            // 2 -> 3, weight: 1
-            // 1 -> 3, weight: 1
-            Edges.Add(new Road(Vertices[0], Vertices[1]));
+            Edges.Add(new Road(Locations[0], Locations[1]));
             Road r = Edges[0];
             r.initialCost = 3;
-            Edges.Add(new Road(Vertices[1], Vertices[2]));
-            Edges.Add(new Road(Vertices[0], Vertices[2]));
+            // 2 -> 3, weight: 1
+            Edges.Add(new Road(Locations[1], Locations[2]));
+            // 1 -> 3, weight: 1
+            Edges.Add(new Road(Locations[0], Locations[2]));
+            // 3 -> 6, weight: 1
+            Edges.Add(new Road(Locations[2], Locations[5]));
+            // 6 -> 7, weight: 1
+            Edges.Add(new Road(Locations[5], Locations[6]));
+            // 1 -> 9, weight: 1
+            Edges.Add(new Road(Locations[0], Locations[8]));
+            // 4 -> 9, weight: 1
+            Edges.Add(new Road(Locations[3], Locations[8]));
+            // 4 -> 5, weight: 1
+            Edges.Add(new Road(Locations[3], Locations[4]));
+            // 5 -> 8, weight: 1
+            Edges.Add(new Road(Locations[4], Locations[7]));
+            // 10 -> 8, weight: 1
+            Edges.Add(new Road(Locations[9], Locations[7]));
+            // 10 -> 5, weight: 1
+            Edges.Add(new Road(Locations[9], Locations[4]));
         }
 
         public Cell[,] GetCells()
@@ -62,7 +79,7 @@ namespace ClassLibrary
 
         public Location getCellByLocation(Location l)
         {
-            foreach(Location loc in Vertices)
+            foreach(Location loc in Locations)
             {
                 if(loc.LocationPoint == l.LocationPoint)
                 {
@@ -83,7 +100,7 @@ namespace ClassLibrary
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public List<Location> Vertices = new List<Location>();
+        public List<Location> Locations = new List<Location>();
         public List<Road> Edges = new List<Road>();
 
         /// <summary>
@@ -91,7 +108,7 @@ namespace ClassLibrary
         /// </summary>
         public IEnumerator GetEnumerator()
         {
-            return this.Vertices.GetEnumerator();
+            return this.Locations.GetEnumerator();
         }
 
         /// <summary>
@@ -99,13 +116,13 @@ namespace ClassLibrary
         /// </summary>
         public Location this[int index]
         {
-            get { return this.Vertices[index]; }
+            get { return this.Locations[index]; }
         }
 
         /// <summary>
         /// Returns a Vertex count in a graph.
         /// </summary>
-        public int V { get { return this.Vertices.Count; } }
+        public int V { get { return this.Locations.Count; } }
 
         /// <summary>
         /// Streams all unvisited vertices in a graph.
@@ -117,7 +134,7 @@ namespace ClassLibrary
 
         public List<Building> getShops()
         {
-            return Vertices.Select(v => v.Building).Where(v => v is Shop).ToList();
+            return Locations.Select(v => v.Building).Where(v => v is Shop).ToList();
         }
 
         /// <summary>
@@ -151,8 +168,7 @@ namespace ClassLibrary
         {
 
             if (this.V < 10) // instead of 10 here we should put the vertex limit
-                this.Vertices.Add(v);
-           
+                this.Locations.Add(v);
 
             //else
             //    System.Windows.Forms.MessageBox.Show("Vertex limit reached!", "Warning");
@@ -164,11 +180,11 @@ namespace ClassLibrary
         public void Remove(Location v)
         {
 
-            this.Vertices.Remove(v);
-            this.Vertices.Sort();
+            this.Locations.Remove(v);
+            this.Locations.Sort();
 
             for (int i = 0; i < V; i++)
-                Vertices[i].LocationID = i;
+                Locations[i].LocationID = i;
 
             this.Disconnect(v);
         }
@@ -254,6 +270,11 @@ namespace ClassLibrary
                 _Graph[index].permanent = true;
                 initial = _Graph[index];
             }
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }
