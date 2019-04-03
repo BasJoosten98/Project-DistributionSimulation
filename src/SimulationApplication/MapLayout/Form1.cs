@@ -26,7 +26,7 @@ namespace MapLayout
             InitializeComponent();
 
             // This could be set later on, maybe even via the app config file or by the user.
-            const int CELLSIZE = 40;
+            const int CELLSIZE = 50;
 
             // The result represents the number of cells we can create in both width and height (Square grid/map) based on the cell size.
             int numberOfCells;
@@ -49,23 +49,35 @@ namespace MapLayout
 
         private void pictureBox1_Paint_1(object sender, PaintEventArgs e)
         {
-            int cellSize = Cell.CellSize;
-            int numOfCells = map.NumberOfCells;
-            ListofRectangles = new List<Rectangle>();
-            Console.WriteLine($"Number of Cells: {numOfCells}");
-
-
             //change to Graphics.FromImage(bmp) for redraw 
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.Black);
 
-            DrawRoads(e);
-
-            Cell[,] allCells = map.GetCells();
-            foreach(Cell c in allCells)
+            //Draw all roads and strings of roads
+            List<Road> allRoads = map.Edges;
+            foreach (Road r in allRoads)
             {
-                c.DrawMe(g,p);
+                r.DrawLine(g);
+                r.DrawString(g, this.Font);
             }
+
+            //Draw all cells and locations
+            Cell[,] allCells = map.GetCells();
+            foreach (Cell c in allCells)
+            {
+                c.DrawMe(g, p, this.Font);
+            }
+
+            //OLD WAY FOR DRAWING BELOW---------------------------------------
+            //int cellSize = Cell.CellSize;
+            //int numOfCells = map.NumberOfCells;
+            //ListofRectangles = new List<Rectangle>();
+            //Console.WriteLine($"Number of Cells: {numOfCells}");
+
+            //DrawRoads(e);         
+
+            //DrawRoadWeights(e);
+
             //for (int y = 0; y <= map.NumberOfCells; ++y)
             //{
             //    // (x1, y1) to (x2, y2)
@@ -82,24 +94,22 @@ namespace MapLayout
             //{
             //    g.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
             //}
-            int k = 10;
-            foreach (Cell cell in map.GetCells())
-            {
-                if (cell is Location)
-                {
-                    Rectangle rect = new Rectangle(((Location)cell).LocationPoint, ((Location)cell)._Size);
+            //int k = 10;
+            //foreach (Cell cell in map.GetCells())
+            //{
+            //    if (cell is Location)
+            //    {
+            //        Rectangle rect = new Rectangle(((Location)cell).LocationPoint, ((Location)cell)._Size);
 
-                    g.FillEllipse(new SolidBrush(Color.LightYellow), rect);
-                    g.DrawEllipse(new Pen(Color.Black), rect);
-                    g.DrawString(string.Format("{0,2}", ((Location)cell).LocationID + 1), this.Font, new SolidBrush(Color.Black), ((Location)cell).Center.X - this.Font.Size, ((Location)cell).Center.Y - this.Font.Size/2);
-                    //g.DrawString(string.Format("{0,2}", ((Location)cell).LocationID + 1), this.Font, new SolidBrush(Color.Black), ((Location)cell).LocationPoint.X + 17, ((Location)cell).LocationPoint.Y + 20);
-                    //removed +1 from locationid above
-                    ListofRectangles.Add(rect);
-                    //map.Locations.Add(cell.Location);
-                    k += 10;
-                }
-            }
-            DrawRoadWeights(e);
+            //        g.FillEllipse(new SolidBrush(Color.LightYellow), rect);
+            //        g.DrawEllipse(new Pen(Color.Black), rect);
+            //        g.DrawString(string.Format("{0,2}", ((Location)cell).LocationID + 1), this.Font, new SolidBrush(Color.Black), ((Location)cell).Center.X - this.Font.Size, ((Location)cell).Center.Y - this.Font.Size/2);
+            //        //removed +1 from locationid above
+            //        //ListofRectangles.Add(rect);
+            //        //map.Locations.Add(cell.Location);
+            //        k += 10;
+            //    }
+            //}
             //Redraw method.
             //mapPictureBox.Image = bmp;
         }
@@ -205,22 +215,22 @@ namespace MapLayout
             isWarehouseBtnClicked = false;
         }
 
-        private void DrawRoads(PaintEventArgs e)
-        {
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            foreach (Road road in map.Edges)
-            {
-                e.Graphics.DrawLine(new Pen(Color.IndianRed, 3), road[0].Center, road[1].Center);
-            }
-        }
+        //private void DrawRoads(PaintEventArgs e)
+        //{
+        //    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+        //    foreach (Road road in map.Edges)
+        //    {
+        //        e.Graphics.DrawLine(new Pen(Color.IndianRed, 3), road[0].Center, road[1].Center);
+        //    }
+        //}
 
-        private void DrawRoadWeights(PaintEventArgs e)
-        {
-            foreach (Road road in map.Edges)
-            {
-                e.Graphics.DrawString(road.initialCost.ToString(), Font, new SolidBrush(Color.White), 0.5f * (road[0].Center.X + road[1].Center.X), 0.5f * (road[0].Center.Y + road[1].Center.Y));
-            }
-        }
+        //private void DrawRoadWeights(PaintEventArgs e)
+        //{
+        //    foreach (Road road in map.Edges)
+        //    {
+        //        e.Graphics.DrawString(road.initialCost.ToString(), Font, new SolidBrush(Color.White), 0.5f * (road[0].Center.X + road[1].Center.X), 0.5f * (road[0].Center.Y + road[1].Center.Y));
+        //    }
+        //}
 
         private void simulateBtn_click(object sender, EventArgs e)
         {

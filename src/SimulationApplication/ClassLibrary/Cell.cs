@@ -20,7 +20,7 @@ namespace ClassLibrary
             Index = new Index(columnNumber, rowNumber);
             CellRectangle = new Rectangle(new Point(Index.Column * CellSize, Index.Row * CellSize), new Size(CellSize, CellSize));
         }
-        public virtual void DrawMe(Graphics g, Pen p)
+        public virtual void DrawMe(Graphics g, Pen p, Font font)
         {
             g.DrawRectangle(p, CellRectangle);
         }
