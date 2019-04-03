@@ -61,27 +61,30 @@ namespace MapLayout
 
             DrawRoads(e);
 
-            for (int y = 0; y <= map.NumberOfCells; ++y)
+            Cell[,] allCells = map.GetCells();
+            string holder = "";
+            foreach(Cell c in allCells)
             {
-                // (x1, y1) to (x2, y2)
-                // With cell size 50 and the map picture box having width of 602 pixels.
-                // Number of cells = 602 / 50, truncated thus = 12.
-                // y = 0 || (0, 0) -> (600, 0)
-                // y = 0 || (0, 50) -> (600, 50)
-                // y = 0 || (0, 100) -> (600, 100)
-                // Drawing the horizontal lines first.
-
-                g.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
-
+                c.DrawMe(g,p);
+                holder += c.CellRectangle.Location + " ";
             }
-
-            // The same as above but now vertical lines are drawn
-            for (int x = 0; x <= numOfCells; ++x)
-            {
-
-                g.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
-
-            }
+            MessageBox.Show(holder);
+            //for (int y = 0; y <= map.NumberOfCells; ++y)
+            //{
+            //    // (x1, y1) to (x2, y2)
+            //    // With cell size 50 and the map picture box having width of 602 pixels.
+            //    // Number of cells = 602 / 50, truncated thus = 12.
+            //    // y = 0 || (0, 0) -> (600, 0)
+            //    // y = 0 || (0, 50) -> (600, 50)
+            //    // y = 0 || (0, 100) -> (600, 100)
+            //    // Drawing the horizontal lines first.
+            //    g.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
+            //}
+            //// The same as above but now vertical lines are drawn
+            //for (int x = 0; x <= numOfCells; ++x)
+            //{
+            //    g.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
+            //}
             int k = 10;
             foreach (Cell cell in map.GetCells())
             {

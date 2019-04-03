@@ -25,7 +25,7 @@ namespace ClassLibrary
             {
                 for (int columnCount = 0; columnCount < NumberOfCells; columnCount++)
                 {
-                    cells[columnCount, rowCount] = new Cell(rowCount, columnCount);
+                    cells[columnCount, rowCount] = new Cell(columnCount, rowCount);
                 }
             }
             // Seed the random generator to get reproducable results.

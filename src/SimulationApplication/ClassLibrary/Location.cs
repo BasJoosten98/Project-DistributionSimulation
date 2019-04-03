@@ -10,8 +10,8 @@ namespace ClassLibrary
     public class Location : Cell, IComparable
     {
         private static int locationID;
-        public const int CRADIUS = 20; // circle radius
-        public const int CDIAMETER = 50; // circle diameter might have something to do with the diameter of the cell someone should look into it
+        //public const int CRADIUS = 25; // circle radius
+        //public const int CDIAMETER = 50; // circle diameter might have something to do with the diameter of the cell someone should look into it
 
         public int LocationID { get; set; }
         public Building Building { get; set; }
@@ -39,17 +39,17 @@ namespace ClassLibrary
         /// <summary>
         /// Returns center point of a Vertex.
         /// </summary>
-        public Point Center { get { return new Point(base.Index.Column * CDIAMETER + CRADIUS, base.Index.Row * CDIAMETER + CRADIUS); } }
+        public Point Center { get { return new Point(base.Index.Column * Cell.CellSize + Cell.CellSize/2, base.Index.Row * Cell.CellSize + Cell.CellSize / 2); } }
 
         /// <summary>
         /// Return location point of a Vertex.
         /// </summary>
-        public Point LocationPoint { get { return new Point(base.Index.Column * CDIAMETER, base.Index.Row * CDIAMETER); } }
+        public Point LocationPoint { get { return new Point(base.Index.Column * Cell.CellSize, base.Index.Row * Cell.CellSize); } }
 
         /// <summary>
         /// Returns default size of a Vertex.
         /// </summary>
-        public Size _Size { get { return new Size(CDIAMETER, CDIAMETER); } }
+        public Size _Size { get { return new Size(Cell.CellSize, Cell.CellSize); } }
 
         public int CompareTo(object obj)
         {
