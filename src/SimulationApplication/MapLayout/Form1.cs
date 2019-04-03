@@ -29,7 +29,9 @@ namespace MapLayout
             const int CELLSIZE = 50;
 
             // The result represents the number of cells we can create in both width and height (Square grid/map) based on the cell size.
-            int numberOfCells = mapPictureBox.Width / CELLSIZE;
+            int numberOfCells;
+            if(mapPictureBox.Width <= mapPictureBox.Height) { numberOfCells = mapPictureBox.Width / CELLSIZE; }
+            else { numberOfCells = mapPictureBox.Height / CELLSIZE; }
             map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE);
 
 
