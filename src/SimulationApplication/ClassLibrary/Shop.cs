@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using ClassLibrary.Events;
 
@@ -15,12 +16,14 @@ namespace ClassLibrary
 
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
-        public Shop(int stock, int restockamount)
+        public Shop(Point ImagePosition, int stock, int restockamount)
+            :base(ImagePosition)
         {
             Stock = stock;
             Capacity = stock;
             RestockAmount = restockamount;
             ID = ++id;
+            base.picBox.Image = Building.shopIcon;
         }
 
         public virtual void OnLowStockReached(LowStockReachedEventArgs e)
@@ -40,11 +43,6 @@ namespace ClassLibrary
 
             
 		}
-
-        public Shop() : base()
-        {
-
-        }
 
         
 	}

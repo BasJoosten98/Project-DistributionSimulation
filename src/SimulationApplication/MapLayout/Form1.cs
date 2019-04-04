@@ -16,7 +16,7 @@ namespace MapLayout
         //Quick dirty way of checking if the shop or warehouse button is clicked
         private bool isShopBtnClicked;
         private bool isWarehouseBtnClicked;
-        List<Rectangle> ListofRectangles;
+        //List<Rectangle> ListofRectangles;
         //redraw image method
         //Bitmap bmp;
         
@@ -26,7 +26,9 @@ namespace MapLayout
             InitializeComponent();
 
             // This could be set later on, maybe even via the app config file or by the user.
-            const int CELLSIZE = 50;
+            const int CELLSIZE = 40;
+            Building.shopIcon = Properties.Resources.shopIcon;
+            Building.WarehouseIcon = Properties.Resources.warehouseIcon;
 
             // The result represents the number of cells we can create in both width and height (Square grid/map) based on the cell size.
             int numberOfCells;
@@ -131,73 +133,98 @@ namespace MapLayout
         {
             //If the shop or warehouse button was clicked AND a rectangle was clicked. Do action.
             Point mousePt = new Point(e.X, e.Y);
-            int CDIAMETER = 50;
-            if (isShopBtnClicked)
+            //int CDIAMETER = 50;
+            foreach (Location l in map.Locations)
             {
-                foreach (Rectangle r in ListofRectangles)
+                if (l.CellRectangle.Contains(mousePt)) //Mouse was above some location 
                 {
-                    if (r.Contains(mousePt))
+                    int id = l.LocationID;
+                    Point ImagePosition = new Point((l.Index.Column * Cell.CellSize) + 4, (l.Index.Row * Cell.CellSize) + 4);                             
+                    if (isShopBtnClicked)
                     {
-                        Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
-                        int id = clickedLocation.LocationID;
-                        clickedLocation.Building = new Shop(100, 10);
-                        PictureBox p = new PictureBox();
-                        Point pPoint = new Point((clickedLocation.Index.Column * CDIAMETER) + 4, (clickedLocation.Index.Row * CDIAMETER) + 4);
-                        p.Location = pPoint;
-                        p.Size = new Size(49, 49);
-                        p.Image = Properties.Resources.shopIcon;
-                        p.SizeMode = PictureBoxSizeMode.StretchImage;
-                        splitContainer1.Panel1.Controls.Add(p);
-                        p.BringToFront();
-                        lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
+                        l.Building = new Shop(ImagePosition, 100, 10);
+                        //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
+                        Console.WriteLine("Location #: " + id + " has been set to a Shop");
                     }
-                }
-            } else if(isWarehouseBtnClicked)
-            {
-                foreach (Rectangle r in ListofRectangles)
-                {
-                    if (r.Contains(mousePt))
+                    else if (isWarehouseBtnClicked)
                     {
-                        Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
-                        int id = clickedLocation.LocationID;
-                        clickedLocation.Building = new Warehouse(); 
-
-                        //warehouse expects a list of shops.. each location has a building..
-                        //i can only make a list of buildings
-                        //no clue what to do for now
-                        //check map.GetShops() for the method
-
-                        /*
-                         * So far i've only found 2 ways to do this. Create a picture box at the location clicked
-                         * with the warehouse image on it.
-                         * OR Redraw the image everytime with the new warehouse/shop
-                         * im including both sets of code and you guys tell me what u think
-                         * (picutrebox way still needs a small positioning fix)
-                         * (redraw method is still kinda broken)
-                         * Picturebox method admitted isnt the most efficient but i couldnt get the draw to work so i opted
-                         * for something else temporarily
-                         */
-                        PictureBox p = new PictureBox();
-                        Point pPoint = new Point((clickedLocation.Index.Column * CDIAMETER)+4, (clickedLocation.Index.Row * CDIAMETER)+4);
-                        p.Location = pPoint;
-                        p.Size = new Size(49,49);
-                        p.Image = Properties.Resources.warehouseIcon;
-                        p.SizeMode = PictureBoxSizeMode.StretchImage;
-                        splitContainer1.Panel1.Controls.Add(p);
-                        p.BringToFront();
-                        lbLocationLog.Text = "Location #: " + id + " has been set to a Warehouse";
-                            
-                        /* Redraw method
-                        using (Graphics g = Graphics.FromImage(bmp))
-                        {
-                            g.DrawRectangle(new Pen(Color.Black), new Rectangle(clickedLocation.LocationPoint, clickedLocation._Size));
-                            g.DrawImage(new Bitmap(Properties.Resources.warehouseIcon, clickedLocation._Size), clickedLocation.LocationPoint);
-                        }
-                        mapPictureBox.Image = bmp;
-                        */
+                        l.Building = new Warehouse(ImagePosition);
+                        //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
+                        Console.WriteLine("Location #: " + id + " has been set to a WareHouse");
                     }
+                    splitContainer1.Panel1.Controls.Add(l.Building.picBox);
+                    l.Building.picBox.BringToFront();
+                    break;
                 }
             }
+
+            //OLD WAY BELOW
+            //if (isShopBtnClicked)
+            //{
+            //    foreach (Rectangle r in ListofRectangles)
+            //    {
+            //        if (r.Contains(mousePt))
+            //        {
+            //            Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
+            //            int id = clickedLocation.LocationID;
+            //            clickedLocation.Building = new Shop(100, 10);
+            //            PictureBox p = new PictureBox();
+            //            Point pPoint = new Point((clickedLocation.Index.Column * CDIAMETER) + 4, (clickedLocation.Index.Row * CDIAMETER) + 4);
+            //            p.Location = pPoint;
+            //            p.Size = new Size(49, 49);
+            //            p.Image = Properties.Resources.shopIcon;
+            //            p.SizeMode = PictureBoxSizeMode.StretchImage;
+            //            splitContainer1.Panel1.Controls.Add(p);
+            //            p.BringToFront();
+            //            lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
+            //        }
+            //    }
+            //} else if(isWarehouseBtnClicked)
+            //{
+            //    foreach (Rectangle r in ListofRectangles)
+            //    {
+            //        if (r.Contains(mousePt))
+            //        {
+            //            Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
+            //            int id = clickedLocation.LocationID;
+            //            clickedLocation.Building = new Warehouse(); 
+
+            //            //warehouse expects a list of shops.. each location has a building..
+            //            //i can only make a list of buildings
+            //            //no clue what to do for now
+            //            //check map.GetShops() for the method
+
+            //            /*
+            //             * So far i've only found 2 ways to do this. Create a picture box at the location clicked
+            //             * with the warehouse image on it.
+            //             * OR Redraw the image everytime with the new warehouse/shop
+            //             * im including both sets of code and you guys tell me what u think
+            //             * (picutrebox way still needs a small positioning fix)
+            //             * (redraw method is still kinda broken)
+            //             * Picturebox method admitted isnt the most efficient but i couldnt get the draw to work so i opted
+            //             * for something else temporarily
+            //             */
+            //            PictureBox p = new PictureBox();
+            //            Point pPoint = new Point((clickedLocation.Index.Column * CDIAMETER)+4, (clickedLocation.Index.Row * CDIAMETER)+4);
+            //            p.Location = pPoint;
+            //            p.Size = new Size(49,49);
+            //            p.Image = Properties.Resources.warehouseIcon;
+            //            p.SizeMode = PictureBoxSizeMode.StretchImage;
+            //            splitContainer1.Panel1.Controls.Add(p);
+            //            p.BringToFront();
+            //            lbLocationLog.Text = "Location #: " + id + " has been set to a Warehouse";
+                            
+            //            /* Redraw method
+            //            using (Graphics g = Graphics.FromImage(bmp))
+            //            {
+            //                g.DrawRectangle(new Pen(Color.Black), new Rectangle(clickedLocation.LocationPoint, clickedLocation._Size));
+            //                g.DrawImage(new Bitmap(Properties.Resources.warehouseIcon, clickedLocation._Size), clickedLocation.LocationPoint);
+            //            }
+            //            mapPictureBox.Image = bmp;
+            //            */
+            //        }
+            //    }
+            //}
         }
 
         private void btnWarehouse_Click(object sender, EventArgs e)
