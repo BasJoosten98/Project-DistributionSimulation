@@ -70,7 +70,7 @@ namespace MapLayout
                 c.DrawMe(g, p, this.Font);
             }
 
-            //OLD WAY FOR DRAWING BELOW---------------------------------------
+            //---------------------------------------OLD WAY FOR DRAWING BELOW---------------------------------------
             //int cellSize = Cell.CellSize;
             //int numOfCells = map.NumberOfCells;
             //ListofRectangles = new List<Rectangle>();
@@ -114,6 +114,7 @@ namespace MapLayout
             //}
             //Redraw method.
             //mapPictureBox.Image = bmp;
+            //------------------------------------------------------------------------------
         }
 
         private void btnShop_Click(object sender, EventArgs e)
@@ -152,13 +153,13 @@ namespace MapLayout
                         //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
                         Console.WriteLine("Location #: " + id + " has been set to a WareHouse");
                     }
-                    splitContainer1.Panel1.Controls.Add(l.Building.picBox);
-                    l.Building.picBox.BringToFront();
+                    splitContainer1.Panel1.Controls.Add(l.Building.picBox); //What does this do??
+                    l.Building.picBox.BringToFront(); //Needs to be here and not in class Building in order to work!
                     break;
                 }
             }
 
-            //OLD WAY BELOW
+            //---------------------------------------OLD WAY BELOW---------------------------------------
             //if (isShopBtnClicked)
             //{
             //    foreach (Rectangle r in ListofRectangles)
@@ -213,7 +214,7 @@ namespace MapLayout
             //            splitContainer1.Panel1.Controls.Add(p);
             //            p.BringToFront();
             //            lbLocationLog.Text = "Location #: " + id + " has been set to a Warehouse";
-                            
+
             //            /* Redraw method
             //            using (Graphics g = Graphics.FromImage(bmp))
             //            {
@@ -225,6 +226,7 @@ namespace MapLayout
             //        }
             //    }
             //}
+            //------------------------------------------------------------------------------
         }
 
         private void btnWarehouse_Click(object sender, EventArgs e)
@@ -267,7 +269,7 @@ namespace MapLayout
             {
                 if (location.Building != null)
                 {
-                    if (location.Building.GetType() == typeof(Warehouse))
+                    if (location.Building is Warehouse)
                     {
                         map.Warehouses.Add(location);
                     }
