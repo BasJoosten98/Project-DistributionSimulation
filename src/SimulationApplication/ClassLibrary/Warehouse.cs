@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 using ClassLibrary.Events;
 
 
@@ -30,11 +31,10 @@ namespace ClassLibrary
             }
         }
 
-        public Warehouse(Point ImagePosition)
-            :base(ImagePosition)
+        public Warehouse(PictureBox PicBox)
+            :base(PicBox)
         {
             Roads = new List<Road>();
-            base.picBox.Image = Building.WarehouseIcon;
         }
 
         private void Item_LowStockReached(object sender, LowStockReachedEventArgs e)

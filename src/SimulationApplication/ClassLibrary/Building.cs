@@ -9,15 +9,9 @@ namespace ClassLibrary
 	public abstract class Building
 	{
         public PictureBox picBox;
-        public static Image shopIcon;
-        public static Image WarehouseIcon;
-        public Building(Point ImagePosition)
+        public Building(PictureBox PicBox)
         {
-            picBox = new PictureBox();
-            picBox.Location = ImagePosition;
-            picBox.Size = new Size(Cell.CellSize - 1, Cell.CellSize - 1);
-            picBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            //picBox.BringToFront(); Must be on Form1 in order to work!!
+            picBox = PicBox;
         }
 	}
 }

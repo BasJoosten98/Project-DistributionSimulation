@@ -26,9 +26,7 @@ namespace MapLayout
             InitializeComponent();
 
             // This could be set later on, maybe even via the app config file or by the user.
-            const int CELLSIZE = 40;
-            Building.shopIcon = Properties.Resources.shopIcon;
-            Building.WarehouseIcon = Properties.Resources.warehouseIcon;
+            const int CELLSIZE = 50;
 
             // The result represents the number of cells we can create in both width and height (Square grid/map) based on the cell size.
             int numberOfCells;
@@ -127,35 +125,56 @@ namespace MapLayout
         private void mapPictureBox_MouseEnter(object sender, EventArgs e)
         {
             //Change cursor when it enters picturebox if isShop OR isWarehouse is true
-            mapPictureBox.Cursor = isShopBtnClicked || isWarehouseBtnClicked ? Cursors.Hand : Cursors.Arrow; 
+            ((PictureBox)sender).Cursor = isShopBtnClicked || isWarehouseBtnClicked ? Cursors.Hand : Cursors.Arrow; 
+            
         }
 
         private void mapPictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            //If the shop or warehouse button was clicked AND a rectangle was clicked. Do action.
-            Point mousePt = new Point(e.X, e.Y);
-            //int CDIAMETER = 50;
-            foreach (Location l in map.Locations)
+            Console.WriteLine("Click detected");
+            if (isShopBtnClicked || isWarehouseBtnClicked)
             {
-                if (l.CellRectangle.Contains(mousePt)) //Mouse was above some location 
+                //If the shop or warehouse button was clicked AND a rectangle was clicked. Do action.
+                Point mousePt = new Point(e.X, e.Y);
+                if(((PictureBox)sender) != mapPictureBox) //change cursor 
                 {
-                    int id = l.LocationID;
-                    Point ImagePosition = new Point((l.Index.Column * Cell.CellSize) + 4, (l.Index.Row * Cell.CellSize) + 4);                             
-                    if (isShopBtnClicked)
+                    int x = ((PictureBox)sender).Location.X - mapPictureBox.Location.X + e.X;
+                    int y = ((PictureBox)sender).Location.Y - mapPictureBox.Location.Y + e.X;
+                    mousePt = new Point(x, y);
+                }
+                //int CDIAMETER = 50;
+                Console.WriteLine("finding location at "+ mousePt.X +" "+ mousePt.Y);
+                foreach (Location l in map.Locations)
+                {
+                    if (l.CellRectangle.Contains(mousePt)) //Mouse was above some location 
                     {
-                        l.Building = new Shop(ImagePosition, 100, 10);
-                        //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
-                        Console.WriteLine("Location #: " + id + " has been set to a Shop");
+                        Console.WriteLine("location found");
+                        int id = l.LocationID;
+                        PictureBox picBox = new PictureBox();
+                        Point ImagePosition = new Point((l.Index.Column * Cell.CellSize) + 4, (l.Index.Row * Cell.CellSize) + 4);
+                        picBox.Location = ImagePosition;
+                        picBox.Size = new Size(Cell.CellSize - 1, Cell.CellSize - 1);
+                        picBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                        picBox.MouseClick += mapPictureBox_MouseClick;
+                        picBox.MouseEnter += mapPictureBox_MouseEnter;
+                        if (isShopBtnClicked)
+                        {
+                            picBox.Image = Properties.Resources.shopIcon;
+                            l.Building = new Shop(picBox, 100, 10);
+                            //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
+                            Console.WriteLine("Location #: " + id + " has been set to a Shop");
+                        }
+                        else if (isWarehouseBtnClicked)
+                        {
+                            picBox.Image = Properties.Resources.warehouseIcon;
+                            l.Building = new Warehouse(picBox);
+                            //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
+                            Console.WriteLine("Location #: " + id + " has been set to a WareHouse");
+                        }
+                        splitContainer1.Panel1.Controls.Add(picBox); //What does this do??
+                        picBox.BringToFront(); //Needs to be here and not in class Building in order to work!
+                        break;
                     }
-                    else if (isWarehouseBtnClicked)
-                    {
-                        l.Building = new Warehouse(ImagePosition);
-                        //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
-                        Console.WriteLine("Location #: " + id + " has been set to a WareHouse");
-                    }
-                    splitContainer1.Panel1.Controls.Add(l.Building.picBox); //What does this do??
-                    l.Building.picBox.BringToFront(); //Needs to be here and not in class Building in order to work!
-                    break;
                 }
             }
 
