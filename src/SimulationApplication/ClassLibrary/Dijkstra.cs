@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ClassLibrary
 {
-    class Dijkstra
+    public class Dijkstra
     {
         private List<DijkstraStart> startingPoints;
         private List<Road> allRoads;
@@ -21,7 +22,10 @@ namespace ClassLibrary
             reachableLocations = new List<Location>();
             allRoads = Roads;
             detectedLocations();
-            createDijkstraStart(reachableLocations[0]);
+            foreach(Location l in reachableLocations)
+            {
+                createDijkstraStart(l);
+            }
         }
         
         private List<Road> getRoadsConnectedToLocation(Location loc)
@@ -69,6 +73,7 @@ namespace ClassLibrary
             int currentRoadLenght;
             Location prevLocation = null;
             Location newLocation = null;
+            //string holder = "";
 
             while (currentRoads.Count != 0)
             {
@@ -83,11 +88,28 @@ namespace ClassLibrary
                 if (prevLocation == null) { throw new NullReferenceException(); }
                 if (newLocation == null) { throw new NullReferenceException(); }
                 DijkstraRoute previousDijkstraRoute = dijkstraStart.GetRouteTo(prevLocation);
-                if(previousDijkstraRoute == null) { throw new NullReferenceException(); }
-                List<Road> newRoute = previousDijkstraRoute.Route;
-                newRoute.Add(currentRoad);
+                List<Road> newRoute;
+                if (previousDijkstraRoute != null)
+                {
+                    newRoute = previousDijkstraRoute.CopyRoute();
+                    newRoute.Add(currentRoad);
+                }
+                else
+                {
+                    newRoute = new List<Road>();
+                    newRoute.Add(currentRoad);
+                }
                 DijkstraRoute newDijkstraRoute = new DijkstraRoute(newRoute, newLocation);
                 dijkstraStart.AddNewRoute(newDijkstraRoute);
+
+                //holder += "PrevLocation: " + prevLocation.LocationID + "\n";
+
+                //holder += "From " + startLocation.LocationID + " to " + newLocation.LocationID + ": \n";
+                //foreach (Road r in newDijkstraRoute.Route)
+                //{
+                //    holder += "Road: " + r.Vertex1.LocationID + " - " + r.Vertex2.LocationID + "\n";
+                //}
+                //holder += "\n";
 
                 //Determine new roads and remove currentRoad/exsiting roads
                 currentRoads.RemoveAt(lowestIndex);
@@ -95,17 +117,18 @@ namespace ClassLibrary
 
                 List<Road> newAddingRoads = getRoadsConnectedToLocation(newLocation);
                 newAddingRoads.Remove(currentRoad);
-                foreach(Road r in newAddingRoads) //filter out already existing roads in currentRoads
+                for(int i = 0; i < newAddingRoads.Count; i++) //filter out already existing roads in currentRoads
                 {
-                    if(dijkstraStart.isConnectedToLocation(r.Vertex1) && dijkstraStart.isConnectedToLocation(r.Vertex2))
+                    if(dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex1) && dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex2))
                     {
-                        if (currentRoads.Contains(r))
+                        if (currentRoads.Contains(newAddingRoads[i]))
                         {
-                            int index = currentRoads.IndexOf(r);
+                            int index = currentRoads.IndexOf(newAddingRoads[i]);
                             currentRoads.RemoveAt(index);
                             currentRoadsLenghts.RemoveAt(index);
                         }
-                        newAddingRoads.Remove(r);
+                        newAddingRoads.RemoveAt(i);
+                        i--;
                     }
                 }
 
@@ -124,7 +147,8 @@ namespace ClassLibrary
                 currentRoadLenght = -1;
                 lowestIndex = -1;
             }
-            currentRoad = null;
+            startingPoints.Add(dijkstraStart);
+            //MessageBox.Show(holder);
         }
 
         private void detectedLocations() //Find all reachable locations with the given Roads
@@ -145,7 +169,7 @@ namespace ClassLibrary
 
         public DijkstraRoute GetRouteTo(Location StartPoint, Location EndPoint) //Getting route from StartPoint to EndPoint
         {
-            foreach(DijkstraStart s in startingPoints)
+            foreach (DijkstraStart s in startingPoints)
             {
                 if(s.StartPoint == StartPoint)
                 {

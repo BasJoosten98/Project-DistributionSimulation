@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    class DijkstraStart
+    public class DijkstraStart
     {
         private Location startPoint;
         private List<DijkstraRoute> routes;

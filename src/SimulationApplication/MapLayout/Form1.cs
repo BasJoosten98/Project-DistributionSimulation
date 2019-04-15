@@ -347,5 +347,60 @@ namespace MapLayout
                 shortesRoutesRichTbx.Text += $"Warehouses at #{shortestRoad[0].LocationID + 1} to shop at #{shortestRoad[1].LocationID + 1}, takes {shortestRoad.initialCost} km.\n";
             }
         }
+
+        Dijkstra myDijkstra;
+        private void btnTestDijkstra_Click(object sender, EventArgs e)
+        {
+            myDijkstra = new Dijkstra(map.Edges);
+            
+        }
+
+        private void btnDrawRoute_Click(object sender, EventArgs e)
+        {
+            Graphics g = mapPictureBox.CreateGraphics();
+            Pen p = new Pen(Color.Black);
+
+            //Draw all roads and strings of roads normally
+            List<Road> allRoads = map.Edges;
+            foreach (Road r in allRoads)
+            {
+                r.DrawLine(g);
+                r.DrawString(g, this.Font);
+            }
+
+            int TolocationID = int.Parse(tbToLocationID.Text);
+            Location destination = map.GetLocationByID(TolocationID);
+            int FromlocationID = int.Parse(tbFromLocationID.Text);
+            Location start = map.GetLocationByID(FromlocationID);
+
+            DijkstraRoute myRoute = myDijkstra.GetRouteTo(start, destination);
+            foreach(Road r in myRoute.Route)
+            {
+                r.DrawLine(g, Color.Green);
+                r.DrawString(g, this.Font);
+            }
+            //Draw all cells and locations
+            Cell[,] allCells = map.GetCells();
+            foreach (Cell c in allCells)
+            {
+                c.DrawMe(g, p, this.Font);
+            }
+        }
+
+        private void btnGetRoute_Click(object sender, EventArgs e)
+        {
+            int TolocationID = int.Parse(tbToLocationID.Text);
+            Location destination = map.GetLocationByID(TolocationID);
+            int FromlocationID = int.Parse(tbFromLocationID.Text);
+            Location start = map.GetLocationByID(FromlocationID);
+            DijkstraRoute myRoute = myDijkstra.GetRouteTo(start, destination);
+
+            string holder = "From " + FromlocationID + " to " + TolocationID + ": \n";
+            foreach (Road r in myRoute.Route)
+            {
+                holder += "Road: " + r.Vertex1.LocationID + " - " + r.Vertex2.LocationID + "\n";
+            }
+            MessageBox.Show(holder);
+        }
     }
 }

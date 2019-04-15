@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    class DijkstraRoute
+    public class DijkstraRoute
     {
         private List<Road> route;
         private Location endPoint;
@@ -31,5 +31,15 @@ namespace ClassLibrary
             this.route = Route;
             endPoint = EndPoint;
         }
+        public List<Road> CopyRoute()
+        {
+            List<Road> temp = new List<Road>();
+            foreach(Road r in route)
+            {
+                temp.Add(r);
+            }
+            return temp;
+        }
+
     }
 }

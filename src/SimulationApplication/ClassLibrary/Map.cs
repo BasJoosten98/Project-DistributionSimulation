@@ -84,6 +84,18 @@ namespace ClassLibrary
             return cells;
         }
 
+        public Location GetLocationByID(int id)
+        {
+            foreach(Location l in Locations)
+            {
+                if(l.LocationID == id)
+                {
+                    return l;
+                }
+            }
+            return null;
+        }
+
         public Location getCellByLocation(Location l)
         {
             foreach(Location loc in Locations)

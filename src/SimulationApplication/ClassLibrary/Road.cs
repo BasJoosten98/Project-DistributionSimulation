@@ -26,6 +26,11 @@ namespace ClassLibrary
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.DrawLine(new Pen(Color.IndianRed, 3), Vertex1.Center, Vertex2.Center);
         }
+        public void DrawLine(Graphics g, Color color)
+        {
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.DrawLine(new Pen(color, 3), Vertex1.Center, Vertex2.Center);
+        }
         public void DrawString(Graphics g, Font font)
         {
             g.DrawString(initialCost.ToString(), font, new SolidBrush(Color.White), 0.5f * (Vertex1.Center.X + Vertex2.Center.X) - font.Size, 0.5f * (Vertex1.Center.Y + Vertex2.Center.Y) - font.Size / 2);

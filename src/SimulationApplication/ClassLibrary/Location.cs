@@ -66,7 +66,7 @@ namespace ClassLibrary
             base.DrawMe(g, p, font);
             g.FillEllipse(new SolidBrush(Color.LightYellow), base.CellRectangle);
             g.DrawEllipse(new Pen(Color.Black), base.CellRectangle);
-            g.DrawString(string.Format("{0,2}", LocationID + 1), font, new SolidBrush(Color.Black), Center.X - font.Size, Center.Y - font.Size / 2);
+            g.DrawString(string.Format("{0,2}", LocationID), font, new SolidBrush(Color.Black), Center.X - font.Size, Center.Y - font.Size / 2);
         }
     }
 }
