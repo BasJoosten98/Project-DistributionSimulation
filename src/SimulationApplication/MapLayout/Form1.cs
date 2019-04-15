@@ -26,7 +26,7 @@ namespace MapLayout
             InitializeComponent();
 
             // This could be set later on, maybe even via the app config file or by the user.
-            const int CELLSIZE = 50;
+            const int CELLSIZE = 40;
 
             // The result represents the number of cells we can create in both width and height (Square grid/map) based on the cell size.
             int numberOfCells;
@@ -351,7 +351,7 @@ namespace MapLayout
         Dijkstra myDijkstra;
         private void btnTestDijkstra_Click(object sender, EventArgs e)
         {
-            myDijkstra = new Dijkstra(map.Edges);
+            myDijkstra = new Dijkstra(map.Edges, mapPictureBox.CreateGraphics(), this.Font);
             
         }
 
@@ -360,13 +360,7 @@ namespace MapLayout
             Graphics g = mapPictureBox.CreateGraphics();
             Pen p = new Pen(Color.Black);
 
-            //Draw all roads and strings of roads normally
-            List<Road> allRoads = map.Edges;
-            foreach (Road r in allRoads)
-            {
-                r.DrawLine(g);
-                r.DrawString(g, this.Font);
-            }
+            
 
             int TolocationID = int.Parse(tbToLocationID.Text);
             Location destination = map.GetLocationByID(TolocationID);
@@ -374,7 +368,14 @@ namespace MapLayout
             Location start = map.GetLocationByID(FromlocationID);
 
             DijkstraRoute myRoute = myDijkstra.GetRouteTo(start, destination);
-            foreach(Road r in myRoute.Route)
+            //Draw all roads and strings of roads normally
+            List<Road> allRoads = map.Edges;
+            foreach (Road r in allRoads)
+            {
+                r.DrawLine(g);
+                r.DrawString(g, this.Font);
+            }
+            foreach (Road r in myRoute.Route)
             {
                 r.DrawLine(g, Color.Green);
                 r.DrawString(g, this.Font);
@@ -401,6 +402,22 @@ namespace MapLayout
                 holder += "Road: " + r.Vertex1.LocationID + " - " + r.Vertex2.LocationID + "\n";
             }
             MessageBox.Show(holder);
+        }
+
+        private void btnDrawDijkstra_Click(object sender, EventArgs e)
+        {
+            Graphics g = mapPictureBox.CreateGraphics();
+            int FromlocationID = int.Parse(tbFromLocationID.Text);
+            Location start = map.GetLocationByID(FromlocationID);
+
+            List<Road> allRoads = map.Edges;
+            foreach (Road r in allRoads)
+            {
+                r.DrawLine(g);
+                r.DrawString(g, this.Font);
+            }
+
+            myDijkstra.createDijkstraStart(start, true);
         }
     }
 }

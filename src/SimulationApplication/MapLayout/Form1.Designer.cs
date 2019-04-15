@@ -43,6 +43,7 @@
             this.btnDrawRoute = new System.Windows.Forms.Button();
             this.tbToLocationID = new System.Windows.Forms.TextBox();
             this.btnGetRoute = new System.Windows.Forms.Button();
+            this.btnDrawDijkstra = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -66,6 +67,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.splitContainer1.Panel2.Controls.Add(this.btnDrawDijkstra);
             this.splitContainer1.Panel2.Controls.Add(this.btnGetRoute);
             this.splitContainer1.Panel2.Controls.Add(this.tbToLocationID);
             this.splitContainer1.Panel2.Controls.Add(this.btnDrawRoute);
@@ -76,7 +78,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.btnCursor);
             this.splitContainer1.Panel2.Controls.Add(this.btnWarehouse);
             this.splitContainer1.Panel2.Controls.Add(this.btnShop);
-            this.splitContainer1.Size = new System.Drawing.Size(842, 552);
+            this.splitContainer1.Size = new System.Drawing.Size(842, 570);
             this.splitContainer1.SplitterDistance = 619;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 0;
@@ -164,7 +166,7 @@
             // 
             // btnMakeDijkstra
             // 
-            this.btnMakeDijkstra.Location = new System.Drawing.Point(8, 492);
+            this.btnMakeDijkstra.Location = new System.Drawing.Point(2, 492);
             this.btnMakeDijkstra.Name = "btnMakeDijkstra";
             this.btnMakeDijkstra.Size = new System.Drawing.Size(90, 23);
             this.btnMakeDijkstra.TabIndex = 9;
@@ -181,9 +183,9 @@
             // 
             // btnDrawRoute
             // 
-            this.btnDrawRoute.Location = new System.Drawing.Point(139, 493);
+            this.btnDrawRoute.Location = new System.Drawing.Point(3, 544);
             this.btnDrawRoute.Name = "btnDrawRoute";
-            this.btnDrawRoute.Size = new System.Drawing.Size(75, 23);
+            this.btnDrawRoute.Size = new System.Drawing.Size(89, 23);
             this.btnDrawRoute.TabIndex = 11;
             this.btnDrawRoute.Text = "Draw Route";
             this.btnDrawRoute.UseVisualStyleBackColor = true;
@@ -198,7 +200,7 @@
             // 
             // btnGetRoute
             // 
-            this.btnGetRoute.Location = new System.Drawing.Point(9, 516);
+            this.btnGetRoute.Location = new System.Drawing.Point(2, 516);
             this.btnGetRoute.Name = "btnGetRoute";
             this.btnGetRoute.Size = new System.Drawing.Size(90, 23);
             this.btnGetRoute.TabIndex = 13;
@@ -206,11 +208,21 @@
             this.btnGetRoute.UseVisualStyleBackColor = true;
             this.btnGetRoute.Click += new System.EventHandler(this.btnGetRoute_Click);
             // 
+            // btnDrawDijkstra
+            // 
+            this.btnDrawDijkstra.Location = new System.Drawing.Point(118, 492);
+            this.btnDrawDijkstra.Name = "btnDrawDijkstra";
+            this.btnDrawDijkstra.Size = new System.Drawing.Size(90, 23);
+            this.btnDrawDijkstra.TabIndex = 14;
+            this.btnDrawDijkstra.Text = "Draw Dijkstra";
+            this.btnDrawDijkstra.UseVisualStyleBackColor = true;
+            this.btnDrawDijkstra.Click += new System.EventHandler(this.btnDrawDijkstra_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(842, 552);
+            this.ClientSize = new System.Drawing.Size(842, 570);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -240,6 +252,7 @@
         private System.Windows.Forms.TextBox tbFromLocationID;
         private System.Windows.Forms.TextBox tbToLocationID;
         private System.Windows.Forms.Button btnGetRoute;
+        private System.Windows.Forms.Button btnDrawDijkstra;
     }
 }
 

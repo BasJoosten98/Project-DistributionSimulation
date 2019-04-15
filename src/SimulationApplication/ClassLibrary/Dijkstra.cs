@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,19 +13,24 @@ namespace ClassLibrary
         private List<DijkstraStart> startingPoints;
         private List<Road> allRoads;
         private List<Location> reachableLocations;
+        private Graphics gMap;
+        private Font fontMap;
+        private Pen pMap;
 
-        public Dijkstra(List<Road> Roads)
+        public Dijkstra(List<Road> Roads, Graphics g, Font font)
         {
             if(Roads == null) { throw new NullReferenceException(); }
             if(Roads.Count == 0) { throw new Exception("Roads should contain atleast 1 road"); }
-
+            gMap = g;
+            fontMap = font;
+            pMap = new Pen(Color.Black);
             startingPoints = new List<DijkstraStart>();
             reachableLocations = new List<Location>();
             allRoads = Roads;
             detectedLocations();
             foreach(Location l in reachableLocations)
             {
-                createDijkstraStart(l);
+                createDijkstraStart(l, false);
             }
         }
         
@@ -56,8 +62,9 @@ namespace ClassLibrary
             return lowestIndex;
         }
 
-        private void createDijkstraStart(Location startLocation) //main methods for creating shortest routes accros the map
+        public void createDijkstraStart(Location startLocation, bool animate) //main methods for creating shortest routes accros the map
         {
+            if (!reachableLocations.Contains(startLocation)) { throw new Exception("Unknown location detected"); }
             List<Road> currentRoads = new List<Road>(); //considered roads at the moment
             List<int> currentRoadsLenghts = new List<int>(); //road lenghts
             DijkstraStart dijkstraStart = new DijkstraStart(startLocation);
@@ -81,6 +88,15 @@ namespace ClassLibrary
                 lowestIndex = findLowestIndex(currentRoadsLenghts);
                 currentRoad = currentRoads[lowestIndex];
                 currentRoadLenght = currentRoadsLenghts[lowestIndex];
+
+                //ANIMATION
+                if (animate)
+                {
+                    AnimationDraw(currentRoads, Color.Yellow);
+                    System.Threading.Thread.Sleep(2000);
+                    AnimationDraw(new List<Road>() { currentRoad }, Color.Green);
+                    //System.Threading.Thread.Sleep(1500);
+                }
 
                 //claim new shortest route
                 if (dijkstraStart.isConnectedToLocation(currentRoad.Vertex1)) { prevLocation = currentRoad.Vertex1; } else { newLocation = currentRoad.Vertex1; }
@@ -147,7 +163,7 @@ namespace ClassLibrary
                 currentRoadLenght = -1;
                 lowestIndex = -1;
             }
-            startingPoints.Add(dijkstraStart);
+            if (!animate) { startingPoints.Add(dijkstraStart); }         
             //MessageBox.Show(holder);
         }
 
@@ -177,6 +193,24 @@ namespace ClassLibrary
                 }
             }
             return null;
+        }
+        private void AnimationDraw(List<Road> list1, Color col1)
+        {
+            //foreach (Road r in allRoads) //draw roads like normal
+            //{
+            //    r.DrawLine(gMap);
+            //    r.DrawString(gMap, fontMap);
+            //}
+            foreach (Road r in list1)
+            {
+                r.DrawLine(gMap, col1);
+                r.DrawString(gMap, fontMap);
+            }
+            //Draw all cells and locations
+            foreach (Location l in reachableLocations) //draw locations over newly drawn roads
+            {
+                l.DrawMe(gMap, pMap, fontMap);
+            }
         }
     }
 }
