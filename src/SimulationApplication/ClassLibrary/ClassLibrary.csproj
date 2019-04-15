@@ -61,6 +61,9 @@
     <Compile Include="Building.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Delivery.cs" />
+    <Compile Include="Dijkstra.cs" />
+    <Compile Include="DijkstraRoute.cs" />
+    <Compile Include="DijkstraStart.cs" />
     <Compile Include="DistributionManager.cs" />
     <Compile Include="Events\LowStockReachedEventArgs.cs" />
     <Compile Include="Index.cs" />
