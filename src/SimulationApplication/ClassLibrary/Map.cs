@@ -39,6 +39,7 @@ namespace ClassLibrary
                     // Set location object to beparth of this cell 
                     // and decrement number of locations to be added to the cells/map.
                     c.Location = new Location(c.Index.Row, c.Index.Column);
+
                     // Add the cell's location object to the list of vertices.
                     // Refactor later, Bas' comment (Location is more specific version of cell) so it can inherit from Cell.
                     Locations.Add(c.Location);

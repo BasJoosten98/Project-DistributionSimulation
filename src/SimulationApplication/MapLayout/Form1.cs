@@ -240,20 +240,18 @@ namespace MapLayout
                 Map.Dijkstra(map, warehouse.LocationID);
                 foreach (Location location in map)
                 {
-                    if (location.LocationID != warehouse.LocationID)
+
+                    if (location.LocationID != warehouse.LocationID && 
+                        location.Building != null && 
+                        location.Building.GetType() == typeof(Shop)
+                        )
                     {
-                        if (location.Building != null)
-                        {
-                            if (location.Building.GetType() == typeof(Shop))
-                            {
                                 Road r = new Road(warehouse, location);
                                 // This is done as an intermediary step to compare different min costs (which belong to a vertex) later on.
                                 // Otherwise there was no way to compare the distance from different warehouses to the same shop (as information
                                 // gets lost because we have to reset the values of vertices to rerun Dijkstra multiple times.
                                 r.initialCost = location.min_cost;
                                 ((Warehouse)warehouse.Building).Roads.Add(r);
-                            }
-                        }
                     }
                     location.min_cost = int.MaxValue;
                     location.permanent = false;
