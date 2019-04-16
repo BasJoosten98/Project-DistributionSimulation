@@ -13,27 +13,54 @@ namespace ClassLibrary
         private List<DijkstraStart> startingPoints;
         private List<Road> allRoads;
         private List<Location> reachableLocations;
-        private Graphics gMap;
-        private Font fontMap;
-        private Pen pMap;
 
-        public Dijkstra(List<Road> Roads, Graphics g, Font font)
+        public Dijkstra(List<Road> Roads)
         {
             if(Roads == null) { throw new NullReferenceException(); }
             if(Roads.Count == 0) { throw new Exception("Roads should contain atleast 1 road"); }
-            gMap = g;
-            fontMap = font;
-            pMap = new Pen(Color.Black);
             startingPoints = new List<DijkstraStart>();
             reachableLocations = new List<Location>();
             allRoads = Roads;
             detectedLocations();
-            foreach(Location l in reachableLocations)
-            {
-                createDijkstraStart(l, false);
-            }
+            UpdateAllStarts();
         }
         
+        public void UpdateAllStarts()
+        {
+            startingPoints = new List<DijkstraStart>();
+            foreach (Location l in reachableLocations)
+            {
+                DijkstraStart temp = createDijkstraStart(l, false);
+                startingPoints.Add(temp);
+            }
+        }
+        public void UpdateSingleStart(Location startLocation)
+        {
+            DijkstraStart result = null;
+            if (reachableLocations.Contains(startLocation))
+            {
+                foreach(DijkstraStart ds in startingPoints)
+                {
+                    if(ds.StartPoint == startLocation)
+                    {
+                        result = ds;
+                    }
+                }
+                if(result != null)
+                {
+                    startingPoints.Remove(result);                  
+                }
+                DijkstraStart temp = createDijkstraStart(startLocation, false);
+                startingPoints.Add(temp);
+            }
+        }
+        public void PlayDijkstraAnimation(Location startLocation)
+        {
+            if (reachableLocations.Contains(startLocation))
+            {
+                createDijkstraStart(startLocation, true);
+            }
+        }
         private List<Road> getRoadsConnectedToLocation(Location loc)
         {
             List<Road> roadList = new List<Road>();
@@ -61,8 +88,7 @@ namespace ClassLibrary
             }
             return lowestIndex;
         }
-
-        public void createDijkstraStart(Location startLocation, bool animate) //main methods for creating shortest routes accros the map
+        private DijkstraStart createDijkstraStart(Location startLocation, bool animate) //main methods for creating shortest routes accros the map
         {
             if (!reachableLocations.Contains(startLocation)) { throw new Exception("Unknown location detected"); }
             List<Road> currentRoads = new List<Road>(); //considered roads at the moment
@@ -80,7 +106,15 @@ namespace ClassLibrary
             int currentRoadLenght;
             Location prevLocation = null;
             Location newLocation = null;
-            //string holder = "";
+
+            //ANIMATION
+            if (animate)
+            {
+                foreach (Road r in allRoads)
+                {
+                    r.ResetDrawFields();
+                }
+            }
 
             while (currentRoads.Count != 0)
             {
@@ -92,10 +126,13 @@ namespace ClassLibrary
                 //ANIMATION
                 if (animate)
                 {
-                    AnimationDraw(currentRoads, Color.Yellow);
+                    foreach(Road r in currentRoads)
+                    {
+                        r.LineColor = Color.Yellow;
+                    }
+                    Map.RedrawMapNow();
                     System.Threading.Thread.Sleep(2000);
-                    AnimationDraw(new List<Road>() { currentRoad }, Color.Green);
-                    //System.Threading.Thread.Sleep(1500);
+                    currentRoad.LineColor = Color.Green;
                 }
 
                 //claim new shortest route
@@ -117,15 +154,6 @@ namespace ClassLibrary
                 }
                 DijkstraRoute newDijkstraRoute = new DijkstraRoute(newRoute, newLocation);
                 dijkstraStart.AddNewRoute(newDijkstraRoute);
-
-                //holder += "PrevLocation: " + prevLocation.LocationID + "\n";
-
-                //holder += "From " + startLocation.LocationID + " to " + newLocation.LocationID + ": \n";
-                //foreach (Road r in newDijkstraRoute.Route)
-                //{
-                //    holder += "Road: " + r.Vertex1.LocationID + " - " + r.Vertex2.LocationID + "\n";
-                //}
-                //holder += "\n";
 
                 //Determine new roads and remove currentRoad/exsiting roads
                 currentRoads.RemoveAt(lowestIndex);
@@ -163,10 +191,9 @@ namespace ClassLibrary
                 currentRoadLenght = -1;
                 lowestIndex = -1;
             }
-            if (!animate) { startingPoints.Add(dijkstraStart); }         
-            //MessageBox.Show(holder);
+            if (!animate) { return dijkstraStart; }
+            return null;
         }
-
         private void detectedLocations() //Find all reachable locations with the given Roads
         {
             reachableLocations = new List<Location>();
@@ -182,7 +209,6 @@ namespace ClassLibrary
                 }
             }
         }
-
         public DijkstraRoute GetRouteTo(Location StartPoint, Location EndPoint) //Getting route from StartPoint to EndPoint
         {
             foreach (DijkstraStart s in startingPoints)
@@ -193,24 +219,6 @@ namespace ClassLibrary
                 }
             }
             return null;
-        }
-        private void AnimationDraw(List<Road> list1, Color col1)
-        {
-            //foreach (Road r in allRoads) //draw roads like normal
-            //{
-            //    r.DrawLine(gMap);
-            //    r.DrawString(gMap, fontMap);
-            //}
-            foreach (Road r in list1)
-            {
-                r.DrawLine(gMap, col1);
-                r.DrawString(gMap, fontMap);
-            }
-            //Draw all cells and locations
-            foreach (Location l in reachableLocations) //draw locations over newly drawn roads
-            {
-                l.DrawMe(gMap, pMap, fontMap);
-            }
         }
     }
 }

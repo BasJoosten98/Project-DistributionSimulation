@@ -26,13 +26,13 @@ namespace MapLayout
             InitializeComponent();
 
             // This could be set later on, maybe even via the app config file or by the user.
-            const int CELLSIZE = 40;
+            const int CELLSIZE = 40;    
 
             // The result represents the number of cells we can create in both width and height (Square grid/map) based on the cell size.
             int numberOfCells;
             if(mapPictureBox.Width <= mapPictureBox.Height) { numberOfCells = mapPictureBox.Width / CELLSIZE; }
             else { numberOfCells = mapPictureBox.Height / CELLSIZE; }
-            map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE);
+            map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE, MapBox: mapPictureBox);
 
 
             //This loop is for debugging purposes such that we can check which cells have a location added to them.
@@ -47,25 +47,44 @@ namespace MapLayout
             //bmp = new Bitmap(mapPictureBox.Width,mapPictureBox.Height);
         }
 
+
         private void pictureBox1_Paint_1(object sender, PaintEventArgs e)
         {
             //change to Graphics.FromImage(bmp) for redraw 
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.Black);
+            SolidBrush sb = new SolidBrush(Color.Black);
 
-            //Draw all roads and strings of roads
-            List<Road> allRoads = map.Edges;
-            foreach (Road r in allRoads)
+            foreach(Road r in map.Edges) 
             {
-                r.DrawLine(g);
-                r.DrawString(g, this.Font);
+                //Draw Line
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                p.Color = r.LineColor;
+                p.Width = r.LineWidth;
+                g.DrawLine(p, r.Vertex1.Center, r.Vertex2.Center);
+
+                //Draw String
+                sb.Color = r.StringColor;
+                g.DrawString(r.initialCost.ToString(), this.Font, sb, 0.5f * (r.Vertex1.Center.X + r.Vertex2.Center.X) - this.Font.Size, 0.5f * (r.Vertex1.Center.Y + r.Vertex2.Center.Y) - this.Font.Size / 2);
             }
 
-            //Draw all cells and locations
-            Cell[,] allCells = map.GetCells();
-            foreach (Cell c in allCells)
+            foreach(Cell c in map.GetCells())
             {
-                c.DrawMe(g, p, this.Font);
+                //Draw Cell
+                p.Color = c.CellColor;
+                p.Width = c.CellLineWidth;
+                g.DrawRectangle(p, c.CellRectangle);
+                if (c is Location)
+                {
+                    //Draw Location
+                    sb.Color = ((Location)c).CircleFillColor;
+                    g.FillEllipse(sb, c.CellRectangle);
+                    p.Color = ((Location)c).CircleColor;
+                    g.DrawEllipse(p, c.CellRectangle);
+                    sb.Color = ((Location)c).StringColor; 
+                    g.DrawString(string.Format("{0,2}", ((Location)c).LocationID), this.Font, sb, ((Location)c).Center.X - this.Font.Size, ((Location)c).Center.Y - this.Font.Size / 2);
+
+                }
             }
 
             //---------------------------------------OLD WAY FOR DRAWING BELOW---------------------------------------
@@ -351,41 +370,27 @@ namespace MapLayout
         Dijkstra myDijkstra;
         private void btnTestDijkstra_Click(object sender, EventArgs e)
         {
-            myDijkstra = new Dijkstra(map.Edges, mapPictureBox.CreateGraphics(), this.Font);
-            
+            myDijkstra = new Dijkstra(map.Edges);
         }
 
         private void btnDrawRoute_Click(object sender, EventArgs e)
         {
-            Graphics g = mapPictureBox.CreateGraphics();
-            Pen p = new Pen(Color.Black);
-
-            
-
             int TolocationID = int.Parse(tbToLocationID.Text);
             Location destination = map.GetLocationByID(TolocationID);
             int FromlocationID = int.Parse(tbFromLocationID.Text);
             Location start = map.GetLocationByID(FromlocationID);
 
             DijkstraRoute myRoute = myDijkstra.GetRouteTo(start, destination);
-            //Draw all roads and strings of roads normally
             List<Road> allRoads = map.Edges;
             foreach (Road r in allRoads)
             {
-                r.DrawLine(g);
-                r.DrawString(g, this.Font);
+                r.ResetDrawFields();
             }
             foreach (Road r in myRoute.Route)
             {
-                r.DrawLine(g, Color.Green);
-                r.DrawString(g, this.Font);
+                r.LineColor = Color.Green;
             }
-            //Draw all cells and locations
-            Cell[,] allCells = map.GetCells();
-            foreach (Cell c in allCells)
-            {
-                c.DrawMe(g, p, this.Font);
-            }
+            Map.RedrawMap();
         }
 
         private void btnGetRoute_Click(object sender, EventArgs e)
@@ -406,18 +411,10 @@ namespace MapLayout
 
         private void btnDrawDijkstra_Click(object sender, EventArgs e)
         {
-            Graphics g = mapPictureBox.CreateGraphics();
             int FromlocationID = int.Parse(tbFromLocationID.Text);
             Location start = map.GetLocationByID(FromlocationID);
 
-            List<Road> allRoads = map.Edges;
-            foreach (Road r in allRoads)
-            {
-                r.DrawLine(g);
-                r.DrawString(g, this.Font);
-            }
-
-            myDijkstra.createDijkstraStart(start, true);
+            myDijkstra.PlayDijkstraAnimation(start);
         }
     }
 }

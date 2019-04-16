@@ -2,11 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 
 namespace ClassLibrary
 {
 	public class Road
 	{
+        //Drawing fields
+        public Color LineColor = Color.IndianRed;
+        public Color StringColor = Color.White;
+        public int LineWidth = 3;
+
+        
+        //other fields
         public Location Vertex1 { get; set; }
         public Location Vertex2 { get; set; }
 
@@ -21,19 +29,11 @@ namespace ClassLibrary
             this.initialCost = 1;
         }
 
-        public void DrawLine(Graphics g)
+        public void ResetDrawFields()
         {
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            g.DrawLine(new Pen(Color.IndianRed, 3), Vertex1.Center, Vertex2.Center);
-        }
-        public void DrawLine(Graphics g, Color color)
-        {
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            g.DrawLine(new Pen(color, 3), Vertex1.Center, Vertex2.Center);
-        }
-        public void DrawString(Graphics g, Font font)
-        {
-            g.DrawString(initialCost.ToString(), font, new SolidBrush(Color.White), 0.5f * (Vertex1.Center.X + Vertex2.Center.X) - font.Size, 0.5f * (Vertex1.Center.Y + Vertex2.Center.Y) - font.Size / 2);
+            LineColor = Color.IndianRed;
+            StringColor = Color.White;
+            LineWidth = 3;
         }
 
         public Location this[int index]

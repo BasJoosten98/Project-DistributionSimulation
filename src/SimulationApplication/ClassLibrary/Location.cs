@@ -9,6 +9,11 @@ namespace ClassLibrary
 {
     public class Location : Cell, IComparable
     {
+        //drawing fields
+        public Color CircleColor = Color.Black;
+        public Color CircleFillColor = Color.LightYellow;
+        public Color StringColor = Color.Black;
+
         private static int locationID;
         //public const int CRADIUS = 25; // circle radius
         //public const int CDIAMETER = 50; // circle diameter might have something to do with the diameter of the cell someone should look into it
@@ -61,12 +66,12 @@ namespace ClassLibrary
             return location.min_cost + road.initialCost;
         }
 
-        public override void DrawMe(Graphics g, Pen p, Font font)
+        public override void ResetDrawFields()
         {
-            base.DrawMe(g, p, font);
-            g.FillEllipse(new SolidBrush(Color.LightYellow), base.CellRectangle);
-            g.DrawEllipse(new Pen(Color.Black), base.CellRectangle);
-            g.DrawString(string.Format("{0,2}", LocationID), font, new SolidBrush(Color.Black), Center.X - font.Size, Center.Y - font.Size / 2);
+            base.ResetDrawFields();
+            CircleColor = Color.Black;
+            CircleFillColor = Color.LightYellow;
+            StringColor = Color.Black;
         }
     }
 }

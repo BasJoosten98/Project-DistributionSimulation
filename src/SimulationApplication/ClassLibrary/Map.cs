@@ -3,6 +3,7 @@ using System.Text;
 using System;
 using System.Collections;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace ClassLibrary
 {
@@ -13,13 +14,14 @@ namespace ClassLibrary
         public List<Road> Edges = new List<Road>();
         private Random rng;
         private Cell[,] cells;
+        private static PictureBox mapPicBox;
 
         public int NumberOfCells { get; set; }
 
-        public Map(int numberOfLocations, int numberOfCells, int cellSize)
+        public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
             Warehouses = new List<Location>();
-
+            mapPicBox = MapBox;
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
             cells = new Cell[NumberOfCells, NumberOfCells];
@@ -76,6 +78,14 @@ namespace ClassLibrary
             Edges.Add(new Road(Locations[9], Locations[7]));
             // 10 -> 5, weight: 1
             Edges.Add(new Road(Locations[9], Locations[4]));
+        }
+        public static void RedrawMap()
+        {
+            mapPicBox.Invalidate();
+        }
+        public static void RedrawMapNow()
+        {
+            mapPicBox.Refresh();
         }
 
         public Cell[,] GetCells()
