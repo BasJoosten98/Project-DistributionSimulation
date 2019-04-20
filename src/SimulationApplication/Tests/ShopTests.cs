@@ -16,6 +16,7 @@ namespace ClassLibrary.Tests
             Assert.NotNull(new Shop(20, 10));
         }
 
+        /*
         [Fact()]
         public void OnLowStockReachedTest()
         {
@@ -28,6 +29,7 @@ namespace ClassLibrary.Tests
             Assert.True(s.Stock == s.Capacity);
 
         }
+        */
 
         [Fact()]
         public void SellTest()
