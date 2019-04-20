@@ -192,6 +192,7 @@ namespace ClassLibrary
                 lowestIndex = -1;
             }
             if (!animate) { return dijkstraStart; }
+            else { Map.RedrawMap(); }
             return null;
         }
         private void detectedLocations() //Find all reachable locations with the given Roads

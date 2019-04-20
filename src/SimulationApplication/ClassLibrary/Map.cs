@@ -19,6 +19,7 @@ namespace ClassLibrary
         private DistributionManager distributionManager;
 
         public int NumberOfCells { get; set; }
+        public DistributionManager DistManager { get { return distributionManager; } }
 
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {

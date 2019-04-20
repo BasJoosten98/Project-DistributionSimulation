@@ -367,12 +367,6 @@ namespace MapLayout
             }
         }
 
-        Dijkstra myDijkstra;
-        private void btnTestDijkstra_Click(object sender, EventArgs e)
-        {
-            myDijkstra = new Dijkstra(map.Edges);
-        }
-
         private void btnDrawRoute_Click(object sender, EventArgs e)
         {
             int TolocationID = int.Parse(tbToLocationID.Text);
@@ -380,7 +374,7 @@ namespace MapLayout
             int FromlocationID = int.Parse(tbFromLocationID.Text);
             Location start = map.GetLocationByID(FromlocationID);
 
-            DijkstraRoute myRoute = myDijkstra.GetRouteTo(start, destination);
+            DijkstraRoute myRoute = map.DistManager.DistDijkstra.GetRouteTo(start, destination);
             List<Road> allRoads = map.Edges;
             foreach (Road r in allRoads)
             {
@@ -399,7 +393,7 @@ namespace MapLayout
             Location destination = map.GetLocationByID(TolocationID);
             int FromlocationID = int.Parse(tbFromLocationID.Text);
             Location start = map.GetLocationByID(FromlocationID);
-            DijkstraRoute myRoute = myDijkstra.GetRouteTo(start, destination);
+            DijkstraRoute myRoute = map.DistManager.DistDijkstra.GetRouteTo(start, destination);
 
             string holder = "From " + FromlocationID + " to " + TolocationID + ": \n";
             foreach (Road r in myRoute.Route)
@@ -414,7 +408,12 @@ namespace MapLayout
             int FromlocationID = int.Parse(tbFromLocationID.Text);
             Location start = map.GetLocationByID(FromlocationID);
 
-            myDijkstra.PlayDijkstraAnimation(start);
+            map.DistManager.DistDijkstra.PlayDijkstraAnimation(start);
+        }
+
+        private void btnCreateDistributionManager_Click(object sender, EventArgs e)
+        {
+            map.CreateDistributionManager();
         }
     }
 }

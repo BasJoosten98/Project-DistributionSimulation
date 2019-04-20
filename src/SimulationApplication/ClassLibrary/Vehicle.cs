@@ -7,12 +7,21 @@ namespace ClassLibrary
 	public class Vehicle
 	{
 		public static int capacity;
+        private static int idCounter = 0;
 		private int id;
-		List<Road> roads;
+        List<Delivery> deliveryQueue;
 
-		public void Deliver(List<Shop> queue, List<Road> roads)
-		{
-			throw new NotImplementedException();
-		}
+        public Vehicle()
+        {
+            deliveryQueue = new List<Delivery>();
+            id = idCounter;
+            idCounter++;
+        }
+
+        public void AddDeliveryToQueue(Delivery d)
+        {
+            deliveryQueue.Add(d);
+        }
+
 	}
 }
