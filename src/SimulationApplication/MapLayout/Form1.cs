@@ -176,6 +176,7 @@ namespace MapLayout
                         picBox.SizeMode = PictureBoxSizeMode.StretchImage;
                         picBox.MouseClick += mapPictureBox_MouseClick;
                         picBox.MouseEnter += mapPictureBox_MouseEnter;
+                        map.RemoveBuilding(l);
                         if (isShopBtnClicked)
                         {
                             picBox.Image = Properties.Resources.shopIcon;
@@ -190,6 +191,7 @@ namespace MapLayout
                             //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
                             Console.WriteLine("Location #: " + id + " has been set to a WareHouse");
                         }
+                        map.AddNewBuilding(l);
                         splitContainer1.Panel1.Controls.Add(picBox); //What does this do??
                         picBox.BringToFront(); //Needs to be here and not in class Building in order to work!
                         break;

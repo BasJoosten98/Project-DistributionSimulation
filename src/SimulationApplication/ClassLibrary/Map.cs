@@ -10,17 +10,20 @@ namespace ClassLibrary
     public class Map : IEnumerable, ICloneable
     {
         public List<Location> Warehouses { get; }
+        public List<Location> Shops { get; }
         public List<Location> Locations = new List<Location>();
         public List<Road> Edges = new List<Road>();
         private Random rng;
         private Cell[,] cells;
         private static PictureBox mapPicBox;
+        private DistributionManager distributionManager;
 
         public int NumberOfCells { get; set; }
 
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
             Warehouses = new List<Location>();
+            Shops = new List<Location>();
             mapPicBox = MapBox;
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
@@ -78,6 +81,35 @@ namespace ClassLibrary
             Edges.Add(new Road(Locations[9], Locations[7]));
             // 10 -> 5, weight: 1
             Edges.Add(new Road(Locations[9], Locations[4]));
+        }
+
+        public void CreateDistributionManager() //should be called when map is forseen with warehouses and shops!
+        {
+            Dijkstra dijkstra = new Dijkstra(Edges);
+            distributionManager = new DistributionManager(dijkstra, Warehouses, Shops);
+        }
+        public void AddNewBuilding(Location l)
+        {
+            if(l.Building is Warehouse)
+            {
+                Warehouses.Add(l);
+            }
+            else if (l.Building is Shop)
+            {
+                Shops.Add(l);
+            }
+        }
+        public void RemoveBuilding(Location l)
+        {
+            if (l.Building is Warehouse)
+            {
+                Warehouses.Remove(l);
+            }
+            else if (l.Building is Shop)
+            {
+                Shops.Remove(l);
+            }
+            l.Building = null;
         }
         public static void RedrawMap()
         {
