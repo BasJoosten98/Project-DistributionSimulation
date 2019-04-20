@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 using ClassLibrary.Events;
 
 
@@ -29,7 +31,8 @@ namespace ClassLibrary
             }
         }
 
-        public Warehouse()
+        public Warehouse(PictureBox PicBox)
+            :base(PicBox)
         {
             Roads = new List<Road>();
         }

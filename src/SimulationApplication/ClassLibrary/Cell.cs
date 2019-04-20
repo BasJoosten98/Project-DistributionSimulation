@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace ClassLibrary
 {
@@ -11,11 +12,17 @@ namespace ClassLibrary
         // Some fields that determine the attractiveness.
         public static int CellSize { get; set; }
         public Index Index { get; set; }
-        public Location Location { get; set; }
+        //public Location Location { get; set; }
+        public Rectangle CellRectangle;
 
-        public Cell(int row, int column)
+        public Cell(int columnNumber, int rowNumber)
         {
-            Index = new Index(row, column);
+            Index = new Index(columnNumber, rowNumber);
+            CellRectangle = new Rectangle(new Point(Index.Column * CellSize, Index.Row * CellSize), new Size(CellSize, CellSize));
+        }
+        public virtual void DrawMe(Graphics g, Pen p, Font font)
+        {
+            g.DrawRectangle(p, CellRectangle);
         }
     }
 }

@@ -7,11 +7,11 @@ using System.Windows;
 
 namespace ClassLibrary
 {
-    public class Location : IComparable
+    public class Location : Cell, IComparable
     {
         private static int locationID;
-        public const int CRADIUS = 20; // circle radius
-        public const int CDIAMETER = 50; // circle diameter might have something to do with the diameter of the cell someone should look into it
+        //public const int CRADIUS = 25; // circle radius
+        //public const int CDIAMETER = 50; // circle diameter might have something to do with the diameter of the cell someone should look into it
 
         public int LocationID { get; set; }
         public Building Building { get; set; }
@@ -20,14 +20,15 @@ namespace ClassLibrary
         public bool permanent { get; set; } // used for deijsktra
         public bool visited { get; set; } // checks if it has been seen 
 
-        public int PositionX { get; }
-        public int PositionY { get; }
+        //public int PositionX { get; }
+        //public int PositionY { get; }
 
-        public Location(int x, int y)
+        public Location(int column, int row)
+            : base(column, row)
         {
             LocationID = locationID++;
-            PositionX = x;
-            PositionY = y;
+            //PositionX = x;
+            //PositionY = y;
 
             this.min_cost = int.MaxValue;
             this.permanent = false;
@@ -38,17 +39,17 @@ namespace ClassLibrary
         /// <summary>
         /// Returns center point of a Vertex.
         /// </summary>
-        public Point Center { get { return new Point(PositionX * CDIAMETER + CRADIUS, PositionY * CDIAMETER + CRADIUS); } }
+        public Point Center { get { return new Point(base.Index.Column * Cell.CellSize + Cell.CellSize/2, base.Index.Row * Cell.CellSize + Cell.CellSize / 2); } }
 
         /// <summary>
         /// Return location point of a Vertex.
         /// </summary>
-        public Point LocationPoint { get { return new Point(PositionX * CDIAMETER, PositionY * CDIAMETER); } }
+        public Point LocationPoint { get { return new Point(base.Index.Column * Cell.CellSize, base.Index.Row * Cell.CellSize); } }
 
         /// <summary>
         /// Returns default size of a Vertex.
         /// </summary>
-        public Size _Size { get { return new Size(CDIAMETER, CDIAMETER); } }
+        public Size _Size { get { return new Size(Cell.CellSize, Cell.CellSize); } }
 
         public int CompareTo(object obj)
         {
@@ -58,6 +59,14 @@ namespace ClassLibrary
         public static int operator +(Location location, Road road)
         {
             return location.min_cost + road.initialCost;
+        }
+
+        public override void DrawMe(Graphics g, Pen p, Font font)
+        {
+            base.DrawMe(g, p, font);
+            g.FillEllipse(new SolidBrush(Color.LightYellow), base.CellRectangle);
+            g.DrawEllipse(new Pen(Color.Black), base.CellRectangle);
+            g.DrawString(string.Format("{0,2}", LocationID), font, new SolidBrush(Color.Black), Center.X - font.Size, Center.Y - font.Size / 2);
         }
     }
 }

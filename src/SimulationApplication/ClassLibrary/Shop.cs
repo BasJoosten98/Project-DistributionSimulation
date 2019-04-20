@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 using ClassLibrary.Events;
 
 namespace ClassLibrary
@@ -15,7 +17,8 @@ namespace ClassLibrary
 
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
-        public Shop(int stock, int restockamount)
+        public Shop(PictureBox PicBox, int stock, int restockamount)
+            :base(PicBox)
         {
             Stock = stock;
             Capacity = stock;
@@ -40,11 +43,6 @@ namespace ClassLibrary
 
             
 		}
-
-        public Shop() : base()
-        {
-
-        }
 
         
 	}
