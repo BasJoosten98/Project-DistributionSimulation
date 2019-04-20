@@ -26,12 +26,12 @@ namespace ClassLibrary
             ID = ++id;
         }
 
-        public Shop (int stock, int restockamount)
-        {
-            Stock = stock;
-            Capacity = stock;
-            RestockAmount = restockamount;
-        }
+        //public Shop (int stock, int restockamount)
+        //{
+        //    Stock = stock;
+        //    Capacity = stock;
+        //    RestockAmount = restockamount;
+        //}
 
         public virtual void OnLowStockReached(LowStockReachedEventArgs e)
         {

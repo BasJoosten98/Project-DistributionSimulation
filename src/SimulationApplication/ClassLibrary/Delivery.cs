@@ -7,29 +7,31 @@ namespace ClassLibrary
 	public class Delivery
 	{
         private DateTime startTime; //when truck started working on this delivery
-        private DateTime deliveryTime;
-        private DateTime endTime;
-        private List<Road> route;
-        private bool goingBack;
+        private DateTime createTime; //when the delivery object was made
+        private DeliveryStatus status;
+        private DijkstraRoute route;
 
-        public List<Road> Route { get { return route; } }
-        public bool GoingBack { get { return goingBack; } }
+        public DijkstraRoute Route { get { return route; } }
+        public DeliveryStatus Status { get { return status; } }
 
-        public Delivery(List<Road> Route)
+        public Delivery(DijkstraRoute route)
         {
             route = Route;
-            goingBack = false;
+            status = DeliveryStatus.NOTSTARTED;
         }
 
+        public void startDelivery()
+        {
+            status = DeliveryStatus.DELIVERING;
+        }
         public void doDelivery()
         {
-            goingBack = true;
-            //set deliveryTime
+            status = DeliveryStatus.COMINGBACK;
 
         }
         public void doFinish()
         {
-            //set endTime
+            status = DeliveryStatus.FINISHED;
         }
 
 	}

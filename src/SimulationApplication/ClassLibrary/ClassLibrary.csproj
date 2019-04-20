@@ -61,6 +61,7 @@
     <Compile Include="Building.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Delivery.cs" />
+    <Compile Include="DeliveryStatus.cs" />
     <Compile Include="Dijkstra.cs" />
     <Compile Include="DijkstraRoute.cs" />
     <Compile Include="DijkstraStart.cs" />
