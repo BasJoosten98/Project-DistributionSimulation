@@ -34,9 +34,11 @@ namespace ClassLibrary
         public Warehouse(PictureBox PicBox)
             :base(PicBox)
         {
-            Roads = new List<Road>();
+            //Roads = new List<Road>();
+            vehicles = new List<Vehicle>();
+            vehicles.Add(new Vehicle());
+            vehicles.Add(new Vehicle());
         }
-        public Warehouse() { }
 
         private void Item_LowStockReached(object sender, LowStockReachedEventArgs e)
         {
@@ -46,9 +48,31 @@ namespace ClassLibrary
             s.Stock = s.Capacity;
         }
 
+        public void fastestVehicleAvailableTime(out Vehicle vehicle, out int time)
+        {
+            time = int.MaxValue;
+            vehicle = null;
+            foreach (Vehicle v in vehicles)
+            {
+                int returnTime = v.lastDeliveryFinishDeltaTime();
+                if(time > returnTime)
+                {
+                    time = returnTime;
+                    vehicle = v;
+                }               
+            }
+        }
+
         public Shop GetShop(int ID)
         {
             return shops.Find(shop => shop.ID == ID);
+        }
+        public void nextTick()
+        {
+            foreach(Vehicle v in vehicles)
+            {
+                v.nextTick();
+            }          
         }
     }
 }

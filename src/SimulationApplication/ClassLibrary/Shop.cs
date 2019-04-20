@@ -50,7 +50,10 @@ namespace ClassLibrary
 
             
 		}
-
+        public void nextTick(int demand)
+        {
+            Sell(demand);
+        }
         
 	}
 }

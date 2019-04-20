@@ -52,6 +52,7 @@ namespace ClassLibrary
                     // Add the cell's location object to the list of vertices.
                     // Refactor later, Bas' comment (Location is more specific version of cell) so it can inherit from Cell.
                     Locations.Add(newLocation);
+                    newLocation.Demand = 2;
                     numberOfLocations--;
                 }
             }
@@ -84,6 +85,18 @@ namespace ClassLibrary
             Edges.Add(new Road(Locations[9], Locations[4]));
         }
 
+        public void nextTick()
+        {
+            foreach(Location w in Warehouses)
+            {
+                ((Warehouse)w.Building).nextTick();
+            }
+            foreach(Location s in Shops)
+            {
+                ((Shop)s.Building).nextTick(s.Demand);
+            }
+            distributionManager.nextTick();
+        }
         public void CreateDistributionManager() //should be called when map is forseen with warehouses and shops!
         {
             Dijkstra dijkstra = new Dijkstra(Edges);

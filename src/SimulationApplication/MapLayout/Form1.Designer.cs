@@ -32,6 +32,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.simulateBtn = new System.Windows.Forms.Button();
             this.mapPictureBox = new System.Windows.Forms.PictureBox();
+            this.btnCreateDistributionManager = new System.Windows.Forms.Button();
             this.btnDrawDijkstra = new System.Windows.Forms.Button();
             this.btnGetRoute = new System.Windows.Forms.Button();
             this.tbToLocationID = new System.Windows.Forms.TextBox();
@@ -43,7 +44,8 @@
             this.btnWarehouse = new System.Windows.Forms.Button();
             this.btnShop = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnCreateDistributionManager = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnStartSimulation = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -67,6 +69,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.splitContainer1.Panel2.Controls.Add(this.btnStartSimulation);
             this.splitContainer1.Panel2.Controls.Add(this.btnCreateDistributionManager);
             this.splitContainer1.Panel2.Controls.Add(this.btnDrawDijkstra);
             this.splitContainer1.Panel2.Controls.Add(this.btnGetRoute);
@@ -105,6 +108,16 @@
             this.mapPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint_1);
             this.mapPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mapPictureBox_MouseClick);
             this.mapPictureBox.MouseEnter += new System.EventHandler(this.mapPictureBox_MouseEnter);
+            // 
+            // btnCreateDistributionManager
+            // 
+            this.btnCreateDistributionManager.Location = new System.Drawing.Point(98, 516);
+            this.btnCreateDistributionManager.Name = "btnCreateDistributionManager";
+            this.btnCreateDistributionManager.Size = new System.Drawing.Size(75, 23);
+            this.btnCreateDistributionManager.TabIndex = 15;
+            this.btnCreateDistributionManager.Text = "Create Dist";
+            this.btnCreateDistributionManager.UseVisualStyleBackColor = true;
+            this.btnCreateDistributionManager.Click += new System.EventHandler(this.btnCreateDistributionManager_Click);
             // 
             // btnDrawDijkstra
             // 
@@ -208,15 +221,20 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // btnCreateDistributionManager
+            // timer1
             // 
-            this.btnCreateDistributionManager.Location = new System.Drawing.Point(98, 516);
-            this.btnCreateDistributionManager.Name = "btnCreateDistributionManager";
-            this.btnCreateDistributionManager.Size = new System.Drawing.Size(75, 23);
-            this.btnCreateDistributionManager.TabIndex = 15;
-            this.btnCreateDistributionManager.Text = "Create Dist";
-            this.btnCreateDistributionManager.UseVisualStyleBackColor = true;
-            this.btnCreateDistributionManager.Click += new System.EventHandler(this.btnCreateDistributionManager_Click);
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // btnStartSimulation
+            // 
+            this.btnStartSimulation.Location = new System.Drawing.Point(101, 544);
+            this.btnStartSimulation.Name = "btnStartSimulation";
+            this.btnStartSimulation.Size = new System.Drawing.Size(89, 23);
+            this.btnStartSimulation.TabIndex = 16;
+            this.btnStartSimulation.Text = "Start Sim";
+            this.btnStartSimulation.UseVisualStyleBackColor = true;
+            this.btnStartSimulation.Click += new System.EventHandler(this.btnStartSimulation_Click);
             // 
             // Form1
             // 
@@ -253,6 +271,8 @@
         private System.Windows.Forms.Button btnGetRoute;
         private System.Windows.Forms.Button btnDrawDijkstra;
         private System.Windows.Forms.Button btnCreateDistributionManager;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnStartSimulation;
     }
 }
 

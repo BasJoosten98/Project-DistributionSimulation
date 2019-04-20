@@ -180,7 +180,7 @@ namespace MapLayout
                         if (isShopBtnClicked)
                         {
                             picBox.Image = Properties.Resources.shopIcon;
-                            l.Building = new Shop(picBox, 100, 10);
+                            l.Building = new Shop(picBox, 30, 20);
                             //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
                             Console.WriteLine("Location #: " + id + " has been set to a Shop");
                         }
@@ -414,6 +414,17 @@ namespace MapLayout
         private void btnCreateDistributionManager_Click(object sender, EventArgs e)
         {
             map.CreateDistributionManager();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            map.nextTick();
+        }
+
+        private void btnStartSimulation_Click(object sender, EventArgs e)
+        {
+            map.CreateDistributionManager();
+            timer1.Enabled = true;
         }
     }
 }
