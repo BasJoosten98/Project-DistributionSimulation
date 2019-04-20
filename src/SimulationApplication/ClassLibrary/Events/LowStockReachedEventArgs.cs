@@ -11,3 +11,4 @@ namespace ClassLibrary.Events
         public DateTime TimeReached { get; set; }
     }
 }
+                

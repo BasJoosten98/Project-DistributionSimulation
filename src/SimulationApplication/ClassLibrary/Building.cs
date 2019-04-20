@@ -13,5 +13,9 @@ namespace ClassLibrary
         {
             picBox = PicBox;
         }
+        public Building()
+        {
+
+        }
 	}
 }
