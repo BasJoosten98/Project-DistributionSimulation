@@ -84,7 +84,7 @@ namespace ClassLibrary
 
             foreach(Road r in Edges)
             {
-                r.initialCost = rng.Next(1, 4);
+                r.initialCost = rng.Next(1, 6);
             }
         }
 

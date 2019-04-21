@@ -16,6 +16,7 @@ namespace MapLayout
         //Quick dirty way of checking if the shop or warehouse button is clicked
         private bool isShopBtnClicked;
         private bool isWarehouseBtnClicked;
+
         //List<Rectangle> ListofRectangles;
         //redraw image method
         //Bitmap bmp;
@@ -205,7 +206,7 @@ namespace MapLayout
                         if (isShopBtnClicked)
                         {
                             picBox.Image = Properties.Resources.shopIcon;
-                            l.Building = new Shop(picBox, 30, 20);
+                            l.Building = new Shop(picBox, 26, 20);
                             //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
                             Console.WriteLine("Location #: " + id + " has been set to a Shop");
                         }
