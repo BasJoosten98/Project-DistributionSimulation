@@ -86,6 +86,21 @@ namespace MapLayout
 
                 }
             }
+            foreach(Location s in map.Shops)
+            {
+                ((Shop)s.Building).picBox.BringToFront();
+            }
+            foreach (Location w in map.Warehouses)
+            {
+                ((Warehouse)w.Building).picBox.BringToFront();
+            }
+            foreach (Location w in map.Warehouses)
+            {
+                foreach(Vehicle v in ((Warehouse)w.Building).Vehicles)
+                {
+                    v.PicBox.BringToFront();
+                }
+            }
 
             //---------------------------------------OLD WAY FOR DRAWING BELOW---------------------------------------
             //int cellSize = Cell.CellSize;
@@ -445,6 +460,7 @@ namespace MapLayout
         private void btnStartSimulation_Click(object sender, EventArgs e)
         {
             map.CreateDistributionManager();
+            Map.RedrawMap();
             timer1.Enabled = true;
         }
 

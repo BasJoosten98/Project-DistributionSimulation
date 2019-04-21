@@ -73,6 +73,7 @@ namespace ClassLibrary
                     if(d.Route.EndPoint == lowStockShops[i])
                     {
                         lowStockShops.RemoveAt(i);
+                        i--;
                         break;
                     }
                 }
@@ -103,6 +104,7 @@ namespace ClassLibrary
                     }
                 }
                 createDelivery(bestRoute, bestVehicle, bestWarehouse);
+                Console.WriteLine("New delivery for SHOP" + s.LocationID + " Stock: " + ((Shop)s.Building).Stock);
             }
         }
         private void checkDeliveriesIsFinished()

@@ -15,6 +15,8 @@ namespace ClassLibrary
         List<Delivery> deliveryQueue;
         List<Delivery> finishedDeliveries;
 
+        public PictureBox PicBox { get { return picBox; } }
+
         public Vehicle(PictureBox PicBox)
         {
             deliveryQueue = new List<Delivery>();

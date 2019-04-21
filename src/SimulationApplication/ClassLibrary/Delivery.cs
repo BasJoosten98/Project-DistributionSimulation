@@ -46,7 +46,6 @@ namespace ClassLibrary
                 if (totalTravelTime == 1)
                 {
                     status = DeliveryStatus.DELIVERING;
-                    Console.WriteLine("DELIVERY STARTED");
                 }
 
                 for (int i = 0; i < route.Route.Count; i++)
@@ -97,7 +96,6 @@ namespace ClassLibrary
                 if (totalTravelTime == 2 * route.RouteLenght)
                 {
                     status = DeliveryStatus.FINISHED;
-                    Console.WriteLine("DELIVERY FINISHED");
                 }
                 
             }

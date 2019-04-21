@@ -14,6 +14,7 @@ namespace ClassLibrary
 		private List<Shop> shops;
 
         public List<Road> Roads { get; }
+        public List<Vehicle> Vehicles { get {return vehicles; } }
 
         public List<Shop> Shops
         {
