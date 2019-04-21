@@ -61,8 +61,6 @@ namespace ClassLibrary
             // Hard coded roads/edges from location 
             // 1 -> 2, weight: 3
             Edges.Add(new Road(Locations[0], Locations[1]));
-            Road r = Edges[0];
-            r.initialCost = 3;
             // 2 -> 3, weight: 1
             Edges.Add(new Road(Locations[1], Locations[2]));
             // 1 -> 3, weight: 1
@@ -83,6 +81,11 @@ namespace ClassLibrary
             Edges.Add(new Road(Locations[9], Locations[7]));
             // 10 -> 5, weight: 1
             Edges.Add(new Road(Locations[9], Locations[4]));
+
+            foreach(Road r in Edges)
+            {
+                r.initialCost = rng.Next(1, 4);
+            }
         }
 
         public void nextTick()

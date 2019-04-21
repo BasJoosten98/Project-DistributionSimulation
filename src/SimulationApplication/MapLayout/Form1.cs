@@ -147,7 +147,17 @@ namespace MapLayout
             ((PictureBox)sender).Cursor = isShopBtnClicked || isWarehouseBtnClicked ? Cursors.Hand : Cursors.Arrow; 
             
         }
-
+        private Vehicle createNewVehicle(Point ImagePosition)
+        {
+            PictureBox vehiclePicBox = new PictureBox();
+            vehiclePicBox.Image = Properties.Resources.vehicleIcon;
+            vehiclePicBox.Location = ImagePosition;
+            vehiclePicBox.Size = new Size(Cell.CellSize / 2, Cell.CellSize / 2);
+            vehiclePicBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            splitContainer1.Panel1.Controls.Add(vehiclePicBox);
+            vehiclePicBox.BringToFront();
+            return new Vehicle(vehiclePicBox);
+        }
         private void mapPictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             Console.WriteLine("Click detected");
@@ -188,6 +198,9 @@ namespace MapLayout
                         {
                             picBox.Image = Properties.Resources.warehouseIcon;
                             l.Building = new Warehouse(picBox);
+
+                            ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
+                            ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
                             //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
                             Console.WriteLine("Location #: " + id + " has been set to a WareHouse");
                         }
@@ -419,12 +432,32 @@ namespace MapLayout
         private void timer1_Tick(object sender, EventArgs e)
         {
             map.nextTick();
+            string holder = "";
+            foreach (Location s in map.Shops)
+            {
+                holder += "SHOP" + s.LocationID + " stock: " + ((Shop)s.Building).Stock + " Restock: " + ((Shop)s.Building).RestockAmount + "\n";
+            }
+            shortesRoutesRichTbx.Clear();
+            shortesRoutesRichTbx.Text += holder;
+
         }
 
         private void btnStartSimulation_Click(object sender, EventArgs e)
         {
             map.CreateDistributionManager();
             timer1.Enabled = true;
+        }
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            if(timer1.Enabled)
+            {
+                timer1.Enabled = false;
+            }
+            else
+            {
+                timer1.Enabled = true;
+            }
         }
     }
 }

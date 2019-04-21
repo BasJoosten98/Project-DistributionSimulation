@@ -25,9 +25,9 @@ namespace ClassLibrary
             if (warehouses.Count == 0) { throw new NullReferenceException(); }
         }
 
-        private void createDelivery(DijkstraRoute Route, Vehicle vehicle)
+        private void createDelivery(DijkstraRoute Route, Vehicle vehicle, Location warehouseLoc)
         {
-            Delivery temp = new Delivery(Route);
+            Delivery temp = new Delivery(Route, warehouseLoc);
             createdDeliveries.Add(temp);
             vehicle.AddDeliveryToQueue(temp);
         }
@@ -47,24 +47,16 @@ namespace ClassLibrary
             //order
             for(int i = 0; i < lowStockShops.Count; i++)
             {
-                bool wasSmallest = true;
                 for(int j = 0; j < lowStockShops.Count; j++)
                 {
-                    if(i != j)
+                    if(((Shop)lowStockShops[i].Building).Stock < ((Shop)lowStockShops[j].Building).Stock)
                     {
-                        if(((Shop)lowStockShops[j].Building).Stock < ((Shop)lowStockShops[i].Building).Stock) //lower stock found
-                        {
-                            i = j;
-                            wasSmallest = false;
-                        }
+                        i = j;
                     }
                 }
                 lowStockShopsOrdered.Add(lowStockShops[i]);
                 lowStockShops.RemoveAt(i);
-                if (!wasSmallest)
-                {
-                    i = -1;
-                }
+                i = -1;
             }
             return lowStockShopsOrdered;
         }
@@ -97,6 +89,7 @@ namespace ClassLibrary
                 DijkstraRoute bestRoute = myDijkstra.GetRouteTo(warehouses[0], s);
                 int totalTimeSpan = bestRoute.RouteLenght + outTime;
                 Vehicle bestVehicle = outVehicle;
+                Location bestWarehouse = warehouses[0];
                 for(int i = 1; i < warehouses.Count; i++)
                 {
                     ((Warehouse)warehouses[i].Building).fastestVehicleAvailableTime(out outVehicle, out outTime);
@@ -106,9 +99,10 @@ namespace ClassLibrary
                         bestRoute = tempRoute;
                         totalTimeSpan = tempRoute.RouteLenght + outTime;
                         bestVehicle = outVehicle;
+                        bestWarehouse = warehouses[i];
                     }
                 }
-                createDelivery(bestRoute, bestVehicle);
+                createDelivery(bestRoute, bestVehicle, bestWarehouse);
             }
         }
         private void checkDeliveriesIsFinished()

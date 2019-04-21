@@ -36,8 +36,11 @@ namespace ClassLibrary
         {
             //Roads = new List<Road>();
             vehicles = new List<Vehicle>();
-            vehicles.Add(new Vehicle());
-            vehicles.Add(new Vehicle());
+        }
+
+        public void AddVehicle(Vehicle v)
+        {
+            vehicles.Add(v);
         }
 
         private void Item_LowStockReached(object sender, LowStockReachedEventArgs e)
