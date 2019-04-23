@@ -36,7 +36,7 @@ namespace ClassLibrary
         {
             Roads = new List<Road>();
         }
-        public Warehouse() { }
+        public Warehouse(List<Shop> shops) { Shops = shops; }
 
         private void Item_LowStockReached(object sender, LowStockReachedEventArgs e)
         {

@@ -31,6 +31,7 @@ namespace ClassLibrary
             Stock = stock;
             Capacity = stock;
             RestockAmount = restockamount;
+            ID = ++id;
         }
 
         public virtual void OnLowStockReached(LowStockReachedEventArgs e)
