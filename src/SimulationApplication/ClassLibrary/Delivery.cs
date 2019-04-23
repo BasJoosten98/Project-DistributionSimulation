@@ -16,7 +16,6 @@ namespace ClassLibrary
         private Location nextLocation;
         private Road currentRoad;
         private int deltaTravelTime;
-        private string holder = "";
 
         public DijkstraRoute Route { get { return route; } }
         public DeliveryStatus Status { get { return status; } }
@@ -84,7 +83,6 @@ namespace ClassLibrary
                         {
                             if (route.Route[i].Vertex1 == nextLocation) { nextLocation = route.Route[i].Vertex2; }
                             else { nextLocation = route.Route[i].Vertex1; }
-                            //deltaTravelTime = sum - totalTravelTime;
                             currentRoad = route.Route[i];
                         }
                         break;

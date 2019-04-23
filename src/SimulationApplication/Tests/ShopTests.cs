@@ -10,11 +10,11 @@ namespace ClassLibrary.Tests
 {
     public class ShopTests
     {
-        [Fact()]
-        public void ShopTest()
-        {
-            Assert.NotNull(new Shop(20, 10));
-        }
+        //[Fact()]
+        //public void ShopTest()
+        //{
+        //    Assert.NotNull(new Shop(20, 10));
+        //}
 
         /*
         [Fact()]
@@ -31,13 +31,13 @@ namespace ClassLibrary.Tests
         }
         */
 
-        [Fact()]
-        public void SellTest()
-        {
-            Shop s = new Shop(10, 5);
-            s.Sell(3);
-            Assert.True(s.Stock == 7);
-        }
+        //[Fact()]
+        //public void SellTest()
+        //{
+        //    Shop s = new Shop(10, 5);
+        //    s.Sell(3);
+        //    Assert.True(s.Stock == 7);
+        //}
 
         
     }

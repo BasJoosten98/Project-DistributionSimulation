@@ -14,6 +14,8 @@ namespace ClassLibrary
         private List<Road> allRoads;
         private List<Location> reachableLocations;
 
+        public int totalDetectedLocations { get { return reachableLocations.Count; } }
+
         public Dijkstra(List<Road> Roads)
         {
             if(Roads == null) { throw new NullReferenceException(); }
