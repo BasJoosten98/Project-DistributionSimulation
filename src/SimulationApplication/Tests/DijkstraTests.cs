@@ -12,7 +12,7 @@ namespace SimulationApplicationTests
     {
         private Random rgn = new Random();
         [Fact()]
-        public void DetectLocationTest()
+        public void DetectLocationsTest()
         {
             int totalLocations = rgn.Next(2, 11);
             List<Location> locations = new List<Location>();
@@ -38,7 +38,7 @@ namespace SimulationApplicationTests
             Assert.True(d.totalDetectedLocations == totalLocations);
         }
         [Fact()]
-        public void ReturnDijkstraRoute()
+        public void ReturnDijkstraRouteTest()
         {
             int totalLocations = rgn.Next(3, 11);
             List<Location> locations = new List<Location>();
