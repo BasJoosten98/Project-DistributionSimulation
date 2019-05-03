@@ -16,6 +16,7 @@ namespace MapLayout
         //Quick dirty way of checking if the shop or warehouse button is clicked
         private bool isShopBtnClicked;
         private bool isWarehouseBtnClicked;
+
         //List<Rectangle> ListofRectangles;
         //redraw image method
         //Bitmap bmp;
@@ -86,6 +87,21 @@ namespace MapLayout
 
                 }
             }
+            foreach(Location s in map.Shops)
+            {
+                ((Shop)s.Building).picBox.BringToFront();
+            }
+            foreach (Location w in map.Warehouses)
+            {
+                ((Warehouse)w.Building).picBox.BringToFront();
+            }
+            foreach (Location w in map.Warehouses)
+            {
+                foreach(Vehicle v in ((Warehouse)w.Building).Vehicles)
+                {
+                    v.PicBox.BringToFront();
+                }
+            }
 
             //---------------------------------------OLD WAY FOR DRAWING BELOW---------------------------------------
             //int cellSize = Cell.CellSize;
@@ -147,7 +163,17 @@ namespace MapLayout
             ((PictureBox)sender).Cursor = isShopBtnClicked || isWarehouseBtnClicked ? Cursors.Hand : Cursors.Arrow; 
             
         }
-
+        private Vehicle createNewVehicle(Point ImagePosition)
+        {
+            PictureBox vehiclePicBox = new PictureBox();
+            vehiclePicBox.Image = Properties.Resources.vehicleIcon;
+            vehiclePicBox.Location = ImagePosition;
+            vehiclePicBox.Size = new Size(Cell.CellSize / 2, Cell.CellSize / 2);
+            vehiclePicBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            splitContainer1.Panel1.Controls.Add(vehiclePicBox);
+            vehiclePicBox.BringToFront();
+            return new Vehicle(vehiclePicBox);
+        }
         private void mapPictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             Console.WriteLine("Click detected");
@@ -176,10 +202,11 @@ namespace MapLayout
                         picBox.SizeMode = PictureBoxSizeMode.StretchImage;
                         picBox.MouseClick += mapPictureBox_MouseClick;
                         picBox.MouseEnter += mapPictureBox_MouseEnter;
+                        map.RemoveBuilding(l);
                         if (isShopBtnClicked)
                         {
                             picBox.Image = Properties.Resources.shopIcon;
-                            l.Building = new Shop(picBox, 100, 10);
+                            l.Building = new Shop(picBox, 26, 20);
                             //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
                             Console.WriteLine("Location #: " + id + " has been set to a Shop");
                         }
@@ -187,9 +214,13 @@ namespace MapLayout
                         {
                             picBox.Image = Properties.Resources.warehouseIcon;
                             l.Building = new Warehouse(picBox);
+
+                            ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
+                            ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
                             //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
                             Console.WriteLine("Location #: " + id + " has been set to a WareHouse");
                         }
+                        map.AddNewBuilding(l);
                         splitContainer1.Panel1.Controls.Add(picBox); //What does this do??
                         picBox.BringToFront(); //Needs to be here and not in class Building in order to work!
                         break;
@@ -365,12 +396,6 @@ namespace MapLayout
             }
         }
 
-        Dijkstra myDijkstra;
-        private void btnTestDijkstra_Click(object sender, EventArgs e)
-        {
-            myDijkstra = new Dijkstra(map.Edges);
-        }
-
         private void btnDrawRoute_Click(object sender, EventArgs e)
         {
             int TolocationID = int.Parse(tbToLocationID.Text);
@@ -378,7 +403,7 @@ namespace MapLayout
             int FromlocationID = int.Parse(tbFromLocationID.Text);
             Location start = map.GetLocationByID(FromlocationID);
 
-            DijkstraRoute myRoute = myDijkstra.GetRouteTo(start, destination);
+            DijkstraRoute myRoute = map.DistManager.DistDijkstra.GetRouteTo(start, destination);
             List<Road> allRoads = map.Edges;
             foreach (Road r in allRoads)
             {
@@ -397,7 +422,7 @@ namespace MapLayout
             Location destination = map.GetLocationByID(TolocationID);
             int FromlocationID = int.Parse(tbFromLocationID.Text);
             Location start = map.GetLocationByID(FromlocationID);
-            DijkstraRoute myRoute = myDijkstra.GetRouteTo(start, destination);
+            DijkstraRoute myRoute = map.DistManager.DistDijkstra.GetRouteTo(start, destination);
 
             string holder = "From " + FromlocationID + " to " + TolocationID + ": \n";
             foreach (Road r in myRoute.Route)
@@ -412,7 +437,44 @@ namespace MapLayout
             int FromlocationID = int.Parse(tbFromLocationID.Text);
             Location start = map.GetLocationByID(FromlocationID);
 
-            myDijkstra.PlayDijkstraAnimation(start);
+            map.DistManager.DistDijkstra.PlayDijkstraAnimation(start);
+        }
+
+        private void btnCreateDistributionManager_Click(object sender, EventArgs e)
+        {
+            map.CreateDistributionManager();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            map.nextTick();
+            string holder = "";
+            foreach (Location s in map.Shops)
+            {
+                holder += "SHOP" + s.LocationID + " stock: " + ((Shop)s.Building).Stock + " Restock: " + ((Shop)s.Building).RestockAmount + "\n";
+            }
+            shortesRoutesRichTbx.Clear();
+            shortesRoutesRichTbx.Text += holder;
+
+        }
+
+        private void btnStartSimulation_Click(object sender, EventArgs e)
+        {
+            map.CreateDistributionManager();
+            Map.RedrawMap();
+            timer1.Enabled = true;
+        }
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            if(timer1.Enabled)
+            {
+                timer1.Enabled = false;
+            }
+            else
+            {
+                timer1.Enabled = true;
+            }
         }
     }
 }

@@ -43,6 +43,10 @@ namespace ClassLibrary
         {
             vehicles.Add(v);
         }
+<<<<<<< HEAD
+        public Warehouse(List<Shop> shops) { Shops = shops; }
+=======
+>>>>>>> DistMan
 
         private void Item_LowStockReached(object sender, LowStockReachedEventArgs e)
         {

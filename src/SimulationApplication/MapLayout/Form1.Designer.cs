@@ -32,18 +32,21 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.simulateBtn = new System.Windows.Forms.Button();
             this.mapPictureBox = new System.Windows.Forms.PictureBox();
+            this.btnStartSimulation = new System.Windows.Forms.Button();
+            this.btnCreateDistributionManager = new System.Windows.Forms.Button();
+            this.btnDrawDijkstra = new System.Windows.Forms.Button();
+            this.btnGetRoute = new System.Windows.Forms.Button();
+            this.tbToLocationID = new System.Windows.Forms.TextBox();
+            this.btnDrawRoute = new System.Windows.Forms.Button();
+            this.tbFromLocationID = new System.Windows.Forms.TextBox();
             this.shortesRoutesRichTbx = new System.Windows.Forms.RichTextBox();
             this.lbLocationLog = new System.Windows.Forms.Label();
             this.btnCursor = new System.Windows.Forms.Button();
             this.btnWarehouse = new System.Windows.Forms.Button();
             this.btnShop = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnMakeDijkstra = new System.Windows.Forms.Button();
-            this.tbFromLocationID = new System.Windows.Forms.TextBox();
-            this.btnDrawRoute = new System.Windows.Forms.Button();
-            this.tbToLocationID = new System.Windows.Forms.TextBox();
-            this.btnGetRoute = new System.Windows.Forms.Button();
-            this.btnDrawDijkstra = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnPause = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -67,19 +70,21 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.splitContainer1.Panel2.Controls.Add(this.btnPause);
+            this.splitContainer1.Panel2.Controls.Add(this.btnStartSimulation);
+            this.splitContainer1.Panel2.Controls.Add(this.btnCreateDistributionManager);
             this.splitContainer1.Panel2.Controls.Add(this.btnDrawDijkstra);
             this.splitContainer1.Panel2.Controls.Add(this.btnGetRoute);
             this.splitContainer1.Panel2.Controls.Add(this.tbToLocationID);
             this.splitContainer1.Panel2.Controls.Add(this.btnDrawRoute);
             this.splitContainer1.Panel2.Controls.Add(this.tbFromLocationID);
-            this.splitContainer1.Panel2.Controls.Add(this.btnMakeDijkstra);
             this.splitContainer1.Panel2.Controls.Add(this.shortesRoutesRichTbx);
             this.splitContainer1.Panel2.Controls.Add(this.lbLocationLog);
             this.splitContainer1.Panel2.Controls.Add(this.btnCursor);
             this.splitContainer1.Panel2.Controls.Add(this.btnWarehouse);
             this.splitContainer1.Panel2.Controls.Add(this.btnShop);
-            this.splitContainer1.Size = new System.Drawing.Size(842, 570);
-            this.splitContainer1.SplitterDistance = 619;
+            this.splitContainer1.Size = new System.Drawing.Size(863, 570);
+            this.splitContainer1.SplitterDistance = 634;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -105,6 +110,70 @@
             this.mapPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint_1);
             this.mapPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mapPictureBox_MouseClick);
             this.mapPictureBox.MouseEnter += new System.EventHandler(this.mapPictureBox_MouseEnter);
+            // 
+            // btnStartSimulation
+            // 
+            this.btnStartSimulation.Location = new System.Drawing.Point(101, 544);
+            this.btnStartSimulation.Name = "btnStartSimulation";
+            this.btnStartSimulation.Size = new System.Drawing.Size(89, 23);
+            this.btnStartSimulation.TabIndex = 16;
+            this.btnStartSimulation.Text = "Start Sim";
+            this.btnStartSimulation.UseVisualStyleBackColor = true;
+            this.btnStartSimulation.Click += new System.EventHandler(this.btnStartSimulation_Click);
+            // 
+            // btnCreateDistributionManager
+            // 
+            this.btnCreateDistributionManager.Location = new System.Drawing.Point(98, 516);
+            this.btnCreateDistributionManager.Name = "btnCreateDistributionManager";
+            this.btnCreateDistributionManager.Size = new System.Drawing.Size(75, 23);
+            this.btnCreateDistributionManager.TabIndex = 15;
+            this.btnCreateDistributionManager.Text = "Create Dist";
+            this.btnCreateDistributionManager.UseVisualStyleBackColor = true;
+            this.btnCreateDistributionManager.Click += new System.EventHandler(this.btnCreateDistributionManager_Click);
+            // 
+            // btnDrawDijkstra
+            // 
+            this.btnDrawDijkstra.Location = new System.Drawing.Point(2, 487);
+            this.btnDrawDijkstra.Name = "btnDrawDijkstra";
+            this.btnDrawDijkstra.Size = new System.Drawing.Size(90, 23);
+            this.btnDrawDijkstra.TabIndex = 14;
+            this.btnDrawDijkstra.Text = "Draw Dijkstra";
+            this.btnDrawDijkstra.UseVisualStyleBackColor = true;
+            this.btnDrawDijkstra.Click += new System.EventHandler(this.btnDrawDijkstra_Click);
+            // 
+            // btnGetRoute
+            // 
+            this.btnGetRoute.Location = new System.Drawing.Point(2, 516);
+            this.btnGetRoute.Name = "btnGetRoute";
+            this.btnGetRoute.Size = new System.Drawing.Size(90, 23);
+            this.btnGetRoute.TabIndex = 13;
+            this.btnGetRoute.Text = "Get Route";
+            this.btnGetRoute.UseVisualStyleBackColor = true;
+            this.btnGetRoute.Click += new System.EventHandler(this.btnGetRoute_Click);
+            // 
+            // tbToLocationID
+            // 
+            this.tbToLocationID.Location = new System.Drawing.Point(128, 490);
+            this.tbToLocationID.Name = "tbToLocationID";
+            this.tbToLocationID.Size = new System.Drawing.Size(27, 20);
+            this.tbToLocationID.TabIndex = 12;
+            // 
+            // btnDrawRoute
+            // 
+            this.btnDrawRoute.Location = new System.Drawing.Point(3, 544);
+            this.btnDrawRoute.Name = "btnDrawRoute";
+            this.btnDrawRoute.Size = new System.Drawing.Size(89, 23);
+            this.btnDrawRoute.TabIndex = 11;
+            this.btnDrawRoute.Text = "Draw Route";
+            this.btnDrawRoute.UseVisualStyleBackColor = true;
+            this.btnDrawRoute.Click += new System.EventHandler(this.btnDrawRoute_Click);
+            // 
+            // tbFromLocationID
+            // 
+            this.tbFromLocationID.Location = new System.Drawing.Point(98, 490);
+            this.tbFromLocationID.Name = "tbFromLocationID";
+            this.tbFromLocationID.Size = new System.Drawing.Size(27, 20);
+            this.tbFromLocationID.TabIndex = 10;
             // 
             // shortesRoutesRichTbx
             // 
@@ -164,65 +233,26 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // btnMakeDijkstra
+            // timer1
             // 
-            this.btnMakeDijkstra.Location = new System.Drawing.Point(2, 492);
-            this.btnMakeDijkstra.Name = "btnMakeDijkstra";
-            this.btnMakeDijkstra.Size = new System.Drawing.Size(90, 23);
-            this.btnMakeDijkstra.TabIndex = 9;
-            this.btnMakeDijkstra.Text = "Make Dijkstra";
-            this.btnMakeDijkstra.UseVisualStyleBackColor = true;
-            this.btnMakeDijkstra.Click += new System.EventHandler(this.btnTestDijkstra_Click);
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // tbFromLocationID
+            // btnPause
             // 
-            this.tbFromLocationID.Location = new System.Drawing.Point(148, 520);
-            this.tbFromLocationID.Name = "tbFromLocationID";
-            this.tbFromLocationID.Size = new System.Drawing.Size(27, 20);
-            this.tbFromLocationID.TabIndex = 10;
-            // 
-            // btnDrawRoute
-            // 
-            this.btnDrawRoute.Location = new System.Drawing.Point(3, 544);
-            this.btnDrawRoute.Name = "btnDrawRoute";
-            this.btnDrawRoute.Size = new System.Drawing.Size(89, 23);
-            this.btnDrawRoute.TabIndex = 11;
-            this.btnDrawRoute.Text = "Draw Route";
-            this.btnDrawRoute.UseVisualStyleBackColor = true;
-            this.btnDrawRoute.Click += new System.EventHandler(this.btnDrawRoute_Click);
-            // 
-            // tbToLocationID
-            // 
-            this.tbToLocationID.Location = new System.Drawing.Point(181, 519);
-            this.tbToLocationID.Name = "tbToLocationID";
-            this.tbToLocationID.Size = new System.Drawing.Size(27, 20);
-            this.tbToLocationID.TabIndex = 12;
-            // 
-            // btnGetRoute
-            // 
-            this.btnGetRoute.Location = new System.Drawing.Point(2, 516);
-            this.btnGetRoute.Name = "btnGetRoute";
-            this.btnGetRoute.Size = new System.Drawing.Size(90, 23);
-            this.btnGetRoute.TabIndex = 13;
-            this.btnGetRoute.Text = "Get Route";
-            this.btnGetRoute.UseVisualStyleBackColor = true;
-            this.btnGetRoute.Click += new System.EventHandler(this.btnGetRoute_Click);
-            // 
-            // btnDrawDijkstra
-            // 
-            this.btnDrawDijkstra.Location = new System.Drawing.Point(118, 492);
-            this.btnDrawDijkstra.Name = "btnDrawDijkstra";
-            this.btnDrawDijkstra.Size = new System.Drawing.Size(90, 23);
-            this.btnDrawDijkstra.TabIndex = 14;
-            this.btnDrawDijkstra.Text = "Draw Dijkstra";
-            this.btnDrawDijkstra.UseVisualStyleBackColor = true;
-            this.btnDrawDijkstra.Click += new System.EventHandler(this.btnDrawDijkstra_Click);
+            this.btnPause.Location = new System.Drawing.Point(179, 516);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(47, 23);
+            this.btnPause.TabIndex = 17;
+            this.btnPause.Text = "Pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(842, 570);
+            this.ClientSize = new System.Drawing.Size(863, 570);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -247,12 +277,15 @@
         private System.Windows.Forms.Label lbLocationLog;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.RichTextBox shortesRoutesRichTbx;
-        private System.Windows.Forms.Button btnMakeDijkstra;
         private System.Windows.Forms.Button btnDrawRoute;
         private System.Windows.Forms.TextBox tbFromLocationID;
         private System.Windows.Forms.TextBox tbToLocationID;
         private System.Windows.Forms.Button btnGetRoute;
         private System.Windows.Forms.Button btnDrawDijkstra;
+        private System.Windows.Forms.Button btnCreateDistributionManager;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnStartSimulation;
+        private System.Windows.Forms.Button btnPause;
     }
 }
 

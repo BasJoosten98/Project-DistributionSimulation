@@ -10,11 +10,24 @@ namespace ClassLibrary.Tests
 {
     public class ShopTests
     {
+<<<<<<< HEAD
+        /// <summary>
+        /// These tests define the core functionality of the shop class, raising events for the listeners (warehouses)
+        /// and getting the expected result (on eventraise, shop stock should be back to the capacity)
+        /// </summary>
+   
+        [Fact()]
+        public void ShopTest()
+        {
+            Assert.NotNull(new Shop(20, 10));
+        }
+=======
         //[Fact()]
         //public void ShopTest()
         //{
         //    Assert.NotNull(new Shop(20, 10));
         //}
+>>>>>>> DistMan
 
         
         [Fact()]

@@ -14,6 +14,8 @@ namespace ClassLibrary
         private List<Road> allRoads;
         private List<Location> reachableLocations;
 
+        public int totalDetectedLocations { get { return reachableLocations.Count; } }
+
         public Dijkstra(List<Road> Roads)
         {
             if(Roads == null) { throw new NullReferenceException(); }
@@ -192,6 +194,7 @@ namespace ClassLibrary
                 lowestIndex = -1;
             }
             if (!animate) { return dijkstraStart; }
+            else { Map.RedrawMap(); }
             return null;
         }
         private void detectedLocations() //Find all reachable locations with the given Roads

@@ -9,6 +9,8 @@ namespace ClassLibrary
 	public class Road
 	{
         //Drawing fields
+        private static int idCounter = 0;
+        public int id;
         public Color LineColor = Color.IndianRed;
         public Color StringColor = Color.White;
         public int LineWidth = 3;
@@ -25,7 +27,8 @@ namespace ClassLibrary
 
             this.Vertex1 = Vertex1;
             this.Vertex2 = Vertex2;
-
+            id = idCounter;
+            idCounter++;
             this.initialCost = 1;
         }
 
@@ -34,6 +37,23 @@ namespace ClassLibrary
             LineColor = Color.IndianRed;
             StringColor = Color.White;
             LineWidth = 3;
+        }
+
+        public Point onRoadLocation(int deltaTime, Location to)
+        {
+            Location from;
+            if(to == Vertex1) { from = Vertex2; }
+            else { from = Vertex1; }
+            //if(deltaTime == 0)
+            //{
+            //    return from.Center;
+            //}
+            //if (deltaTime == initialCost)
+            //{
+            //    return to.Center;
+            //}
+            //return new Point((from.Center.X + to.Center.X) / 2, (from.Center.Y + to.Center.Y) / 2);
+            return new Point(from.Center.X + deltaTime * (to.Center.X - from.Center.X) / initialCost, from.Center.Y + deltaTime * (to.Center.Y - from.Center.Y)/initialCost);
         }
 
         public Location this[int index]

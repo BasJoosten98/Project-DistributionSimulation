@@ -10,17 +10,21 @@ namespace ClassLibrary
     public class Map : IEnumerable
     {
         public List<Location> Warehouses { get; }
+        public List<Location> Shops { get; }
         public List<Location> Locations = new List<Location>();
         public List<Road> Edges = new List<Road>();
         private Random rng;
         private Cell[,] cells;
         private static PictureBox mapPicBox;
+        private DistributionManager distributionManager;
 
         public int NumberOfCells { get; set; }
+        public DistributionManager DistManager { get { return distributionManager; } }
 
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
             Warehouses = new List<Location>();
+            Shops = new List<Location>();
             mapPicBox = MapBox;
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
@@ -46,8 +50,8 @@ namespace ClassLibrary
                     Location newLocation = new Location(c.Index.Column, c.Index.Row);
                     cells[c.Index.Column, c.Index.Row] = newLocation;
                     // Add the cell's location object to the list of vertices.
-                    // Refactor later, Bas' comment (Location is more specific version of cell) so it can inherit from Cell.
                     Locations.Add(newLocation);
+                    newLocation.Demand = 2;
                     numberOfLocations--;
                 }
             }
@@ -57,8 +61,6 @@ namespace ClassLibrary
             // Hard coded roads/edges from location 
             // 1 -> 2, weight: 3
             Edges.Add(new Road(Locations[0], Locations[1]));
-            Road r = Edges[0];
-            r.initialCost = 3;
             // 2 -> 3, weight: 1
             Edges.Add(new Road(Locations[1], Locations[2]));
             // 1 -> 3, weight: 1
@@ -79,6 +81,52 @@ namespace ClassLibrary
             Edges.Add(new Road(Locations[9], Locations[7]));
             // 10 -> 5, weight: 1
             Edges.Add(new Road(Locations[9], Locations[4]));
+
+            foreach(Road r in Edges)
+            {
+                r.initialCost = rng.Next(1, 6);
+            }
+        }
+
+        public void nextTick()
+        {
+            foreach(Location w in Warehouses)
+            {
+                ((Warehouse)w.Building).nextTick();
+            }
+            foreach(Location s in Shops)
+            {
+                ((Shop)s.Building).nextTick(s.Demand);
+            }
+            distributionManager.nextTick();
+        }
+        public void CreateDistributionManager() //should be called when map is forseen with warehouses and shops!
+        {
+            Dijkstra dijkstra = new Dijkstra(Edges);
+            distributionManager = new DistributionManager(dijkstra, Warehouses, Shops);
+        }
+        public void AddNewBuilding(Location l)
+        {
+            if(l.Building is Warehouse)
+            {
+                Warehouses.Add(l);
+            }
+            else if (l.Building is Shop)
+            {
+                Shops.Add(l);
+            }
+        }
+        public void RemoveBuilding(Location l)
+        {
+            if (l.Building is Warehouse)
+            {
+                Warehouses.Remove(l);
+            }
+            else if (l.Building is Shop)
+            {
+                Shops.Remove(l);
+            }
+            l.Building = null;
         }
         public static void RedrawMap()
         {
