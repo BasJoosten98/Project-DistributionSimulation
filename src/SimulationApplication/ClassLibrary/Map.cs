@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace ClassLibrary
 {
-    public class Map : IEnumerable, ICloneable
+    public class Map : IEnumerable
     {
         public List<Location> Warehouses { get; }
         public List<Location> Locations = new List<Location>();
@@ -297,11 +297,6 @@ namespace ClassLibrary
                 _Graph[index].permanent = true;
                 initial = _Graph[index];
             }
-        }
-
-        public object Clone()
-        {
-            return MemberwiseClone();
         }
     }
 }

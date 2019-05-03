@@ -37,12 +37,12 @@ namespace MapLayout
 
             //This loop is for debugging purposes such that we can check which cells have a location added to them.
             foreach (Cell cell in map.GetCells())
+            {
+                if (cell is Location)
                 {
-                    if (cell is Location)
-                    {
-                        Console.WriteLine($"Row: {cell.Index.Row}, Col: {cell.Index.Column}");
-                    }
+                    Console.WriteLine($"Row: {cell.Index.Row}, Col: {cell.Index.Column}");
                 }
+            }
             //reDraw image method
             //bmp = new Bitmap(mapPictureBox.Width,mapPictureBox.Height);
         }
