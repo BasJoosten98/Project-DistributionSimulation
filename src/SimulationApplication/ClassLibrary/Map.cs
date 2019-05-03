@@ -51,6 +51,7 @@ namespace ClassLibrary
                     numberOfLocations--;
                 }
             }
+            // Prints the count property of the List of location objects.
             Console.WriteLine(V);
 
             // Hard coded roads/edges from location 
