@@ -17,21 +17,13 @@ namespace ClassLibrary
 
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
-        public Shop(PictureBox PicBox, int stock, int restockamount)
-            :base(PicBox)
+        public Shop(PictureBox PicBox, int stock, int restockamount) : base(PicBox)
         {
             Stock = stock;
             Capacity = stock;
             RestockAmount = restockamount;
             ID = ++id;
         }
-
-        //public Shop (int stock, int restockamount)
-        //{
-        //    Stock = stock;
-        //    Capacity = stock;
-        //    RestockAmount = restockamount;
-        //}
 
         public virtual void OnLowStockReached(LowStockReachedEventArgs e)
         {
@@ -50,6 +42,7 @@ namespace ClassLibrary
 
             
 		}
+
         public void nextTick(int demand)
         {
             Sell(demand);

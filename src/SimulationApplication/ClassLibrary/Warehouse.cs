@@ -71,6 +71,7 @@ namespace ClassLibrary
         {
             return shops.Find(shop => shop.ID == ID);
         }
+
         public void nextTick()
         {
             foreach(Vehicle v in vehicles)
