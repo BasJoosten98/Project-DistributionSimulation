@@ -10,7 +10,7 @@ namespace ClassLibrary
     public class Map : IEnumerable, ICloneable
     {
         public List<Location> Warehouses { get; }
-        public List<Location> Locations = new List<Location>();
+        public List<Location> Locations;
         public List<Road> Edges = new List<Road>();
         private Random rng;
         private Cell[,] cells;
@@ -21,7 +21,12 @@ namespace ClassLibrary
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
             Warehouses = new List<Location>();
+            Locations = new List<Location>();
             mapPicBox = MapBox;
+            if (numberOfCells < 0)
+            {
+                numberOfCells = 0;
+            }
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
             cells = new Cell[NumberOfCells, NumberOfCells];
@@ -35,9 +40,9 @@ namespace ClassLibrary
             // Seed the random generator to get reproducable results.
             rng = new Random(0);
 
-            if (numberOfLocations > numberOfCells * numberOfCells)
+            if (numberOfLocations > NumberOfCells * NumberOfCells)
             {
-                numberOfLocations = numberOfCells * numberOfCells;
+                numberOfLocations = NumberOfCells * NumberOfCells;
             }
 
             while (numberOfLocations > 0)
