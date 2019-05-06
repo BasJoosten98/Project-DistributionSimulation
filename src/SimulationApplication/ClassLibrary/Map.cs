@@ -35,6 +35,11 @@ namespace ClassLibrary
             // Seed the random generator to get reproducable results.
             rng = new Random(0);
 
+            if (numberOfLocations > numberOfCells * numberOfCells)
+            {
+                numberOfLocations = numberOfCells * numberOfCells;
+            }
+
             while (numberOfLocations > 0)
             {
                 Cell c = GenerateRandomLocation();
