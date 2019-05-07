@@ -18,7 +18,12 @@ namespace ClassLibrary
             routes = new List<DijkstraRoute>();
         }
 
-        public void AddNewRoute(DijkstraRoute newRoute)
+
+        /// <summary>
+        /// Adds a new  possible route to the current existing routes
+        /// </summary>
+        /// <param name="newRoute"></param>
+       public void AddNewRoute(DijkstraRoute newRoute)  
         {
             if (!isConnectedToLocation(newRoute.EndPoint))
             {
@@ -26,6 +31,11 @@ namespace ClassLibrary
             }            
         }
 
+        /// <summary>
+        /// Returns the best route to the specified destination
+        /// </summary>
+        /// <param name="Destination"></param>
+        /// <returns>DikkstraRoute</returns>
         public DijkstraRoute GetRouteTo(Location Destination)
         {
             foreach(DijkstraRoute r in routes)
@@ -38,6 +48,11 @@ namespace ClassLibrary
             return null;
         }
 
+        /// <summary>
+        /// Checks to see if the given location is connected to any of the available routes
+        /// </summary>
+        /// <param name="loc"></param>
+        /// <returns></returns>
         public bool isConnectedToLocation(Location loc)
         {
             if(loc == startPoint) { return true; }

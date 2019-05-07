@@ -33,11 +33,20 @@ namespace ClassLibrary
             RestockAmount = restockamount;
         }
 
+
+        /// <summary>
+        /// Event that triggers when the stock is low
+        /// </summary>
+        /// <param name="e"></param>
         public virtual void OnLowStockReached(LowStockReachedEventArgs e)
         {
             LowStockReached?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// Decreases the value of stock by the given value
+        /// </summary>
+        /// <param name="demand"></param>
 		public void Sell(int demand)
 		{
             Stock -= demand;

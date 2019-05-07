@@ -56,6 +56,11 @@ namespace ClassLibrary
         /// </summary>
         public Size _Size { get { return new Size(Cell.CellSize, Cell.CellSize); } }
 
+        /// <summary>
+        /// Compares the LocationID's of the given location
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public int CompareTo(object obj)
         {
             return this.LocationID.CompareTo((obj as Location).LocationID);

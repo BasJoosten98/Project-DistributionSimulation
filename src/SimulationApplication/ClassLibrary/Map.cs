@@ -18,6 +18,14 @@ namespace ClassLibrary
 
         public int NumberOfCells { get; set; }
 
+
+        /// <summary>
+        /// Creates a map objects and initializes with the given values
+        /// </summary>
+        /// <param name="numberOfLocations"></param>
+        /// <param name="numberOfCells"></param>
+        /// <param name="cellSize"></param>
+        /// <param name="MapBox"></param>
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
             Warehouses = new List<Location>();
@@ -79,21 +87,37 @@ namespace ClassLibrary
             // 10 -> 5, weight: 1
             Edges.Add(new Road(Locations[9], Locations[4]));
         }
+
+        /// <summary>
+        /// Redraws the map 
+        /// </summary>
         public static void RedrawMap()
         {
             mapPicBox.Invalidate();
         }
+        /// <summary>
+        /// Redraws the map fast
+        /// </summary>
         public static void RedrawMapNow()
         {
             mapPicBox.Refresh();
         }
 
+        /// <summary>
+        /// Returns a copy of the cells NOT IMPLEMENTD YET
+        /// </summary>
+        /// <returns></returns>
         public Cell[,] GetCells()
         {
             // Preferably this will be a copy, and perhaps not a shallow one.
             return cells;
         }
 
+        /// <summary>
+        /// Returns a specific location by the inputed LocationID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Location</returns>
         public Location GetLocationByID(int id)
         {
             foreach(Location l in Locations)
@@ -106,6 +130,11 @@ namespace ClassLibrary
             return null;
         }
 
+        /// <summary>
+        /// Returns a specific cell by the specified location
+        /// </summary>
+        /// <param name="l"></param>
+        /// <returns>Location</returns>
         public Location getCellByLocation(Location l)
         {
             foreach(Location loc in Locations)
@@ -118,9 +147,13 @@ namespace ClassLibrary
             return null;
         }
 
+        /// <summary>
+        /// Return a cell at index [x, y] where x and y are numbers between 0 and NumOfCells (exclusive)
+        /// </summary>
+        /// <returns></returns>
         private Cell GenerateRandomLocation()
         {
-            // Return a cell at index [x, y] where x and y are numbers between 0 and NumOfCells (exclusive)
+            
             return cells[rng.Next(0, NumberOfCells), rng.Next(0, NumberOfCells)]; 
         }
 

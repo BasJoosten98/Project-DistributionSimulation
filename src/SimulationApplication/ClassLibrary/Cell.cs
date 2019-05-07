@@ -32,6 +32,9 @@ namespace ClassLibrary
         public Cell(int columnNumber, int rowNumber) : this(columnNumber, rowNumber, 0)
         { }
 
+        /// <summary>
+        ///It sets the collor of the cell to black and the width to 1
+        /// </summary>
         public virtual void ResetDrawFields()
         {
             CellColor = Color.Black;

@@ -14,6 +14,11 @@ namespace ClassLibrary
         private List<Road> allRoads;
         private List<Location> reachableLocations;
 
+
+        /// <summary>
+        /// Sets the initial values for the parameters
+        /// </summary>
+        /// <param name="Roads"></param>
         public Dijkstra(List<Road> Roads)
         {
             if(Roads == null) { throw new NullReferenceException(); }
@@ -25,6 +30,10 @@ namespace ClassLibrary
             UpdateAllStarts();
         }
         
+
+        /// <summary>
+        /// Updated all the starts for all the routes
+        /// </summary>
         public void UpdateAllStarts()
         {
             startingPoints = new List<DijkstraStart>();
@@ -34,6 +43,11 @@ namespace ClassLibrary
                 startingPoints.Add(temp);
             }
         }
+
+        /// <summary>
+        /// Updates the start for the specified location
+        /// </summary>
+        /// <param name="startLocation"></param>
         public void UpdateSingleStart(Location startLocation)
         {
             DijkstraStart result = null;
@@ -54,6 +68,11 @@ namespace ClassLibrary
                 startingPoints.Add(temp);
             }
         }
+
+        /// <summary>
+        /// Starts the animation for Dijkstra
+        /// </summary>
+        /// <param name="startLocation"></param>
         public void PlayDijkstraAnimation(Location startLocation)
         {
             if (reachableLocations.Contains(startLocation))
@@ -61,6 +80,12 @@ namespace ClassLibrary
                 createDijkstraStart(startLocation, true);
             }
         }
+
+        /// <summary>
+        /// Checks all the available roads if they are connected to the given location and returns them
+        /// </summary>
+        /// <param name="loc"></param>
+        /// <returns></returns>
         private List<Road> getRoadsConnectedToLocation(Location loc)
         {
             List<Road> roadList = new List<Road>();
@@ -73,6 +98,12 @@ namespace ClassLibrary
             }
             return roadList;
         }
+
+        /// <summary>
+        /// Determines the smallest value of the list for the given list.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
         private int findLowestIndex(List<int> list)
         {
             if (list == null) { throw new NullReferenceException(); }
@@ -88,13 +119,22 @@ namespace ClassLibrary
             }
             return lowestIndex;
         }
-        private DijkstraStart createDijkstraStart(Location startLocation, bool animate) //main methods for creating shortest routes accros the map
+        /// <summary>
+        /// Calculates Dijkstra for the given location and returns a visualization of the process
+        /// </summary>
+        /// <param name="startLocation"></param>
+        /// <param name="animate"></param>
+        /// <returns>returns true if the animation is possible</returns>
+        private DijkstraStart createDijkstraStart(Location startLocation, bool animate)
+            //main methods for creating shortest routes accros the map
         {
             if (!reachableLocations.Contains(startLocation)) { throw new Exception("Unknown location detected"); }
             List<Road> currentRoads = new List<Road>(); //considered roads at the moment
             List<int> currentRoadsLenghts = new List<int>(); //road lenghts
             DijkstraStart dijkstraStart = new DijkstraStart(startLocation);
 
+
+            //sets the lengths of the roads.
             currentRoads = getRoadsConnectedToLocation(startLocation);
             foreach (Road r in currentRoads)
             {
@@ -110,6 +150,7 @@ namespace ClassLibrary
             //ANIMATION
             if (animate)
             {
+                // resets all roads to black color
                 foreach (Road r in allRoads)
                 {
                     r.ResetDrawFields();
@@ -126,12 +167,15 @@ namespace ClassLibrary
                 //ANIMATION
                 if (animate)
                 {
+                    // colors the potential roads with yellow
                     foreach(Road r in currentRoads)
                     {
                         r.LineColor = Color.Yellow;
                     }
                     Map.RedrawMapNow();
+                    // makes the system wait 2 seconds
                     System.Threading.Thread.Sleep(2000);
+                    // after it colors all potential yellow it colors the best green.
                     currentRoad.LineColor = Color.Green;
                 }
 
@@ -142,6 +186,8 @@ namespace ClassLibrary
                 if (newLocation == null) { throw new NullReferenceException(); }
                 DijkstraRoute previousDijkstraRoute = dijkstraStart.GetRouteTo(prevLocation);
                 List<Road> newRoute;
+
+                //makes a copy of the current route and adds the current road
                 if (previousDijkstraRoute != null)
                 {
                     newRoute = previousDijkstraRoute.CopyRoute();
@@ -149,6 +195,7 @@ namespace ClassLibrary
                 }
                 else
                 {
+                    // makes a new route and adds the road to it
                     newRoute = new List<Road>();
                     newRoute.Add(currentRoad);
                 }
@@ -161,9 +208,11 @@ namespace ClassLibrary
 
                 List<Road> newAddingRoads = getRoadsConnectedToLocation(newLocation);
                 newAddingRoads.Remove(currentRoad);
-                for(int i = 0; i < newAddingRoads.Count; i++) //filter out already existing roads in currentRoads
-                {
-                    if(dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex1) && dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex2))
+
+                //filter out already existing roads in currentRoads
+                for (int i = 0; i < newAddingRoads.Count; i++) {
+                    if(dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex1) &&
+                        dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex2))
                     {
                         if (currentRoads.Contains(newAddingRoads[i]))
                         {
@@ -194,7 +243,11 @@ namespace ClassLibrary
             if (!animate) { return dijkstraStart; }
             return null;
         }
-        private void detectedLocations() //Find all reachable locations with the given Roads
+
+        /// <summary>
+        /// Find all reachable locations 
+        /// </summary>
+        private void detectedLocations() 
         {
             reachableLocations = new List<Location>();
             foreach (Road r in allRoads)
@@ -209,7 +262,14 @@ namespace ClassLibrary
                 }
             }
         }
-        public DijkstraRoute GetRouteTo(Location StartPoint, Location EndPoint) //Getting route from StartPoint to EndPoint
+
+        /// <summary>
+        /// Getting route from StartPoint to EndPoint
+        /// </summary>
+        /// <param name="StartPoint"></param>
+        /// <param name="EndPoint"></param>
+        /// <returns>DijkstraRoute</returns>
+        public DijkstraRoute GetRouteTo(Location StartPoint, Location EndPoint) 
         {
             foreach (DijkstraStart s in startingPoints)
             {

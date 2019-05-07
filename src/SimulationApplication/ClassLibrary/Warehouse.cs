@@ -30,7 +30,7 @@ namespace ClassLibrary
                 }
             }
         }
-
+        
         public Warehouse(PictureBox PicBox)
             :base(PicBox)
         {
@@ -38,6 +38,11 @@ namespace ClassLibrary
         }
         public Warehouse() { }
 
+        /// <summary>
+        /// Event that triggers when a shop needs to restock 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Item_LowStockReached(object sender, LowStockReachedEventArgs e)
         {
             // Logic to get a vehicle to simulate traveling to the shop
@@ -46,6 +51,12 @@ namespace ClassLibrary
             s.Stock = s.Capacity;
         }
 
+
+        /// <summary>
+        /// Returns the shop that has the ID equal to the given ID
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public Shop GetShop(int ID)
         {
             return shops.Find(shop => shop.ID == ID);
