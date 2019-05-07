@@ -36,7 +36,7 @@ namespace ClassLibrary
         {
             Roads = new List<Road>();
         }
-        public Warehouse() { }
+        public Warehouse(List<Shop> shops) { Shops = shops; }
 
         /// <summary>
         /// Event that triggers when a shop needs to restock 

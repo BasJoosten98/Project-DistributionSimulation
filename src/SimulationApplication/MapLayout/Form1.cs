@@ -32,6 +32,8 @@ namespace MapLayout
             int numberOfCells = mapPictureBox.Width / CELLSIZE;
             map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE);
 
+            // Remove this line in case we do not want to make use of the hard coded edges anymore.
+            map.AddHardCodedEdges();
 
             // This loop is for debugging purposes such that we can check which cells have a location added to them.
             foreach (Cell cell in map.GetCells())

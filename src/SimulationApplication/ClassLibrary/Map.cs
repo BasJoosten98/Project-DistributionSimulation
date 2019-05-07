@@ -10,7 +10,7 @@ namespace ClassLibrary
     public class Map : IEnumerable, ICloneable
     {
         public List<Location> Warehouses { get; }
-        public List<Location> Locations = new List<Location>();
+        public List<Location> Locations;
         public List<Road> Edges = new List<Road>();
         private Random rng;
         private Cell[,] cells;
@@ -29,7 +29,12 @@ namespace ClassLibrary
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
             Warehouses = new List<Location>();
+            Locations = new List<Location>();
             mapPicBox = MapBox;
+            if (numberOfCells < 0)
+            {
+                numberOfCells = 0;
+            }
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
             cells = new Cell[NumberOfCells, NumberOfCells];
@@ -42,6 +47,11 @@ namespace ClassLibrary
             }
             // Seed the random generator to get reproducable results.
             rng = new Random(0);
+
+            if (numberOfLocations > NumberOfCells * NumberOfCells)
+            {
+                numberOfLocations = NumberOfCells * NumberOfCells;
+            }
 
             while (numberOfLocations > 0)
             {
@@ -60,7 +70,13 @@ namespace ClassLibrary
                 }
             }
             Console.WriteLine(V);
-
+        }
+        /// <summary>
+        /// Moved the hard coded edges to a public method that will be called inside the form
+        /// since this was hindering the creation of test cases.
+        /// </summary>
+        public void AddHardCodedEdges()
+        {
             // Hard coded roads/edges from location 
             // 1 -> 2, weight: 3
             Edges.Add(new Road(Locations[0], Locations[1]));

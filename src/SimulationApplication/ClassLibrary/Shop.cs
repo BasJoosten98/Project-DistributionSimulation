@@ -31,6 +31,7 @@ namespace ClassLibrary
             Stock = stock;
             Capacity = stock;
             RestockAmount = restockamount;
+            ID = ++id;
         }
 
 
