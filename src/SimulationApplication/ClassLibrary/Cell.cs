@@ -17,7 +17,9 @@ namespace ClassLibrary
 
         // Some fields that determine the attractiveness.
         //TODO: Should be getting a more complex backing field
-        public int Demand { get; set; }
+        private static int maxDemand = 0;
+        private int demand;
+        public int Demand { get; }
         public static int CellSize { get; set; }
         public Index Index { get; set; }
         //public Location Location { get; set; }
@@ -27,7 +29,7 @@ namespace ClassLibrary
         {
             Index = new Index(columnNumber, rowNumber);
             CellRectangle = new Rectangle(new Point(Index.Column * CellSize, Index.Row * CellSize), new Size(CellSize, CellSize));
-            Demand = demand;
+            SetDemand(demand);
         }
         public Cell(int columnNumber, int rowNumber) : this(columnNumber, rowNumber, 0)
         { }
@@ -36,6 +38,20 @@ namespace ClassLibrary
         {
             CellColor = Color.Black;
             CellLineWidth = 1;
+        }
+        public void SetDemand(int Demand)
+        {
+            this.demand = Demand;
+            if(Demand > maxDemand)
+            {
+                maxDemand = Demand;
+            }
+        }
+        public Color GetHeatMapCellColor()
+        {
+            double greenColor = Math.Floor(50 + (double)this.demand/ (double)maxDemand * 205);
+            Color heatColor = Color.FromArgb(0, (int)greenColor, 0);
+            return heatColor;
         }
     }
 }

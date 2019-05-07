@@ -39,6 +39,11 @@ namespace ClassLibrary
             // Seed the random generator to get reproducable results.
             rng = new Random(0);
 
+            foreach(Cell c in cells)
+            {
+                c.SetDemand(rng.Next(0, 5));
+            }
+
             while (numberOfLocations > 0)
             {
                 Cell c = GenerateRandomLocation();
@@ -52,7 +57,6 @@ namespace ClassLibrary
                     // Add the cell's location object to the list of vertices.
                     // Refactor later, Bas' comment (Location is more specific version of cell) so it can inherit from Cell.
                     Locations.Add(newLocation);
-                    newLocation.Demand = 2;
                     numberOfLocations--;
                 }
             }

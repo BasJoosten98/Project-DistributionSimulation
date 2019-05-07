@@ -56,7 +56,21 @@ namespace MapLayout
             Pen p = new Pen(Color.Black);
             SolidBrush sb = new SolidBrush(Color.Black);
 
-            foreach(Road r in map.Edges) 
+            foreach (Cell c in map.GetCells())
+            {
+                if (drawHeatMap)
+                {
+                    sb.Color = c.GetHeatMapCellColor();
+                    g.FillRectangle(sb, c.CellRectangle);
+                }
+                else
+                {
+                    sb.Color = SystemColors.ActiveCaption;
+                    g.FillRectangle(sb, c.CellRectangle);
+                }
+            }
+
+            foreach (Road r in map.Edges) 
             {
                 //Draw Line
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -74,7 +88,7 @@ namespace MapLayout
                 //Draw Cell
                 p.Color = c.CellColor;
                 p.Width = c.CellLineWidth;
-                g.DrawRectangle(p, c.CellRectangle);
+                g.DrawRectangle(p, c.CellRectangle);              
                 if (c is Location)
                 {
                     //Draw Location
@@ -475,6 +489,12 @@ namespace MapLayout
             {
                 timer1.Enabled = true;
             }
+        }
+        private bool drawHeatMap = false;
+        private void btnHeatMap_Click(object sender, EventArgs e)
+        {
+            drawHeatMap = !drawHeatMap;
+            Map.RedrawMap();
         }
     }
 }

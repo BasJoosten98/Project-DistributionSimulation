@@ -32,6 +32,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.simulateBtn = new System.Windows.Forms.Button();
             this.mapPictureBox = new System.Windows.Forms.PictureBox();
+            this.btnPause = new System.Windows.Forms.Button();
             this.btnStartSimulation = new System.Windows.Forms.Button();
             this.btnCreateDistributionManager = new System.Windows.Forms.Button();
             this.btnDrawDijkstra = new System.Windows.Forms.Button();
@@ -46,7 +47,7 @@
             this.btnShop = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnPause = new System.Windows.Forms.Button();
+            this.btnHeatMap = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -70,6 +71,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.splitContainer1.Panel2.Controls.Add(this.btnHeatMap);
             this.splitContainer1.Panel2.Controls.Add(this.btnPause);
             this.splitContainer1.Panel2.Controls.Add(this.btnStartSimulation);
             this.splitContainer1.Panel2.Controls.Add(this.btnCreateDistributionManager);
@@ -110,6 +112,16 @@
             this.mapPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint_1);
             this.mapPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mapPictureBox_MouseClick);
             this.mapPictureBox.MouseEnter += new System.EventHandler(this.mapPictureBox_MouseEnter);
+            // 
+            // btnPause
+            // 
+            this.btnPause.Location = new System.Drawing.Point(179, 516);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(47, 23);
+            this.btnPause.TabIndex = 17;
+            this.btnPause.Text = "Pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
             // btnStartSimulation
             // 
@@ -238,15 +250,15 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnPause
+            // btnHeatMap
             // 
-            this.btnPause.Location = new System.Drawing.Point(179, 516);
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(47, 23);
-            this.btnPause.TabIndex = 17;
-            this.btnPause.Text = "Pause";
-            this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            this.btnHeatMap.Location = new System.Drawing.Point(158, 488);
+            this.btnHeatMap.Name = "btnHeatMap";
+            this.btnHeatMap.Size = new System.Drawing.Size(65, 23);
+            this.btnHeatMap.TabIndex = 18;
+            this.btnHeatMap.Text = "HeatMap";
+            this.btnHeatMap.UseVisualStyleBackColor = true;
+            this.btnHeatMap.Click += new System.EventHandler(this.btnHeatMap_Click);
             // 
             // Form1
             // 
@@ -286,6 +298,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnStartSimulation;
         private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.Button btnHeatMap;
     }
 }
 
