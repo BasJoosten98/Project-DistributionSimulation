@@ -80,7 +80,8 @@ namespace MapLayout
 
                 //Draw String
                 sb.Color = r.StringColor;
-                g.DrawString(r.initialCost.ToString(), this.Font, sb, 0.5f * (r.Vertex1.Center.X + r.Vertex2.Center.X) - this.Font.Size, 0.5f * (r.Vertex1.Center.Y + r.Vertex2.Center.Y) - this.Font.Size / 2);
+                Font f = new Font("Arial", 13, FontStyle.Bold);
+                g.DrawString(r.initialCost.ToString(), f, sb, 0.5f * (r.Vertex1.Center.X + r.Vertex2.Center.X) - f.Size, 0.5f * (r.Vertex1.Center.Y + r.Vertex2.Center.Y) - f.Size / 2);
             }
 
             foreach(Cell c in map.GetCells())

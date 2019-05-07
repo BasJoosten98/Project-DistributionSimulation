@@ -19,7 +19,7 @@ namespace ClassLibrary
         //TODO: Should be getting a more complex backing field
         private static int maxDemand = 0;
         private int demand;
-        public int Demand { get; }
+        public int Demand { get { return this.demand; } }
         public static int CellSize { get; set; }
         public Index Index { get; set; }
         //public Location Location { get; set; }
@@ -49,8 +49,19 @@ namespace ClassLibrary
         }
         public Color GetHeatMapCellColor()
         {
-            double greenColor = Math.Floor(50 + (double)this.demand/ (double)maxDemand * 205);
-            Color heatColor = Color.FromArgb(0, (int)greenColor, 0);
+            double maxPercentage = (double)this.demand / maxDemand;
+            Color heatColor;
+            if(maxPercentage >= 0.5) //green
+            {
+                double otherColors = 255 - Math.Floor((maxPercentage - 0.5) * 2 * 255); 
+                heatColor = Color.FromArgb((int)otherColors, 255, (int)otherColors);
+            }
+            else //red
+            {
+                double otherColors = 255 - Math.Floor((0.5 - maxPercentage) * 2 * 255);
+                heatColor = Color.FromArgb(255, (int) otherColors, (int)otherColors);
+            }
+             
             return heatColor;
         }
     }
