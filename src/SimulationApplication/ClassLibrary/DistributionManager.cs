@@ -12,6 +12,8 @@ namespace ClassLibrary
         private List<Location> warehouses;
         private List<Location> shops;
 
+        public List<Delivery>  CreatedDeliveries { get; set; }
+
         public Dijkstra DistDijkstra { get { return myDijkstra; } }
 
         public DistributionManager(Dijkstra dijkstra, List<Location> Warehouses, List<Location> Shops)
