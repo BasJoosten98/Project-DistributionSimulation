@@ -14,6 +14,7 @@ namespace ClassLibrary
         public List<Location> Locations = new List<Location>();
         public List<Road> Edges = new List<Road>();
         private Random rng;
+        private Random rng2;
         private Cell[,] cells;
         private static PictureBox mapPicBox;
         private DistributionManager distributionManager;
@@ -37,14 +38,14 @@ namespace ClassLibrary
                 }
             }
             // Seed the random generator to get reproducable results.
-            rng = new Random();
+            rng = new Random(0);
+            rng2 = new Random();
 
             foreach (Cell c in cells)
             {
-                c.SetDemand(rng.Next(2, 5));
+                c.SetDemand(rng2.Next(2, 5));
             }
 
-            rng = new Random(0);
 
             while (numberOfLocations > 0)
             {
@@ -107,7 +108,7 @@ namespace ClassLibrary
             }
             while(tempList.Count > 0)
             {
-                int r = rng.Next(0, tempList.Count);
+                int r = rng2.Next(0, tempList.Count);
                 tempList[r].NextTick();
                 tempList.RemoveAt(r);
             }

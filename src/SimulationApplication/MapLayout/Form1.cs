@@ -221,7 +221,7 @@ namespace MapLayout
                         if (isShopBtnClicked)
                         {
                             picBox.Image = Properties.Resources.shopIcon;
-                            l.Building = new Shop(picBox, 350, 300);
+                            l.Building = new Shop(picBox, 350, 100);
                             //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
                             Console.WriteLine("Location #: " + id + " has been set to a Shop");
                         }
