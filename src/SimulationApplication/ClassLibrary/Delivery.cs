@@ -36,7 +36,7 @@ namespace ClassLibrary
             currentRoad = dRoute.Route[0];
         }
 
-        public void nextTick()
+        public void NextTick()
         {
             totalTravelTime++;
             int sum = 0;

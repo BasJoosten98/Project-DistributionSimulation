@@ -8,7 +8,7 @@ namespace ClassLibrary
 {
 	public class Vehicle
 	{
-        public static int capacity = 40;
+        public static int capacity = 250;
         private static int idCounter = 0;
 		private int id;
         private PictureBox picBox;
@@ -41,11 +41,11 @@ namespace ClassLibrary
             return sum;
         }
 
-        public void nextTick()
+        public void NextTick()
         {
             if(deliveryQueue.Count != 0)
             {
-                deliveryQueue[0].nextTick();
+                deliveryQueue[0].NextTick();
                 calculateAndSetPosition();
                 if (deliveryQueue[0].Route.RouteLenght == deliveryQueue[0].TotalTravelTime) //Delivery happenend!
                 {

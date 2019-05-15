@@ -196,14 +196,14 @@ namespace MapLayout
             {
                 //If the shop or warehouse button was clicked AND a rectangle was clicked. Do action.
                 Point mousePt = new Point(e.X, e.Y);
-                if(((PictureBox)sender) != mapPictureBox) //change cursor 
+                if (((PictureBox)sender) != mapPictureBox) //change cursor 
                 {
                     int x = ((PictureBox)sender).Location.X - mapPictureBox.Location.X + e.X;
                     int y = ((PictureBox)sender).Location.Y - mapPictureBox.Location.Y + e.X;
                     mousePt = new Point(x, y);
                 }
                 //int CDIAMETER = 50;
-                Console.WriteLine("finding location at "+ mousePt.X +" "+ mousePt.Y);
+                Console.WriteLine("finding location at " + mousePt.X + " " + mousePt.Y);
                 foreach (Location l in map.Locations)
                 {
                     if (l.CellRectangle.Contains(mousePt)) //Mouse was above some location 
@@ -221,7 +221,7 @@ namespace MapLayout
                         if (isShopBtnClicked)
                         {
                             picBox.Image = Properties.Resources.shopIcon;
-                            l.Building = new Shop(picBox, 26, 20);
+                            l.Building = new Shop(picBox, 350, 300);
                             //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
                             Console.WriteLine("Location #: " + id + " has been set to a Shop");
                         }
@@ -239,6 +239,26 @@ namespace MapLayout
                         splitContainer1.Panel1.Controls.Add(picBox); //What does this do??
                         picBox.BringToFront(); //Needs to be here and not in class Building in order to work!
                         break;
+                    }
+                }
+            }
+            else
+            {
+                //If the shop or warehouse button was clicked AND a rectangle was clicked. Do action.
+                Point mousePt = new Point(e.X, e.Y);
+                if (((PictureBox)sender) != mapPictureBox) //change cursor 
+                {
+                    int x = ((PictureBox)sender).Location.X - mapPictureBox.Location.X + e.X;
+                    int y = ((PictureBox)sender).Location.Y - mapPictureBox.Location.Y + e.X;
+                    mousePt = new Point(x, y);
+                }
+                //int CDIAMETER = 50;
+                Console.WriteLine("finding location at " + mousePt.X + " " + mousePt.Y);
+                foreach (Cell l in map.GetCells())
+                {
+                    if (l.CellRectangle.Contains(mousePt)) //Mouse was above some location 
+                    {
+                        MessageBox.Show("Cell col:" + l.Index.Column + " row:" + l.Index.Row + " demand:" + l.Demand + " demandGrow:" + l.DemandGrow);
                     }
                 }
             }
@@ -455,27 +475,28 @@ namespace MapLayout
             map.DistManager.DistDijkstra.PlayDijkstraAnimation(start);
         }
 
-        private void btnCreateDistributionManager_Click(object sender, EventArgs e)
-        {
-            map.CreateDistributionManager();
-        }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
-            map.nextTick();
+            map.NextTick();
             string holder = "";
             foreach (Location s in map.Shops)
             {
                 holder += "SHOP" + s.LocationID + " stock: " + ((Shop)s.Building).Stock + " Restock: " + ((Shop)s.Building).RestockAmount + "\n";
             }
+            holder += "Cell Max D: " + Cell.MaxDemand + " DG: " + Cell.MaxDemandGrow + "\n";
+            foreach(Cell c in map.GetCells())
+            {
+                holder += "Cell (" + c.Index.Column + "," + c.Index.Row + ") D: " + c.Demand + " DG: " + c.DemandGrow + "\n";
+            }
             shortesRoutesRichTbx.Clear();
             shortesRoutesRichTbx.Text += holder;
+            if (drawHeatMap) { Map.RedrawMap(); }
 
         }
 
         private void btnStartSimulation_Click(object sender, EventArgs e)
         {
-            map.CreateDistributionManager();
+            map.PrepareForSimulation();
             Map.RedrawMap();
             timer1.Enabled = true;
         }
@@ -496,6 +517,12 @@ namespace MapLayout
         {
             drawHeatMap = !drawHeatMap;
             Map.RedrawMap();
+        }
+
+        private void btnSpeed_Click(object sender, EventArgs e)
+        {
+            int speed = int.Parse(tbFromLocationID.Text);
+            timer1.Interval = speed;
         }
     }
 }

@@ -71,11 +71,11 @@ namespace ClassLibrary
         {
             return shops.Find(shop => shop.ID == ID);
         }
-        public void nextTick()
+        public void NextTick()
         {
             foreach(Vehicle v in vehicles)
             {
-                v.nextTick();
+                v.NextTick();
             }          
         }
     }

@@ -120,7 +120,7 @@ namespace ClassLibrary
             }
         }
 
-        public void nextTick()
+        public void NextTick()
         {
             forseeDeliveries();
         }
