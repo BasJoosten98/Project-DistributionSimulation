@@ -31,7 +31,14 @@ namespace ClassLibrary
                 }
             }
         }
-
+        public void RemoveAllvehicles()
+        {
+            foreach(Vehicle v in vehicles)
+            {
+                v.picBox.Dispose();
+            }
+            vehicles.Clear();
+        }
         public Warehouse(PictureBox PicBox)
             :base(PicBox)
         {

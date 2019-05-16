@@ -11,7 +11,7 @@ namespace ClassLibrary
         public static int capacity = 150;
         private static int idCounter = 0;
 		private int id;
-        private PictureBox picBox;
+        public PictureBox picBox;
         List<Delivery> deliveryQueue;
         List<Delivery> finishedDeliveries;
 

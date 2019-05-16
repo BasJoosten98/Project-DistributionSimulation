@@ -98,6 +98,22 @@ namespace ClassLibrary
             cells[c.Index.Column, c.Index.Row] = l;
             return l;
         }
+        public Cell ChangeLocationIntoCell(Location l)
+        {
+            Cell c = new Cell(l.Index.Column, l.Index.Row);
+            c.SetDemand(l.Demand);
+            cells[l.Index.Column, l.Index.Row] = c;
+            Locations.Remove(l);
+            for(int i = 0; i < Edges.Count; i++)
+            {
+                if(Edges[i].Vertex1 == l || Edges[i].Vertex2 == l)
+                {
+                    Edges.RemoveAt(i);
+                    i--;
+                }
+            }
+            return c;
+        }
 
         public void NextTick()
         {
@@ -127,6 +143,39 @@ namespace ClassLibrary
         {
             createDistributionManager();
 
+        }
+        public bool AddNewRoad(Location l1, Location l2, int cost)
+        {
+            Road r = getRoadByLocations(l1, l2);
+            if (r == null)
+            {
+                Road temp = new Road(l1, l2);
+                temp.initialCost = cost;
+                Edges.Add(temp);
+                return true;
+            }
+            return false;
+        }
+        private Road getRoadByLocations(Location l1, Location l2)
+        {
+            foreach (Road r in Edges)
+            {
+                if ((r.Vertex1 == l1 && r.Vertex2 == l2) || (r.Vertex1 == l2 && r.Vertex2 == l1))
+                {
+                    return r;
+                }
+            }
+            return null;
+        }
+        public bool RemoveRoad(Location l1, Location l2)
+        {
+            Road r = getRoadByLocations(l1, l2);
+            if(r != null)
+            {
+                Edges.Remove(r);
+                return true;
+            }
+            return false;
         }
         public void AddNewBuilding(Location l)
         {
@@ -189,11 +238,15 @@ namespace ClassLibrary
             if (l.Building is Warehouse)
             {
                 Warehouses.Remove(l);
+                l.Building.picBox.Dispose();
+                ((Warehouse)l.Building).RemoveAllvehicles();
+                
             }
             else if (l.Building is Shop)
             {
                 Shops.Remove(l);
                 removeShopRadiusFromCells((Shop)l.Building);
+                l.Building.picBox.Dispose();
             }
             l.Building = null;
         }
