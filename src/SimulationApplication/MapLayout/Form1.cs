@@ -109,21 +109,23 @@ namespace MapLayout
                 p.Width = c.CellLineWidth;
                 g.DrawRectangle(p, c.CellRectangle);
             }
-            foreach(Location s in map.Shops)
-            {
-                ((Shop)s.Building).picBox.BringToFront();
-            }
             foreach (Location w in map.Warehouses)
             {
-                ((Warehouse)w.Building).picBox.BringToFront();
-            }
-            foreach (Location w in map.Warehouses)
-            {
-                foreach(Vehicle v in ((Warehouse)w.Building).Vehicles)
+                foreach (Vehicle v in ((Warehouse)w.Building).Vehicles)
                 {
                     v.PicBox.BringToFront();
                 }
             }
+            foreach (Location s in map.Shops)
+            {
+                ((Shop)s.Building).picBox.BringToFront();
+            }
+
+            foreach (Location w in map.Warehouses)
+            {
+                ((Warehouse)w.Building).picBox.BringToFront();
+            }
+
 
             //---------------------------------------OLD WAY FOR DRAWING BELOW---------------------------------------
             //int cellSize = Cell.CellSize;
@@ -254,60 +256,54 @@ namespace MapLayout
                             Console.WriteLine("location found");
                             if (l.Building != null)
                             {
+                                l.Building.picBox.Dispose();
+                                map.RemoveBuilding(l);
                                 if (l.Building is Warehouse)
-                                {
+                                {                               
+                                    Console.WriteLine("Warehouse has been removed from location" + l.LocationID);
                                     if (isWarehouseBtnClicked)
-                                    {
-                                        l.Building.picBox.Dispose();
-                                        map.RemoveBuilding(l);
-                                        Console.WriteLine("Warehouse has been removed from location" + l.LocationID);
+                                    {                                    
                                         return;
                                     }
                                 }
                                 else if (l.Building is Shop)
                                 {
+                                    Console.WriteLine("Shop has been removed from location" + l.LocationID);
                                     if (isShopBtnClicked)
-                                    {
-                                        l.Building.picBox.Dispose();
-                                        map.RemoveBuilding(l);
-                                        Console.WriteLine("Shop has been removed from location" + l.LocationID);
+                                    {      
                                         return;
                                     }
                                 }
                             }
-                            else
+                            int id = l.LocationID;
+                            PictureBox picBox = new PictureBox();
+                            Point ImagePosition = new Point((l.Index.Column * Cell.CellSize) + 4, (l.Index.Row * Cell.CellSize) + 4);
+                            picBox.Location = ImagePosition;
+                            picBox.Size = new Size(Cell.CellSize - 1, Cell.CellSize - 1);
+                            picBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                            picBox.MouseClick += mapPictureBox_MouseClick;
+                            picBox.MouseEnter += mapPictureBox_MouseEnter;
+                            map.RemoveBuilding(l);
+                            if (isShopBtnClicked)
                             {
-
-                                int id = l.LocationID;
-                                PictureBox picBox = new PictureBox();
-                                Point ImagePosition = new Point((l.Index.Column * Cell.CellSize) + 4, (l.Index.Row * Cell.CellSize) + 4);
-                                picBox.Location = ImagePosition;
-                                picBox.Size = new Size(Cell.CellSize - 1, Cell.CellSize - 1);
-                                picBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                                picBox.MouseClick += mapPictureBox_MouseClick;
-                                picBox.MouseEnter += mapPictureBox_MouseEnter;
-                                map.RemoveBuilding(l);
-                                if (isShopBtnClicked)
-                                {
-                                    picBox.Image = Properties.Resources.shopIcon;
-                                    l.Building = new Shop(picBox, 350, 100);
-                                    //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
-                                    Console.WriteLine("Location #: " + id + " has been set to a Shop");
-                                }
-                                else if (isWarehouseBtnClicked)
-                                {
-                                    picBox.Image = Properties.Resources.warehouseIcon;
-                                    l.Building = new Warehouse(picBox);
-
-                                    ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
-                                    ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
-                                    //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
-                                    Console.WriteLine("Location #: " + id + " has been set to a WareHouse");
-                                }
-                                map.AddNewBuilding(l);
-                                splitContainer1.Panel1.Controls.Add(picBox); //What does this do??
-                                picBox.BringToFront(); //Needs to be here and not in class Building in order to work!
+                                picBox.Image = Properties.Resources.shopIcon;
+                                l.Building = new Shop(picBox, 350, 100);
+                                //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
+                                Console.WriteLine("Location #: " + id + " has been set to a Shop");
                             }
+                            else if (isWarehouseBtnClicked)
+                            {
+                                picBox.Image = Properties.Resources.warehouseIcon;
+                                l.Building = new Warehouse(picBox);
+
+                                ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
+                                ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
+                                //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
+                                Console.WriteLine("Location #: " + id + " has been set to a WareHouse");
+                            }
+                            map.AddNewBuilding(l);
+                            splitContainer1.Panel1.Controls.Add(picBox); //What does this do??
+                            picBox.BringToFront(); //Needs to be here and not in class Building in order to work!
                         }
                         break;
                     }
@@ -328,6 +324,12 @@ namespace MapLayout
                             }
                             else
                             {
+                                Location l = (Location)c;
+                                if(l.Building != null) //Remove Building
+                                {
+                                    l.Building.picBox.Dispose();
+                                    map.RemoveBuilding(l);
+                                }
                                 map.ChangeLocationIntoCell((Location)c);
                             }
                             Map.RedrawMap();
