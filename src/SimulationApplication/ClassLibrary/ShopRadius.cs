@@ -8,7 +8,7 @@ namespace ClassLibrary
 {
     class ShopRadius
     {
-        private Shop shop;
+        private Shop shop; 
         private int demandEffect;
 
         public Shop Shop { get { return this.shop; } }
@@ -18,6 +18,11 @@ namespace ClassLibrary
             demandEffect = Demand;
         }
 
+        /// <summary>
+        /// Cell buys products from shop based on availableDemand of the cell
+        /// </summary>
+        /// <param name="availableDemand"></param>
+        /// <returns></returns>
         public int BuyFromShop(int availableDemand)
         {
             if(demandEffect < availableDemand) { availableDemand = demandEffect; }

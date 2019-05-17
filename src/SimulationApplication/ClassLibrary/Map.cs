@@ -43,7 +43,7 @@ namespace ClassLibrary
 
             foreach (Cell c in cells)
             {
-                c.SetDemand(rng2.Next(2, 5));
+                c.SetDemandGrow(rng2.Next(2, 5));
             }
 
 
@@ -91,17 +91,27 @@ namespace ClassLibrary
                 r.initialCost = rng.Next(1, 6);
             }
         }
+        /// <summary>
+        /// Changes Cell into Location
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
         public Location ChangeCellIntoLocation(Cell c)
         {
             Location l = new Location(c.Index.Column, c.Index.Row);
-            l.SetDemand(c.Demand);
+            l.SetDemandGrow(c.Demand);
             cells[c.Index.Column, c.Index.Row] = l;
             return l;
         }
+        /// <summary>
+        /// Changes Location into Cell
+        /// </summary>
+        /// <param name="l"></param>
+        /// <returns></returns>
         public Cell ChangeLocationIntoCell(Location l)
         {
             Cell c = new Cell(l.Index.Column, l.Index.Row);
-            c.SetDemand(l.Demand);
+            c.SetDemandGrow(l.Demand);
             cells[l.Index.Column, l.Index.Row] = c;
             Locations.Remove(l);
             for(int i = 0; i < Edges.Count; i++)
@@ -139,6 +149,9 @@ namespace ClassLibrary
             Dijkstra dijkstra = new Dijkstra(Edges);
             distributionManager = new DistributionManager(dijkstra, Warehouses, Shops);
         }
+        /// <summary>
+        /// Preparing Map and all it's atributes for the start of the simulation
+        /// </summary>
         public void PrepareForSimulation()
         {
             createDistributionManager();
@@ -200,6 +213,10 @@ namespace ClassLibrary
             }
             return null;
         }
+        /// <summary>
+        /// Provide shopRadius to all nearby Cells (based on the Radius of the given Shop)
+        /// </summary>
+        /// <param name="shopLocation"></param>
         private void applyShopRadiusToCells(Location shopLocation)
         {
             Shop shop = (Shop)shopLocation.Building;

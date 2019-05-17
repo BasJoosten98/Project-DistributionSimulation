@@ -12,10 +12,10 @@ namespace ClassLibrary
         private DateTime createTime; //when the delivery object was made
         private DeliveryStatus status;
         private DijkstraRoute route;
-        private int totalTravelTime;
-        private Location nextLocation;
-        private Road currentRoad;
-        private int deltaTravelTime;
+        private int totalTravelTime; //Total traveled time units
+        private Location nextLocation; //End location of the road
+        private Road currentRoad; //Current road the vehicle is on
+        private int deltaTravelTime; //Total traveled initial cost of the road
 
         public DijkstraRoute Route { get { return route; } }
         public DeliveryStatus Status { get { return status; } }
@@ -36,12 +36,16 @@ namespace ClassLibrary
             currentRoad = dRoute.Route[0];
         }
 
+        /// <summary>
+        /// Moving the delivery/vehicle 1 time unit ahead
+        /// </summary>
         public void NextTick()
         {
             totalTravelTime++;
             int sum = 0;
-            if(totalTravelTime <= route.RouteLenght)
+            if(totalTravelTime <= route.RouteLenght) //vehicle is heading towards the shop
             {
+                //CALCULATING THE NEW FIELD'S VARIABLES (NOT IMPORTANT, DON'T LOOK AT THIS)
                 if (totalTravelTime == 1)
                 {
                     status = DeliveryStatus.DELIVERING;
@@ -63,15 +67,14 @@ namespace ClassLibrary
                 }
                 if (currentRoad.Vertex1 != nextLocation && currentRoad.Vertex2 != nextLocation) { throw new Exception("currentroad mismatches nextLocation"); }
                 deltaTravelTime = currentRoad.initialCost - (sum - totalTravelTime);
-                //Console.WriteLine("DeltaTime: " + deltaTravelTime + ", totalTime: " + totalTravelTime + ", sum: " + sum + ", nextLocation: " + nextLocation.LocationID + ", CurrentRoad: " + CurrentRoad.id + " lenght: " + currentRoad.initialCost);
-
                 if (totalTravelTime == route.RouteLenght)
                 {
                     status = DeliveryStatus.COMINGBACK;
                 }
             }
-            else if(totalTravelTime <= 2* route.RouteLenght)
+            else if(totalTravelTime <= 2* route.RouteLenght) //vehicle is returning towards warehouse
             {
+                //CALCULATING THE NEW FIELD'S VARIABLES (NOT IMPORTANT, DON'T LOOK AT THIS)
                 if(totalTravelTime == route.RouteLenght + 1) { currentRoad = null; }
                 sum = route.RouteLenght;
                 for (int i = route.Route.Count - 1; i >= 0; i--)
@@ -90,7 +93,6 @@ namespace ClassLibrary
                 }
                 if (currentRoad.Vertex1 != nextLocation && currentRoad.Vertex2 != nextLocation) { throw new Exception("currentroad mismatches nextLocation"); }
                 deltaTravelTime = currentRoad.initialCost - (sum - totalTravelTime);
-                //Console.WriteLine("DeltaTime: " + deltaTravelTime + ", totalTime: " + totalTravelTime + ", sum: " + sum + ", nextLocation: " + nextLocation.LocationID + ", CurrentRoad: " + CurrentRoad.id + " lenght: " + currentRoad.initialCost);
                 if (totalTravelTime == 2 * route.RouteLenght)
                 {
                     status = DeliveryStatus.FINISHED;

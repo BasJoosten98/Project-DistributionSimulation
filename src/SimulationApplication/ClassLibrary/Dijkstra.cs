@@ -27,6 +27,9 @@ namespace ClassLibrary
             UpdateAllStarts();
         }
         
+        /// <summary>
+        /// Updates all Dijkstra Routes
+        /// </summary>
         public void UpdateAllStarts()
         {
             startingPoints = new List<DijkstraStart>();
@@ -36,6 +39,11 @@ namespace ClassLibrary
                 startingPoints.Add(temp);
             }
         }
+
+        /// <summary>
+        /// Update all Dijkstra routes that have startLocation as starting point
+        /// </summary>
+        /// <param name="startLocation"></param>
         public void UpdateSingleStart(Location startLocation)
         {
             DijkstraStart result = null;
@@ -56,6 +64,11 @@ namespace ClassLibrary
                 startingPoints.Add(temp);
             }
         }
+
+        /// <summary>
+        /// Display in the form of an animation how a Dijkstra start is created. This does not create an actual Dijkstra start! Only animation!
+        /// </summary>
+        /// <param name="startLocation"></param>
         public void PlayDijkstraAnimation(Location startLocation)
         {
             if (reachableLocations.Contains(startLocation))
@@ -197,7 +210,10 @@ namespace ClassLibrary
             else { Map.RedrawMap(); }
             return null;
         }
-        private void detectedLocations() //Find all reachable locations with the given Roads
+        /// <summary>
+        /// Finds all reachable locations with the given roads from the constructor
+        /// </summary>
+        private void detectedLocations() 
         {
             reachableLocations = new List<Location>();
             foreach (Road r in allRoads)
@@ -212,6 +228,13 @@ namespace ClassLibrary
                 }
             }
         }
+
+        /// <summary>
+        /// Returns a Dijkstra route from StartPoint to EndPoint
+        /// </summary>
+        /// <param name="StartPoint"></param>
+        /// <param name="EndPoint"></param>
+        /// <returns></returns>
         public DijkstraRoute GetRouteTo(Location StartPoint, Location EndPoint) //Getting route from StartPoint to EndPoint
         {
             foreach (DijkstraStart s in startingPoints)

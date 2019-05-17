@@ -10,19 +10,19 @@ namespace ClassLibrary
 {
     public class Cell
     {
-        //drawing fields
+        //Drawing fields
         public Color CellColor = Color.Black;
         public int CellLineWidth = 1;
 
 
-        // Some fields that determine the attractiveness.
-        //TODO: Should be getting a more complex backing field
-        private static int maxDemand = 0;
+        //Cell fields
+        private static int maxDemand = 0; 
         private static int maxDemandGrow = 0;
         private static Random rand = new Random();
-        private int demand;
-        private int demandGrow;
-        private List<ShopRadius> shopRadiuses = new List<ShopRadius>();
+
+        private int demand; //Current demand of the cell
+        private int demandGrow; //Demand grow per tick
+        private List<ShopRadius> shopRadiuses = new List<ShopRadius>(); 
 
         public static int MaxDemand { get { return maxDemand; } }
         public static int MaxDemandGrow { get { return maxDemandGrow;  } }
@@ -30,19 +30,19 @@ namespace ClassLibrary
         public int DemandGrow { get { return this.demandGrow; } }
         public static int CellSize { get; set; }
         public Index Index { get; set; }
-        //public Location Location { get; set; }
+
         public Rectangle CellRectangle;
 
         public Cell(int columnNumber, int rowNumber, int demand)
         {
             Index = new Index(columnNumber, rowNumber);
             CellRectangle = new Rectangle(new Point(Index.Column * CellSize, Index.Row * CellSize), new Size(CellSize, CellSize));
-            SetDemand(demand);
+            SetDemandGrow(demand);
         }
         public Cell(int columnNumber, int rowNumber) : this(columnNumber, rowNumber, 0)
         { }
 
-        public void AddShopRadius(Shop s, int Demand)
+        public void AddShopRadius(Shop s, int Demand) 
         {
             ShopRadius temp = new ShopRadius(s, Demand);
             foreach (ShopRadius sr in shopRadiuses)
@@ -54,7 +54,7 @@ namespace ClassLibrary
             }
             shopRadiuses.Add(temp);
         }
-        public void RemoveShopRadius(Shop s)
+        public void RemoveShopRadius(Shop s) 
         {
             foreach(ShopRadius sr in shopRadiuses)
             {
@@ -65,7 +65,7 @@ namespace ClassLibrary
                 }
             }
         }
-        public void NextTick()
+        public void NextTick() 
         {
             //BUY FROM SHOPS
             List<ShopRadius> temp = new List<ShopRadius>();
@@ -92,7 +92,11 @@ namespace ClassLibrary
             CellColor = Color.Black;
             CellLineWidth = 1;
         }
-        public void SetDemand(int Demand)
+        /// <summary>
+        /// Set the demandGrow and demand of this cell
+        /// </summary>
+        /// <param name="Demand"></param>
+        public void SetDemandGrow(int Demand)
         {
             this.demand = Demand;
             this.demandGrow = Demand;
@@ -105,7 +109,12 @@ namespace ClassLibrary
                 maxDemandGrow = Demand;
             }
         }
-        public Color GetHeatMapCellColor()
+        
+        /// <summary>
+        ///     Get the HeatMap color of this cell
+        /// </summary>
+        /// <returns></returns>
+        public Color GetHeatMapCellColor() 
         {
             double maxPercentage = (double)this.demand / maxDemand;
             Color heatColor;

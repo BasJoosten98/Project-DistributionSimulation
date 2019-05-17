@@ -59,13 +59,18 @@ namespace ClassLibrary
             s.Stock = s.Capacity;
         }
 
+        /// <summary>
+        /// Returns the vehicle (and time) that can accepts a new delivery the fastest
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <param name="time"></param>
         public void fastestVehicleAvailableTime(out Vehicle vehicle, out int time)
         {
             time = int.MaxValue;
             vehicle = null;
             foreach (Vehicle v in vehicles)
             {
-                int returnTime = v.lastDeliveryFinishDeltaTime();
+                int returnTime = v.lastDeliveryFinishDeltaTime(); //Get the time it takes to start delivering a new Delivery
                 if(time > returnTime)
                 {
                     time = returnTime;
