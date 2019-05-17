@@ -32,8 +32,11 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.simulateBtn = new System.Windows.Forms.Button();
             this.mapPictureBox = new System.Windows.Forms.PictureBox();
+            this.btnRoadMode = new System.Windows.Forms.Button();
+            this.btnSpeed = new System.Windows.Forms.Button();
+            this.btnHeatMap = new System.Windows.Forms.Button();
+            this.btnPause = new System.Windows.Forms.Button();
             this.btnStartSimulation = new System.Windows.Forms.Button();
-            this.btnCreateDistributionManager = new System.Windows.Forms.Button();
             this.btnDrawDijkstra = new System.Windows.Forms.Button();
             this.btnGetRoute = new System.Windows.Forms.Button();
             this.tbToLocationID = new System.Windows.Forms.TextBox();
@@ -46,12 +49,14 @@
             this.btnShop = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnPause = new System.Windows.Forms.Button();
+            this.btnLocationMode = new System.Windows.Forms.Button();
+            this.nudRoadCost = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRoadCost)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -70,9 +75,13 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.splitContainer1.Panel2.Controls.Add(this.nudRoadCost);
+            this.splitContainer1.Panel2.Controls.Add(this.btnLocationMode);
+            this.splitContainer1.Panel2.Controls.Add(this.btnRoadMode);
+            this.splitContainer1.Panel2.Controls.Add(this.btnSpeed);
+            this.splitContainer1.Panel2.Controls.Add(this.btnHeatMap);
             this.splitContainer1.Panel2.Controls.Add(this.btnPause);
             this.splitContainer1.Panel2.Controls.Add(this.btnStartSimulation);
-            this.splitContainer1.Panel2.Controls.Add(this.btnCreateDistributionManager);
             this.splitContainer1.Panel2.Controls.Add(this.btnDrawDijkstra);
             this.splitContainer1.Panel2.Controls.Add(this.btnGetRoute);
             this.splitContainer1.Panel2.Controls.Add(this.tbToLocationID);
@@ -111,6 +120,46 @@
             this.mapPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mapPictureBox_MouseClick);
             this.mapPictureBox.MouseEnter += new System.EventHandler(this.mapPictureBox_MouseEnter);
             // 
+            // btnRoadMode
+            // 
+            this.btnRoadMode.Location = new System.Drawing.Point(8, 66);
+            this.btnRoadMode.Name = "btnRoadMode";
+            this.btnRoadMode.Size = new System.Drawing.Size(75, 23);
+            this.btnRoadMode.TabIndex = 20;
+            this.btnRoadMode.Text = "Road Mode";
+            this.btnRoadMode.UseVisualStyleBackColor = true;
+            this.btnRoadMode.Click += new System.EventHandler(this.btnRoadMode_Click);
+            // 
+            // btnSpeed
+            // 
+            this.btnSpeed.Location = new System.Drawing.Point(117, 515);
+            this.btnSpeed.Name = "btnSpeed";
+            this.btnSpeed.Size = new System.Drawing.Size(47, 23);
+            this.btnSpeed.TabIndex = 19;
+            this.btnSpeed.Text = "Speed";
+            this.btnSpeed.UseVisualStyleBackColor = true;
+            this.btnSpeed.Click += new System.EventHandler(this.btnSpeed_Click);
+            // 
+            // btnHeatMap
+            // 
+            this.btnHeatMap.Location = new System.Drawing.Point(158, 488);
+            this.btnHeatMap.Name = "btnHeatMap";
+            this.btnHeatMap.Size = new System.Drawing.Size(65, 23);
+            this.btnHeatMap.TabIndex = 18;
+            this.btnHeatMap.Text = "HeatMap";
+            this.btnHeatMap.UseVisualStyleBackColor = true;
+            this.btnHeatMap.Click += new System.EventHandler(this.btnHeatMap_Click);
+            // 
+            // btnPause
+            // 
+            this.btnPause.Location = new System.Drawing.Point(179, 516);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(47, 23);
+            this.btnPause.TabIndex = 17;
+            this.btnPause.Text = "Pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
             // btnStartSimulation
             // 
             this.btnStartSimulation.Location = new System.Drawing.Point(101, 544);
@@ -120,16 +169,6 @@
             this.btnStartSimulation.Text = "Start Sim";
             this.btnStartSimulation.UseVisualStyleBackColor = true;
             this.btnStartSimulation.Click += new System.EventHandler(this.btnStartSimulation_Click);
-            // 
-            // btnCreateDistributionManager
-            // 
-            this.btnCreateDistributionManager.Location = new System.Drawing.Point(98, 516);
-            this.btnCreateDistributionManager.Name = "btnCreateDistributionManager";
-            this.btnCreateDistributionManager.Size = new System.Drawing.Size(75, 23);
-            this.btnCreateDistributionManager.TabIndex = 15;
-            this.btnCreateDistributionManager.Text = "Create Dist";
-            this.btnCreateDistributionManager.UseVisualStyleBackColor = true;
-            this.btnCreateDistributionManager.Click += new System.EventHandler(this.btnCreateDistributionManager_Click);
             // 
             // btnDrawDijkstra
             // 
@@ -177,10 +216,10 @@
             // 
             // shortesRoutesRichTbx
             // 
-            this.shortesRoutesRichTbx.Location = new System.Drawing.Point(8, 66);
+            this.shortesRoutesRichTbx.Location = new System.Drawing.Point(8, 129);
             this.shortesRoutesRichTbx.Margin = new System.Windows.Forms.Padding(2);
             this.shortesRoutesRichTbx.Name = "shortesRoutesRichTbx";
-            this.shortesRoutesRichTbx.Size = new System.Drawing.Size(182, 421);
+            this.shortesRoutesRichTbx.Size = new System.Drawing.Size(182, 358);
             this.shortesRoutesRichTbx.TabIndex = 8;
             this.shortesRoutesRichTbx.Text = "";
             // 
@@ -235,18 +274,35 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 1000;
+            this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnPause
+            // btnLocationMode
             // 
-            this.btnPause.Location = new System.Drawing.Point(179, 516);
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(47, 23);
-            this.btnPause.TabIndex = 17;
-            this.btnPause.Text = "Pause";
-            this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            this.btnLocationMode.Location = new System.Drawing.Point(8, 95);
+            this.btnLocationMode.Name = "btnLocationMode";
+            this.btnLocationMode.Size = new System.Drawing.Size(93, 23);
+            this.btnLocationMode.TabIndex = 21;
+            this.btnLocationMode.Text = "Location Mode";
+            this.btnLocationMode.UseVisualStyleBackColor = true;
+            this.btnLocationMode.Click += new System.EventHandler(this.btnLocationMode_Click);
+            // 
+            // nudRoadCost
+            // 
+            this.nudRoadCost.Location = new System.Drawing.Point(90, 67);
+            this.nudRoadCost.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudRoadCost.Name = "nudRoadCost";
+            this.nudRoadCost.Size = new System.Drawing.Size(42, 20);
+            this.nudRoadCost.TabIndex = 22;
+            this.nudRoadCost.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // Form1
             // 
@@ -262,6 +318,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudRoadCost)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -282,10 +339,14 @@
         private System.Windows.Forms.TextBox tbToLocationID;
         private System.Windows.Forms.Button btnGetRoute;
         private System.Windows.Forms.Button btnDrawDijkstra;
-        private System.Windows.Forms.Button btnCreateDistributionManager;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnStartSimulation;
         private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.Button btnHeatMap;
+        private System.Windows.Forms.Button btnSpeed;
+        private System.Windows.Forms.Button btnRoadMode;
+        private System.Windows.Forms.Button btnLocationMode;
+        private System.Windows.Forms.NumericUpDown nudRoadCost;
     }
 }
 

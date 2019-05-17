@@ -14,6 +14,7 @@ namespace ClassLibrary
 		public int Stock { get; set; }
         public int RestockAmount { get; set; }
         public int ID { get; set; }
+        public int Radius { get; set; }
 
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
@@ -22,6 +23,7 @@ namespace ClassLibrary
             Stock = stock;
             Capacity = stock;
             RestockAmount = restockamount;
+            Radius = 2;
             ID = ++id;
         }
 
@@ -30,8 +32,12 @@ namespace ClassLibrary
             LowStockReached?.Invoke(this, e);
         }
 
-		public void Sell(int demand)
+		public int Sell(int demand)
 		{
+            if(demand > Stock)
+            {
+                demand = Stock;
+            }
             Stock -= demand;
             if (Stock <= RestockAmount)
             {
@@ -39,14 +45,10 @@ namespace ClassLibrary
                 args.TimeReached = DateTime.Now;
                 OnLowStockReached(args);
             }
-
+            return demand; //AMOUNT THAT HAS BEEN SOLD
             
-		}
 
-        public void nextTick(int demand)
-        {
-            Sell(demand);
-        }
+		}
         
 	}
 }

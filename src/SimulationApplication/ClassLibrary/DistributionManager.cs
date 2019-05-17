@@ -6,11 +6,11 @@ namespace ClassLibrary
 {
 	public class DistributionManager
 	{
-        private Dijkstra myDijkstra;
-        private List<Delivery> createdDeliveries;
-        private List<Delivery> finishedCreatedDeliveries;
-        private List<Location> warehouses;
-        private List<Location> shops;
+        private Dijkstra myDijkstra; //dijkstra object for calculating shortest route
+        private List<Delivery> createdDeliveries; //list of deliveries that are active (handling)
+        private List<Delivery> finishedCreatedDeliveries; //list of deliveries that are finished (vehicle is back at the warehouse)
+        private List<Location> warehouses; //all locations that contain warehouse
+        private List<Location> shops; //all locations that contain shop
 
         public List<Delivery>  CreatedDeliveries { get; set; }
 
@@ -27,12 +27,22 @@ namespace ClassLibrary
             if (warehouses.Count == 0) { throw new NullReferenceException(); }
         }
 
-        private void createDelivery(DijkstraRoute Route, Vehicle vehicle, Location warehouseLoc)
+        /// <summary>
+        /// Create delivery for Vehicle located at warehouseLoc and where it should follow Route
+        /// </summary>
+        /// <param name="Route"></param>
+        /// <param name="Vehicle"></param>
+        /// <param name="WarehouseLoc"></param>
+        private void createDelivery(DijkstraRoute Route, Vehicle Vehicle, Location WarehouseLoc)
         {
-            Delivery temp = new Delivery(Route, warehouseLoc);
+            Delivery temp = new Delivery(Route, WarehouseLoc);
             createdDeliveries.Add(temp);
-            vehicle.AddDeliveryToQueue(temp);
+            Vehicle.AddDeliveryToQueue(temp);
         }
+        /// <summary>
+        /// Go through all given shops and return a list of shops ordered by stock (from low to high)
+        /// </summary>
+        /// <returns></returns>
         private List<Location> getShopsWithLowStockOrdered()
         {
             List<Location> lowStockShops = new List<Location>();
@@ -46,7 +56,7 @@ namespace ClassLibrary
                     lowStockShops.Add(l);
                 }
             }
-            //order
+            //order based on stock
             for(int i = 0; i < lowStockShops.Count; i++)
             {
                 for(int j = 0; j < lowStockShops.Count; j++)
@@ -62,12 +72,15 @@ namespace ClassLibrary
             }
             return lowStockShopsOrdered;
         }
+        /// <summary>
+        /// Provide deliveries to shops
+        /// </summary>
         private void forseeDeliveries()
         {
             List<Location> lowStockShops = getShopsWithLowStockOrdered();
             checkDeliveriesIsFinished();
 
-            //filter out shops that have already been helped
+            //filter out shops that have an active delivery
             for(int i = 0; i < lowStockShops.Count; i++)
             {
                 foreach(Delivery d in createdDeliveries)
@@ -81,7 +94,7 @@ namespace ClassLibrary
                 }
             }
 
-            //check foreach warehouse which can deliver the fastest
+            //Create the fastest deliveries for each shop by looking at available vehicles and the traveltime from warehouse to shop
             foreach(Location s in lowStockShops)
             {
                 int outTime;
@@ -109,6 +122,10 @@ namespace ClassLibrary
                 Console.WriteLine("New delivery for SHOP" + s.LocationID + " Stock: " + ((Shop)s.Building).Stock);
             }
         }
+
+        /// <summary>
+        /// Go through all active deliveries and see which ones are finished, move them to the finished delivery list
+        /// </summary>
         private void checkDeliveriesIsFinished()
         {
             for(int i = 0; i < createdDeliveries.Count; i++)
@@ -122,7 +139,7 @@ namespace ClassLibrary
             }
         }
 
-        public void nextTick()
+        public void NextTick()
         {
             forseeDeliveries();
         }
