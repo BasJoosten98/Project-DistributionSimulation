@@ -8,8 +8,12 @@ namespace ClassLibrary
 {
     public class Index
     {
+        public int Id { get; set; }
         public int Row { get; set; }
         public int Column { get; set; }
+
+        public Index ()
+        { }
 
         public Index (int columnNumber, int rowNumber)
         {

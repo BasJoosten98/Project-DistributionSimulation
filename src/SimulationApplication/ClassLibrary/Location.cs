@@ -28,6 +28,9 @@ namespace ClassLibrary
         //public int PositionX { get; }
         //public int PositionY { get; }
 
+        public Location()
+        { }
+
         public Location(int column, int row) : base(column, row)
         {
             LocationID = locationID++;

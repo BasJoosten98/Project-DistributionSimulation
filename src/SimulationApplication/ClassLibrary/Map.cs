@@ -23,6 +23,9 @@ namespace ClassLibrary
         public int NumberOfCells { get; set; }
         public DistributionManager DistManager { get { return distributionManager; } }
 
+        public Map()
+        { }
+
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
             Warehouses = new List<Location>();
