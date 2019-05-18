@@ -14,7 +14,7 @@ namespace ClassLibrary
 		public int Stock { get; set; }
         public int RestockAmount { get; set; }
         public int ID { get; set; }
-        public int Radius { get; set; }
+
 
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
@@ -24,7 +24,6 @@ namespace ClassLibrary
             Stock = stock;
             Capacity = stock;
             RestockAmount = restockamount;
-            Radius = 2;
             ID = ++id;
         }
 

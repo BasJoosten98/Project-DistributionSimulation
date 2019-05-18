@@ -220,9 +220,9 @@ namespace ClassLibrary
         private void applyShopRadiusToCells(Location shopLocation)
         {
             Shop shop = (Shop)shopLocation.Building;
-            for(int col = shopLocation.Index.Column - shop.Radius; col <= shopLocation.Index.Column + shop.Radius; col++)
+            for(int col = shopLocation.Index.Column - shopLocation.Radius; col <= shopLocation.Index.Column + shopLocation.Radius; col++)
             {
-                for (int row = shopLocation.Index.Row - shop.Radius; row <= shopLocation.Index.Row + shop.Radius; row++)
+                for (int row = shopLocation.Index.Row - shopLocation.Radius; row <= shopLocation.Index.Row + shopLocation.Radius; row++)
                 {
                     Cell c = getCellByIndex(col, row);
                     if(c != null)
