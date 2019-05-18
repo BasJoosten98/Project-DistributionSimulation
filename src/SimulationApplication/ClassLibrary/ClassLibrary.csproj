@@ -159,10 +159,16 @@
     <Compile Include="DijkstraRoute.cs" />
     <Compile Include="DijkstraStart.cs" />
     <Compile Include="DistributionManager.cs" />
+    <Compile Include="Entities\Building.cs" />
+    <Compile Include="Entities\Location.cs" />
+    <Compile Include="Entities\Map.cs" />
+    <Compile Include="Entities\Shop.cs" />
+    <Compile Include="Entities\Warehouse.cs" />
     <Compile Include="Events\LowStockReachedEventArgs.cs" />
     <Compile Include="Index.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="MapLocation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Road.cs" />
     <Compile Include="Shop.cs" />
@@ -182,6 +188,7 @@
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

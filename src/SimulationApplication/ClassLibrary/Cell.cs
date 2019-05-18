@@ -33,9 +33,6 @@ namespace ClassLibrary
 
         public Rectangle CellRectangle;
 
-        public Cell()
-        { }
-
         public Cell(int columnNumber, int rowNumber, int demand)
         {
             Index = new Index(columnNumber, rowNumber);

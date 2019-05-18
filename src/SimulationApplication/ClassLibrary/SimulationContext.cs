@@ -6,8 +6,11 @@ namespace ClassLibrary
 {
     public class SimulationContext : DbContext
     {
-        public DbSet<Map> Maps { get; set; }
-        public DbSet<Location> Locations { get; set; }
+        public DbSet<Entities.Building> Buildings { get; set; }
+        public DbSet<Entities.Location> Locations { get; set; }
+        public DbSet<Entities.Map> Maps { get; set; }
+        public DbSet<Entities.Shop> Shops { get; set; }
+        public DbSet<Entities.Warehouse> Warehouses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,7 +27,14 @@ namespace ClassLibrary
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Ignore<Building>();
+            #region Location
+            modelBuilder.Entity<Entities.Location>()
+                .HasKey(location => new { location.MapId, location.RowIndex, location.ColumnIndex });
+            #endregion
+
+            #region Map
+
+            #endregion
         }
     }
 }

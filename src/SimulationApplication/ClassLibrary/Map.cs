@@ -10,6 +10,8 @@ namespace ClassLibrary
     public class Map : IEnumerable
     {
         public int Id { get; set; }
+        // Another test for relation with locations.
+        public ICollection<Location> LocationsDb { get; set; }
         public List<Location> Warehouses { get; }
         public List<Location> Shops { get; }
         public List<Location> Locations = new List<Location>();

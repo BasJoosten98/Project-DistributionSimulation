@@ -1,10 +1,6 @@
-﻿using ClassLibrary;
+﻿using ClassLibrary.Entities;
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataBaseTestingApplication
 {
@@ -12,11 +8,25 @@ namespace DataBaseTestingApplication
     {
         static void Main(string[] args)
         {
-            SimulationContext context = new SimulationContext();
-
-            using (context)
+            ClassLibrary.SimulationContext context;
+            using (context = new ClassLibrary.SimulationContext())
             {
                 context.Database.EnsureCreatedAsync();
+            }
+
+            // Create a map with a location and add a shop object into that location and store it into the db.
+            Map m = new Map() { NumberOfCells = 10, CellSize = 20 };
+            m.Locations = new List<Location>()
+            {
+                new Location() { RowIndex = 0, ColumnIndex = 0, Building = new Shop() { Stock = 100, RestockAmount = 20 } },
+                new Location() { RowIndex = 0, ColumnIndex = 1, Building = new Warehouse() },
+                new Location() { RowIndex = 0, ColumnIndex = 2 }
+            };
+
+            using (context = new ClassLibrary.SimulationContext())
+            {
+                context.Maps.Add(m);
+                context.SaveChanges();
             }
 
             Console.ReadKey();
