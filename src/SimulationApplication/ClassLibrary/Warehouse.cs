@@ -50,6 +50,7 @@ namespace ClassLibrary
         {
             vehicles.Add(v);
         }
+        public Warehouse(List<Shop> shops) { Shops = shops; }
 
         private void Item_LowStockReached(object sender, LowStockReachedEventArgs e)
         {

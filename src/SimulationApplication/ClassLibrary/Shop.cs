@@ -32,19 +32,16 @@ namespace ClassLibrary
         //    Stock = stock;
         //    Capacity = stock;
         //    RestockAmount = restockamount;
-        //}
+            ID = ++id;
+        }
 
         public virtual void OnLowStockReached(LowStockReachedEventArgs e)
         {
             LowStockReached?.Invoke(this, e);
         }
 
-		public int Sell(int demand)
+		public void Sell(int demand)
 		{
-            if(demand > Stock)
-            {
-                demand = Stock;
-            }
             Stock -= demand;
             if (Stock <= RestockAmount)
             {
@@ -55,6 +52,7 @@ namespace ClassLibrary
             return demand; //AMOUNT THAT HAS BEEN SOLD
             
 		}
+
         
 	}
 }
