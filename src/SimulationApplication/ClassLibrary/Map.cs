@@ -220,6 +220,7 @@ namespace ClassLibrary
         private void applyShopRadiusToCells(Location shopLocation)
         {
             Shop shop = (Shop)shopLocation.Building;
+            int downPerDistance = (int)Math.Floor((double)100 / (shopLocation.Radius + 1));
             for(int col = shopLocation.Index.Column - shopLocation.Radius; col <= shopLocation.Index.Column + shopLocation.Radius; col++)
             {
                 for (int row = shopLocation.Index.Row - shopLocation.Radius; row <= shopLocation.Index.Row + shopLocation.Radius; row++)
@@ -236,8 +237,8 @@ namespace ClassLibrary
                         {
                             distance = Math.Abs(col - shopLocation.Index.Column);
                         }
-                        int demandEffect = c.Demand - distance;
-                        c.AddShopRadius(shop, demandEffect);
+                        int demandPercentage = 100 - distance * downPerDistance;
+                        c.AddShopRadius(shop, demandPercentage);
                     }
                 }
             }

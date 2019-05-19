@@ -8,7 +8,7 @@ namespace ClassLibrary
 {
 	public class Vehicle
 	{
-        public static int capacity = 150;
+        public static int capacity = 500;
         private static int idCounter = 0;
 		private int id;
         public PictureBox picBox;

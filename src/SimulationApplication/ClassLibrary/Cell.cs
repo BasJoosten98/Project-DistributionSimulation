@@ -42,9 +42,9 @@ namespace ClassLibrary
         public Cell(int columnNumber, int rowNumber) : this(columnNumber, rowNumber, 0)
         { }
 
-        public void AddShopRadius(Shop s, int Demand) 
+        public void AddShopRadius(Shop s, int DemandPercentage) 
         {
-            ShopRadius temp = new ShopRadius(s, Demand);
+            ShopRadius temp = new ShopRadius(s, DemandPercentage);
             foreach (ShopRadius sr in shopRadiuses)
             {
                 if (sr.Shop == s)
@@ -118,15 +118,23 @@ namespace ClassLibrary
         {
             double maxPercentage = (double)this.demand / maxDemand;
             Color heatColor;
+            if(maxPercentage > 1)
+            {
+                throw new Exception("Percentage > 1 is not allowed");
+            }
             if(maxPercentage >= 0.5) //green
             {
                 double otherColors = 255 - Math.Floor((maxPercentage - 0.5) * 2 * 255); 
                 heatColor = Color.FromArgb((int)otherColors, 255, (int)otherColors);
             }
-            else //red
+            else if(maxPercentage >= 0) //red
             {
                 double otherColors = 255 - Math.Floor((0.5 - maxPercentage) * 2 * 255);
                 heatColor = Color.FromArgb(255, (int) otherColors, (int)otherColors);
+            }
+            else
+            {
+                throw new Exception("Negative percentage is not allowed");
             }
              
             return heatColor;
