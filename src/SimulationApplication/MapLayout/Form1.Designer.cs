@@ -32,6 +32,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.simulateBtn = new System.Windows.Forms.Button();
             this.mapPictureBox = new System.Windows.Forms.PictureBox();
+            this.nudRoadCost = new System.Windows.Forms.NumericUpDown();
+            this.btnLocationMode = new System.Windows.Forms.Button();
             this.btnRoadMode = new System.Windows.Forms.Button();
             this.btnSpeed = new System.Windows.Forms.Button();
             this.btnHeatMap = new System.Windows.Forms.Button();
@@ -49,8 +51,8 @@
             this.btnShop = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnLocationMode = new System.Windows.Forms.Button();
-            this.nudRoadCost = new System.Windows.Forms.NumericUpDown();
+            this.tbDays = new System.Windows.Forms.TextBox();
+            this.lblTime = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -75,6 +77,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.splitContainer1.Panel2.Controls.Add(this.lblTime);
+            this.splitContainer1.Panel2.Controls.Add(this.tbDays);
             this.splitContainer1.Panel2.Controls.Add(this.nudRoadCost);
             this.splitContainer1.Panel2.Controls.Add(this.btnLocationMode);
             this.splitContainer1.Panel2.Controls.Add(this.btnRoadMode);
@@ -92,7 +96,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.btnCursor);
             this.splitContainer1.Panel2.Controls.Add(this.btnWarehouse);
             this.splitContainer1.Panel2.Controls.Add(this.btnShop);
-            this.splitContainer1.Size = new System.Drawing.Size(863, 570);
+            this.splitContainer1.Size = new System.Drawing.Size(863, 631);
             this.splitContainer1.SplitterDistance = 634;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 0;
@@ -120,6 +124,33 @@
             this.mapPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mapPictureBox_MouseClick);
             this.mapPictureBox.MouseEnter += new System.EventHandler(this.mapPictureBox_MouseEnter);
             // 
+            // nudRoadCost
+            // 
+            this.nudRoadCost.Location = new System.Drawing.Point(90, 67);
+            this.nudRoadCost.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudRoadCost.Name = "nudRoadCost";
+            this.nudRoadCost.Size = new System.Drawing.Size(42, 20);
+            this.nudRoadCost.TabIndex = 22;
+            this.nudRoadCost.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // btnLocationMode
+            // 
+            this.btnLocationMode.Location = new System.Drawing.Point(8, 95);
+            this.btnLocationMode.Name = "btnLocationMode";
+            this.btnLocationMode.Size = new System.Drawing.Size(93, 23);
+            this.btnLocationMode.TabIndex = 21;
+            this.btnLocationMode.Text = "Location Mode";
+            this.btnLocationMode.UseVisualStyleBackColor = true;
+            this.btnLocationMode.Click += new System.EventHandler(this.btnLocationMode_Click);
+            // 
             // btnRoadMode
             // 
             this.btnRoadMode.Location = new System.Drawing.Point(8, 66);
@@ -132,9 +163,9 @@
             // 
             // btnSpeed
             // 
-            this.btnSpeed.Location = new System.Drawing.Point(117, 515);
+            this.btnSpeed.Location = new System.Drawing.Point(118, 599);
             this.btnSpeed.Name = "btnSpeed";
-            this.btnSpeed.Size = new System.Drawing.Size(47, 23);
+            this.btnSpeed.Size = new System.Drawing.Size(96, 23);
             this.btnSpeed.TabIndex = 19;
             this.btnSpeed.Text = "Speed";
             this.btnSpeed.UseVisualStyleBackColor = true;
@@ -152,9 +183,9 @@
             // 
             // btnPause
             // 
-            this.btnPause.Location = new System.Drawing.Point(179, 516);
+            this.btnPause.Location = new System.Drawing.Point(8, 599);
             this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(47, 23);
+            this.btnPause.Size = new System.Drawing.Size(104, 23);
             this.btnPause.TabIndex = 17;
             this.btnPause.Text = "Pause";
             this.btnPause.UseVisualStyleBackColor = true;
@@ -162,11 +193,11 @@
             // 
             // btnStartSimulation
             // 
-            this.btnStartSimulation.Location = new System.Drawing.Point(101, 544);
+            this.btnStartSimulation.Location = new System.Drawing.Point(8, 570);
             this.btnStartSimulation.Name = "btnStartSimulation";
-            this.btnStartSimulation.Size = new System.Drawing.Size(89, 23);
+            this.btnStartSimulation.Size = new System.Drawing.Size(209, 23);
             this.btnStartSimulation.TabIndex = 16;
-            this.btnStartSimulation.Text = "Start Sim";
+            this.btnStartSimulation.Text = "Start Simulation";
             this.btnStartSimulation.UseVisualStyleBackColor = true;
             this.btnStartSimulation.Click += new System.EventHandler(this.btnStartSimulation_Click);
             // 
@@ -199,7 +230,7 @@
             // 
             // btnDrawRoute
             // 
-            this.btnDrawRoute.Location = new System.Drawing.Point(3, 544);
+            this.btnDrawRoute.Location = new System.Drawing.Point(129, 516);
             this.btnDrawRoute.Name = "btnDrawRoute";
             this.btnDrawRoute.Size = new System.Drawing.Size(89, 23);
             this.btnDrawRoute.TabIndex = 11;
@@ -277,38 +308,27 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnLocationMode
+            // tbDays
             // 
-            this.btnLocationMode.Location = new System.Drawing.Point(8, 95);
-            this.btnLocationMode.Name = "btnLocationMode";
-            this.btnLocationMode.Size = new System.Drawing.Size(93, 23);
-            this.btnLocationMode.TabIndex = 21;
-            this.btnLocationMode.Text = "Location Mode";
-            this.btnLocationMode.UseVisualStyleBackColor = true;
-            this.btnLocationMode.Click += new System.EventHandler(this.btnLocationMode_Click);
+            this.tbDays.Location = new System.Drawing.Point(128, 546);
+            this.tbDays.Name = "tbDays";
+            this.tbDays.Size = new System.Drawing.Size(60, 20);
+            this.tbDays.TabIndex = 23;
             // 
-            // nudRoadCost
+            // lblTime
             // 
-            this.nudRoadCost.Location = new System.Drawing.Point(90, 67);
-            this.nudRoadCost.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudRoadCost.Name = "nudRoadCost";
-            this.nudRoadCost.Size = new System.Drawing.Size(42, 20);
-            this.nudRoadCost.TabIndex = 22;
-            this.nudRoadCost.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.lblTime.AutoSize = true;
+            this.lblTime.Location = new System.Drawing.Point(22, 549);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(87, 13);
+            this.lblTime.TabIndex = 24;
+            this.lblTime.Text = "Run time in Days";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(863, 570);
+            this.ClientSize = new System.Drawing.Size(863, 631);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -347,6 +367,8 @@
         private System.Windows.Forms.Button btnRoadMode;
         private System.Windows.Forms.Button btnLocationMode;
         private System.Windows.Forms.NumericUpDown nudRoadCost;
+        private System.Windows.Forms.TextBox tbDays;
+        private System.Windows.Forms.Label lblTime;
     }
 }
 

@@ -17,6 +17,8 @@ namespace MapLayout
         //Quick dirty way of checking if the shop or warehouse button is clicked
         private bool isShopBtnClicked;
         private bool isWarehouseBtnClicked;
+        private int runTime = 0;
+        private int desiredRunTime;
 
         //List<Rectangle> ListofRectangles;
         //redraw image method
@@ -564,20 +566,25 @@ namespace MapLayout
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            map.NextTick();
-            string holder = "";
-            foreach (Location s in map.Shops)
+            if(runTime < desiredRunTime)
             {
-                holder += "SHOP" + s.LocationID + " stock: " + ((Shop)s.Building).Stock + " Restock: " + ((Shop)s.Building).RestockAmount + "\n";
+                map.NextTick();
+                runTime += 500;
+                string holder = "";
+                foreach (Location s in map.Shops)
+                {
+                    holder += "SHOP" + s.LocationID + " stock: " + ((Shop)s.Building).Stock + " Restock: " + ((Shop)s.Building).RestockAmount + "\n";
+                }
+                holder += "Cell Max D: " + Cell.MaxDemand + " DG: " + Cell.MaxDemandGrow + "\n";
+                foreach (Cell c in map.GetCells())
+                {
+                    holder += "Cell (" + c.Index.Column + "," + c.Index.Row + ") D: " + c.Demand + " DG: " + c.DemandGrow + "\n";
+                }
+                shortesRoutesRichTbx.Clear();
+                shortesRoutesRichTbx.Text += holder;
+                if (drawHeatMap) { Map.RedrawMap(); }
             }
-            holder += "Cell Max D: " + Cell.MaxDemand + " DG: " + Cell.MaxDemandGrow + "\n";
-            foreach(Cell c in map.GetCells())
-            {
-                holder += "Cell (" + c.Index.Column + "," + c.Index.Row + ") D: " + c.Demand + " DG: " + c.DemandGrow + "\n";
-            }
-            shortesRoutesRichTbx.Clear();
-            shortesRoutesRichTbx.Text += holder;
-            if (drawHeatMap) { Map.RedrawMap(); }
+            
 
         }
 
@@ -586,6 +593,8 @@ namespace MapLayout
             map.PrepareForSimulation();
             Map.RedrawMap();
             timer1.Enabled = true;
+            //TODO: How long should this run?
+            desiredRunTime = Convert.ToInt32(tbDays.Text) * 500;
         }
 
         private void btnPause_Click(object sender, EventArgs e)
