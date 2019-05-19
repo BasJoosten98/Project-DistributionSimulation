@@ -39,6 +39,6 @@ namespace ClassLibrary.Tests
         //    Assert.True(s.Stock == 7);
         //}
 
-        
+
     }
 }
