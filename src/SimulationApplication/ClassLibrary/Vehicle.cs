@@ -12,8 +12,8 @@ namespace ClassLibrary
         private static int idCounter = 0;
 		private int id;
         public PictureBox picBox;
-        List<Delivery> deliveryQueue; //list of deliveries that this vehicle needs to do
-        List<Delivery> finishedDeliveries; //list of deliveries that this vehicle has finished
+        private List<Delivery> deliveryQueue; //list of deliveries that this vehicle needs to do
+        private List<Delivery> finishedDeliveries; //list of deliveries that this vehicle has finished
 
         public PictureBox PicBox { get { return picBox; } }
 

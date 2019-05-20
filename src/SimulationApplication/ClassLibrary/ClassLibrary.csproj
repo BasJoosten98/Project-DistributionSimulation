@@ -76,6 +76,9 @@
     <Compile Include="ShopRadius.cs" />
     <Compile Include="Simulation.cs" />
     <Compile Include="Statistics.cs" />
+    <Compile Include="StatisticsShop.cs" />
+    <Compile Include="StatisticsVehicle.cs" />
+    <Compile Include="StatisticsWarehouse.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="Warehouse.cs" />
   </ItemGroup>
