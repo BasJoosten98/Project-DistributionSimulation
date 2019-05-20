@@ -36,9 +36,6 @@ namespace MapLayout
             else { numberOfCells = mapPictureBox.Height / CELLSIZE; }
             map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE, MapBox: mapPictureBox);
 
-            // Remove this line in case we do not want to make use of the hard coded edges anymore.
-            map.AddHardCodedEdges();
-
             // This loop is for debugging purposes such that we can check which cells have a location added to them.
             foreach (Cell cell in map.GetCells())
                 {
@@ -73,7 +70,7 @@ namespace MapLayout
                 }
             }
 
-            foreach (Road r in map.Edges) 
+            foreach (Road r in map.Edges)
             {
                 //Draw Line
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -87,12 +84,12 @@ namespace MapLayout
                 g.DrawString(r.initialCost.ToString(), f, sb, 0.5f * (r.Vertex1.Center.X + r.Vertex2.Center.X) - f.Size, 0.5f * (r.Vertex1.Center.Y + r.Vertex2.Center.Y) - f.Size / 2);
             }
 
-            foreach(Cell c in map.GetCells())
+            foreach (Cell c in map.GetCells())
             {
-
-                g.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
-
-                g.DrawRectangle(p, c.CellRectangle);              
+                //Draw Cell
+                p.Color = c.CellColor;
+                p.Width = c.CellLineWidth;
+                g.DrawRectangle(p, c.CellRectangle);
                 if (c is Location)
                 {
                     //Draw Location
@@ -100,12 +97,12 @@ namespace MapLayout
                     g.FillEllipse(sb, c.CellRectangle);
                     p.Color = ((Location)c).CircleColor;
                     g.DrawEllipse(p, c.CellRectangle);
-                    sb.Color = ((Location)c).StringColor; 
+                    sb.Color = ((Location)c).StringColor;
                     g.DrawString(string.Format("{0,2}", ((Location)c).LocationID), this.Font, sb, ((Location)c).Center.X - this.Font.Size, ((Location)c).Center.Y - this.Font.Size / 2);
 
                 }
             }
-            foreach(Location c in selectedLocations)
+            foreach (Location c in selectedLocations)
             {
                 p.Color = Color.Yellow;
                 p.Width = c.CellLineWidth;
@@ -207,34 +204,17 @@ namespace MapLayout
             //Console.WriteLine("Click detected");
             Point mousePt = new Point(e.X, e.Y);
             if (((PictureBox)sender) != mapPictureBox) //change cursor 
-            if (isShopBtnClicked)
             {
                 int x = ((PictureBox)sender).Location.X - mapPictureBox.Location.X + e.X;
                 int y = ((PictureBox)sender).Location.Y - mapPictureBox.Location.Y + e.X;
                 mousePt = new Point(x, y);
-                    {
-                        Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
-                        int id = clickedLocation.LocationID;
-                        clickedLocation.Building = new Shop(100, 10);
-                        PictureBox p = new PictureBox();
-                        Point pPoint = new Point((clickedLocation.PositionX * CDIAMETER) + 4, (clickedLocation.PositionY * CDIAMETER) + 4);
-                        p.Location = pPoint;
-                        p.Size = clickedLocation._Size;
-                        p.Image = Properties.Resources.shopIcon;
-                        p.SizeMode = PictureBoxSizeMode.StretchImage;
-                        splitContainer1.Panel1.Controls.Add(p);
-                        p.BringToFront();
-                        lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
             }
-           // Console.WriteLine("finding location at " + mousePt.X + " " + mousePt.Y);
+            // Console.WriteLine("finding location at " + mousePt.X + " " + mousePt.Y);
 
-            
+
             if (isShopBtnClicked || isWarehouseBtnClicked || roadModeEnabled)
             {
                 //If the shop or warehouse button was clicked AND a rectangle was clicked. Do action.                
-            {
-                foreach (Rectangle r in ListofRectangles)
-                {
                 foreach (Location l in map.Locations)
                 {
                     if (l.CellRectangle.Contains(mousePt)) //Mouse was above some location 
@@ -285,7 +265,7 @@ namespace MapLayout
                                     map.RemoveBuilding(l);
                                     Console.WriteLine("Warehouse has been removed from location" + l.LocationID);
                                     if (isWarehouseBtnClicked)
-                                    {                                    
+                                    {
                                         return;
                                     }
                                 }
@@ -295,7 +275,7 @@ namespace MapLayout
                                     map.RemoveBuilding(l);
                                     Console.WriteLine("Shop has been removed from location" + l.LocationID);
                                     if (isShopBtnClicked)
-                                    {      
+                                    {
                                         return;
                                     }
                                 }
@@ -304,7 +284,7 @@ namespace MapLayout
                                     throw new Exception("Impossible scenario");
                                 }
                             }
-                            
+
                             //Add building
                             int id = l.LocationID;
 
@@ -326,31 +306,6 @@ namespace MapLayout
                                 Console.WriteLine("Shop has been added to location" + l.LocationID);
                             }
                             else if (isWarehouseBtnClicked)
-                        //no clue what to do for now
-                        //check map.GetShops() for the method
-
-                        /*
-                         * So far i've only found 2 ways to do this. Create a picture box at the location clicked
-                         * with the warehouse image on it.
-                         * OR Redraw the image everytime with the new warehouse/shop
-                         * im including both sets of code and you guys tell me what u think
-                         * (picutrebox way still needs a small positioning fix)
-                         * (redraw method is still kinda broken)
-                         * Picturebox method admitted isnt the most efficient but i couldnt get the draw to work so i opted
-                         * for something else temporarily
-                         */
-                        PictureBox p = new PictureBox();
-                        Point pPoint = new Point((clickedLocation.PositionX * CDIAMETER)+4, (clickedLocation.PositionY * CDIAMETER)+4);
-                        p.Location = pPoint;
-                        p.Size = new Size(49,49);
-                        p.Image = Properties.Resources.warehouseIcon;
-                        p.SizeMode = PictureBoxSizeMode.StretchImage;
-                        splitContainer1.Panel1.Controls.Add(p);
-                        p.BringToFront();
-                        lbLocationLog.Text = "Location #: " + id + " has been set to a Warehouse";
-                            
-                        /* Redraw method
-                        using (Graphics g = Graphics.FromImage(bmp))
                             {
                                 picBox.Image = Properties.Resources.warehouseIcon;
                                 l.Building = new Warehouse(picBox);
@@ -393,7 +348,7 @@ namespace MapLayout
                                     l.Building.picBox.Dispose();
                                     map.RemoveBuilding(l);
                                 }
-                                map.ChangeLocationIntoCell((Location)c);                                
+                                map.ChangeLocationIntoCell((Location)c);
                             }
                             Map.RedrawMap();
                         }
