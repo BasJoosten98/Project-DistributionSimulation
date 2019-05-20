@@ -9,11 +9,11 @@ namespace ClassLibrary
 {
     public class Map : IEnumerable, ICloneable
     {
-        public List<Location> Warehouses { get; }
-        public List<Statistics> Statistics = new List<Statistics>();
-        public List<Location> Shops { get; }
-        public List<Location> Locations = new List<Location>();
-        public List<Road> Edges = new List<Road>();
+        private List<Location> warehouses = new List<Location>();
+        private List<Statistics> statistics = new List<Statistics>();
+        private List<Location> shops = new List<Location>();
+        private List<Location> locations = new List<Location>();
+        private List<Road> edges = new List<Road>();
         private Random rng;
         private Random rng2;
         private Cell[,] cells;
@@ -22,7 +22,11 @@ namespace ClassLibrary
 
         public int NumberOfCells { get; set; }
         public DistributionManager DistManager { get { return distributionManager; } }
-
+        public List<Location> Warehouses { get { return warehouses; } }
+        public List<Statistics> Statistics { get { return statistics; } }
+        public List<Location> Shops { get { return shops; } }
+        public List<Location> Locations { get { return locations; } }
+        public List<Road> Edges { get { return edges; } }
 
         /// <summary>
         /// Creates a map objects and initializes with the given values
@@ -33,8 +37,6 @@ namespace ClassLibrary
         /// <param name="MapBox"></param>
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
-            Warehouses = new List<Location>();
-            Shops = new List<Location>();
             mapPicBox = MapBox;
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;

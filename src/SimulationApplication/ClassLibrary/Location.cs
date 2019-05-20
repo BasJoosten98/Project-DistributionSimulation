@@ -15,8 +15,6 @@ namespace ClassLibrary
         public Color StringColor = Color.Black;
 
         private static int locationID;
-        //public const int CRADIUS = 25; // circle radius
-        //public const int CDIAMETER = 50; // circle diameter might have something to do with the diameter of the cell someone should look into it
 
         public int LocationID { get; set; }
         public Building Building { get; set; }
@@ -26,15 +24,10 @@ namespace ClassLibrary
         public bool visited { get; set; } // checks if it has been seen 
         public int Radius { get; set; }
 
-        //public int PositionX { get; }
-        //public int PositionY { get; }
-
         public Location(int column, int row)
             : base(column, row)
         {
             LocationID = locationID++;
-            //PositionX = x;
-            //PositionY = y;
 
             this.min_cost = int.MaxValue;
             this.permanent = false;
@@ -46,8 +39,6 @@ namespace ClassLibrary
             : base(column, row)
         {
             LocationID = locationID++;
-            //PositionX = x;
-            //PositionY = y;
 
             this.min_cost = int.MaxValue;
             this.permanent = false;

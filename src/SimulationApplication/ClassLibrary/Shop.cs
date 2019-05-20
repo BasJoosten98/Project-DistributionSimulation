@@ -22,21 +22,13 @@ namespace ClassLibrary
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
         public Shop(PictureBox PicBox, int stock, int restockamount)
+            :base(PicBox)
         {
             Stock = stock;
             Capacity = stock;
             RestockAmount = restockamount;
             ID = ++id;
         }
-
-        public Shop(int stock, int restockamount)
-        {
-            Stock = stock;
-            Capacity = stock;
-            RestockAmount = restockamount;
-            ID = ++id;
-        }
-
 
         /// <summary>
         /// Event that triggers when the stock is low
