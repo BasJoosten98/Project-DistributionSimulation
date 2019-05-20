@@ -32,7 +32,6 @@ namespace ClassLibrary
         }
         
         public Warehouse(PictureBox PicBox)
-            :base(PicBox)
         {
             Roads = new List<Road>();
         }

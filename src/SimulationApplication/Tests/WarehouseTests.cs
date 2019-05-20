@@ -13,19 +13,27 @@ namespace ClassLibrary.Tests
         [Fact()]
         public void WarehouseTest()
         {
-            Assert.True(false, "This test needs an implementation");
+            List<Shop> shops = new List<Shop>() { new Shop(10, 5) };
+            Warehouse warehouse = new Warehouse(shops);
+            Assert.NotNull(warehouse);
         }
 
         [Fact()]
-        public void WarehouseTest1()
+        public void CheckSubscriptionTest()
         {
-            Assert.True(false, "This test needs an implementation");
+            List<Shop> shops = new List<Shop>() { new Shop(10, 5) };
+            Warehouse warehouse = new Warehouse(shops);
         }
 
         [Fact()]
         public void GetShopTest()
         {
-            Assert.True(false, "This test needs an implementation");
+            List<Shop> shops = new List<Shop>() { new Shop(10, 5) };
+
+            Warehouse warehouse = new Warehouse(shops);
+
+            Shop s = shops.Find(shop => shop.ID == 1);
+            Assert.NotNull(s);
         }
     }
 }

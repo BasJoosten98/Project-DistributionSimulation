@@ -18,7 +18,6 @@ namespace ClassLibrary
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
         public Shop(PictureBox PicBox, int stock, int restockamount)
-            :base(PicBox)
         {
             Stock = stock;
             Capacity = stock;
@@ -56,11 +55,7 @@ namespace ClassLibrary
                 LowStockReachedEventArgs args = new LowStockReachedEventArgs();
                 args.TimeReached = DateTime.Now;
                 OnLowStockReached(args);
-            }
-
-            
-		}
-
-        
+            }         
+		}        
 	}
 }
