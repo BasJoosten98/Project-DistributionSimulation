@@ -98,7 +98,10 @@ namespace SimulationApplication
             //}
             Dijkstra d = new Dijkstra(roads);
             DistributionManager dm = new DistributionManager(d,warehouses,shops);
-            Assert.Equal(3,dm.getShopsWithLowStockOrdered().Count);
+
+            dm.nextTick();
+ 
+            Assert.Equal(3,dm.CreatedDeliveries.Count);
         }
     }
 }

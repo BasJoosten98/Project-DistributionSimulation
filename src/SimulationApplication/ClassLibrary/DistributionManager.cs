@@ -12,7 +12,16 @@ namespace ClassLibrary
         private List<Location> warehouses;
         private List<Location> shops;
 
-        public List<Delivery>  CreatedDeliveries { get; set; }
+    //    public List<Delivery>  CreatedDeliveries { get; set; }
+
+  
+
+        public List<Delivery> CreatedDeliveries
+        {
+            get { return  createdDeliveries; }
+       
+        }
+
 
         public Dijkstra DistDijkstra { get { return myDijkstra; } }
 
