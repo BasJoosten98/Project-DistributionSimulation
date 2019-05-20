@@ -10,6 +10,7 @@ namespace ClassLibrary
     public class Map : IEnumerable, ICloneable
     {
         public List<Location> Warehouses { get; }
+        public List<Statistics> Statistics = new List<Statistics>();
         public List<Location> Shops { get; }
         public List<Location> Locations = new List<Location>();
         public List<Road> Edges = new List<Road>();
@@ -125,7 +126,7 @@ namespace ClassLibrary
             return c;
         }
 
-        public void NextTick()
+        public void NextTick(int timeStamp)
         {
             List<Cell> tempList = new List<Cell>();
             foreach(Cell c in cells)
@@ -135,14 +136,27 @@ namespace ClassLibrary
             while(tempList.Count > 0)
             {
                 int r = rng2.Next(0, tempList.Count);
-                tempList[r].NextTick();
+                tempList[r].NextTick(timeStamp);
                 tempList.RemoveAt(r);
             }
-            foreach(Location w in Warehouses)
+            distributionManager.NextTick(timeStamp);
+            foreach (Location w in Warehouses)
             {
-                ((Warehouse)w.Building).NextTick();
+                ((Warehouse)w.Building).NextTick(timeStamp);
             }
-            distributionManager.NextTick();
+            updateStatistics(timeStamp);
+        }
+        private void updateStatistics(int timeStamp)
+        {
+            foreach(Location s in Shops)
+            {
+                Statistics.Add(((Shop)s.Building).MakeStatistics(timeStamp));
+            }
+            foreach (Location w in Warehouses)
+            {
+                Statistics.Add(((Warehouse)w.Building).MakeStatistics(timeStamp));
+            }
+            int k = 1;
         }
         private void createDistributionManager() //should be called when map is forseen with warehouses and shops!
         {

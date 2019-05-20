@@ -83,12 +83,22 @@ namespace ClassLibrary
         {
             return shops.Find(shop => shop.ID == ID);
         }
-        public void NextTick()
+        public void NextTick(int timeStamp)
         {
             foreach(Vehicle v in vehicles)
             {
-                v.NextTick();
+                v.NextTick(timeStamp);
             }          
+        }
+        public StatisticsWarehouse MakeStatistics(int timeStamp)
+        {
+            List<StatisticsVehicle> vehiclesStat = new List<StatisticsVehicle>();
+            foreach(Vehicle v in vehicles)
+            {
+                vehiclesStat.Add(v.MakeStatistics(timeStamp));
+            }
+            StatisticsWarehouse temp = new StatisticsWarehouse(timeStamp, this, vehiclesStat);
+            return temp;
         }
     }
 }

@@ -67,6 +67,14 @@ namespace ClassLibrary
         {
             vehicles = vehiclesStat;
             warehouse = me;
+
+            if (false) //testing
+            {
+                Console.WriteLine("current id: " + ID);
+                Console.WriteLine("TGD: " + TotalGivenDeliveries + " TFD: " + TotalFinishedDeliveries);
+                Console.WriteLine("ADWT: " + AverageDeliveryWaitingTime + " VBUTP: " + VehicleBeingUsedTimePercentage);
+                Console.WriteLine("------------------------------------------------------------------------");
+            }
         }
     }
 }

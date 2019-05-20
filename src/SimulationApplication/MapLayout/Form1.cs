@@ -564,7 +564,8 @@ namespace MapLayout
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            map.NextTick();
+            timeStampCounter++;
+            map.NextTick(timeStampCounter);
             string holder = "";
             foreach (Location s in map.Shops)
             {
@@ -581,6 +582,7 @@ namespace MapLayout
 
         }
 
+        int timeStampCounter = 0;
         private void btnStartSimulation_Click(object sender, EventArgs e)
         {
             map.PrepareForSimulation();

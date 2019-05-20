@@ -27,6 +27,13 @@ namespace ClassLibrary
             this.stock = stock;
             this.sold = sold;
             previous = prev;
+            if (prev != null && false) //testing
+            {
+                Console.WriteLine("current id: " + ID + " previous id: " + previous.ID);
+                Console.WriteLine("Stock: " + stock + " Sold: " + sold);
+                Console.WriteLine("TZST: " + TotalZeroStockTime + " AStock: " + AverageStock + " ASold: " + AverageSold);
+                Console.WriteLine("------------------------------------------------------------------------");
+            }
         }
 
         private int calculateZeroStockTime()
@@ -44,7 +51,7 @@ namespace ClassLibrary
             double sum = 0;
             if (previous != null)
             {
-                sum += calculateAverageStock();
+                sum += previous.calculateAverageStock();
                 sum += stock;
                 return sum /= 2;
             }           
@@ -55,7 +62,7 @@ namespace ClassLibrary
             double sum = 0;
             if (previous != null)
             {
-                sum += calculateAverageSold();
+                sum += previous.calculateAverageSold();
                 sum += sold;
                 return sum /= 2;
             }

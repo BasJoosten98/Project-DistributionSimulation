@@ -65,7 +65,7 @@ namespace ClassLibrary
                 }
             }
         }
-        public void NextTick() 
+        public void NextTick(int timeStamp) 
         {
             //BUY FROM SHOPS
             List<ShopRadius> temp = new List<ShopRadius>();
