@@ -10,7 +10,7 @@ namespace ClassLibrary
 	public class Shop : Building
 	{
         private int tempSold = 0; //needed for statistics
-        private StatisticsShop tempStat; //needed for statistics
+        private StatisticsShop tempStat = null; //needed for statistics
 
         public static int id;
         public int Capacity { get; set; }
@@ -65,7 +65,6 @@ namespace ClassLibrary
             return demand; //AMOUNT THAT HAS BEEN SOLD
 		}        
             
-		}
 
         public StatisticsShop MakeStatistics(int timeStamp)
         {

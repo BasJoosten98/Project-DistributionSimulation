@@ -70,13 +70,7 @@ namespace ClassLibrary
                 }
             }
             Console.WriteLine(V);
-        }
-        /// <summary>
-        /// Moved the hard coded edges to a public method that will be called inside the form
-        /// since this was hindering the creation of test cases.
-        /// </summary>
-        public void AddHardCodedEdges()
-        {
+
             // Hard coded roads/edges from location 
             // 1 -> 2, weight: 3
             Edges.Add(new Road(Locations[0], Locations[1]));
@@ -101,11 +95,12 @@ namespace ClassLibrary
             // 10 -> 5, weight: 1
             Edges.Add(new Road(Locations[9], Locations[4]));
 
-            foreach(Road r in Edges)
+            foreach (Road r in Edges)
             {
                 r.initialCost = rng.Next(1, 6);
             }
         }
+        
         /// <summary>
         /// Changes Cell into Location
         /// </summary>

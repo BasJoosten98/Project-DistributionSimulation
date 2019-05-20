@@ -89,7 +89,7 @@ namespace MapLayout
 
         private void bSave_Click(object sender, EventArgs e)
         {
-            cell.Demand = Convert.ToInt32(nudDemand.Value);
+            //cell.Demand = Convert.ToInt32(nudDemand.Value);
 
             if (cbType.SelectedIndex == 1 )
             {
