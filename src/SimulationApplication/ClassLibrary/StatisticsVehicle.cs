@@ -21,9 +21,9 @@ namespace ClassLibrary
         public int TotalFinishedDeliveries { get { return totalDeliveriesFinished; } }
         public int TotalDrivenTimeUnits { get { return totalDrivenTimeUnits; } }
         public int TotalNonDrivenTimeUnits { get { return Time - totalDrivenTimeUnits; } }
-        public double DrivingTimePercentage { get { return (double)totalDrivenTimeUnits / Time; } }
-        public double NonDrivingTimePercentage { get { return (double)TotalNonDrivenTimeUnits / Time; } }
-        public int TotalDeliveryWaitTime { get { return totalDeliveryWaitTime; } }
+        public double DrivingTimePercentage { get { return (double)totalDrivenTimeUnits / Time; } } //How much of the time did this vehicle drive (percentage)
+        public double NonDrivingTimePercentage { get { return (double)TotalNonDrivenTimeUnits / Time; } } //How much of the time didn't this vehicle drive (percentage)
+        public int TotalDeliveryWaitTime { get { return totalDeliveryWaitTime; } } //Amount of time units of all deliveries that where on hold (less is better)
         public double AverageDeliveryWaitTime { get { if (TotalFinishedDeliveries > 0) { return (double)totalDeliveryWaitTime / TotalFinishedDeliveries; } else { return 0; } } }
         public StatisticsVehicle(int timeStamp, Vehicle me, DeliveryStatus deliveryStat, int drivenUnits, int totalDeliveriesFin, int totalDeliveriesGiven, int resTime)
             :base(timeStamp)

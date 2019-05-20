@@ -16,7 +16,7 @@ namespace ClassLibrary
         public Shop Shop { get { return shop; } }
         public int Stock { get { return stock; } }
         public int Sold { get { return sold; } }
-        public int TotalZeroStockTime { get { return calculateZeroStockTime(); } }
+        public int TotalZeroStockTime { get { return calculateZeroStockTime(); } } //Total amount of time units where Stock == 0
         public double AverageStock { get { return calculateAverageStock(); } }
         public double AverageSold { get { return calculateAverageSold(); } }
 
