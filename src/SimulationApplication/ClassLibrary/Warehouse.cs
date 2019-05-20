@@ -14,6 +14,7 @@ namespace ClassLibrary
 		private List<Shop> shops;
 
         public List<Road> Roads { get; }
+        public List<Vehicle> Vehicles { get {return vehicles; } }
 
         public List<Shop> Shops
         {
@@ -30,10 +31,24 @@ namespace ClassLibrary
                 }
             }
         }
-        
-        public Warehouse(PictureBox PicBox)
+        public void RemoveAllvehicles()
         {
-            Roads = new List<Road>();
+            foreach(Vehicle v in vehicles)
+            {
+                v.picBox.Dispose();
+            }
+            vehicles.Clear();
+        }
+        public Warehouse(PictureBox PicBox)
+            :base(PicBox)
+        {
+            //Roads = new List<Road>();
+            vehicles = new List<Vehicle>();
+        }
+
+        public void AddVehicle(Vehicle v)
+        {
+            vehicles.Add(v);
         }
         public Warehouse(List<Shop> shops) { Shops = shops; }
 
@@ -50,15 +65,46 @@ namespace ClassLibrary
             s.Stock = s.Capacity;
         }
 
-
         /// <summary>
-        /// Returns the shop that has the ID equal to the given ID
+        /// Returns the vehicle (and time) that can accepts a new delivery the fastest
         /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
+        /// <param name="vehicle"></param>
+        /// <param name="time"></param>
+        public void fastestVehicleAvailableTime(out Vehicle vehicle, out int time)
+        {
+            time = int.MaxValue;
+            vehicle = null;
+            foreach (Vehicle v in vehicles)
+            {
+                int returnTime = v.lastDeliveryFinishDeltaTime(); //Get the time it takes to start delivering a new Delivery
+                if(time > returnTime)
+                {
+                    time = returnTime;
+                    vehicle = v;
+                }               
+            }
+        }
+
         public Shop GetShop(int ID)
         {
             return shops.Find(shop => shop.ID == ID);
+        }
+        public void NextTick(int timeStamp)
+        {
+            foreach(Vehicle v in vehicles)
+            {
+                v.NextTick(timeStamp);
+            }          
+        }
+        public StatisticsWarehouse MakeStatistics(int timeStamp)
+        {
+            List<StatisticsVehicle> vehiclesStat = new List<StatisticsVehicle>();
+            foreach(Vehicle v in vehicles)
+            {
+                vehiclesStat.Add(v.MakeStatistics(timeStamp));
+            }
+            StatisticsWarehouse temp = new StatisticsWarehouse(timeStamp, this, vehiclesStat);
+            return temp;
         }
     }
 }

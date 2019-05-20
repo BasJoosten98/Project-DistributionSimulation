@@ -12,11 +12,13 @@ namespace MapLayout
 {
     public partial class Form1 : Form
     {
+        private List<Location> selectedLocations = new List<Location>();
         private Map map;
         //Quick dirty way of checking if the shop or warehouse button is clicked
         private bool isShopBtnClicked;
         private bool isWarehouseBtnClicked;
-        List<Rectangle> ListofRectangles;
+
+        //List<Rectangle> ListofRectangles;
         //redraw image method
         //Bitmap bmp;
         
@@ -26,106 +28,190 @@ namespace MapLayout
             InitializeComponent();
 
             // This could be set later on, maybe even via the app config file or by the user.
-            const int CELLSIZE = 50;
+            const int CELLSIZE = 40;    
 
             // The result represents the number of cells we can create in both width and height (Square grid/map) based on the cell size.
-            int numberOfCells = mapPictureBox.Width / CELLSIZE;
-            map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE);
+            int numberOfCells;
+            if(mapPictureBox.Width <= mapPictureBox.Height) { numberOfCells = mapPictureBox.Width / CELLSIZE; }
+            else { numberOfCells = mapPictureBox.Height / CELLSIZE; }
+            map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE, MapBox: mapPictureBox);
 
             // Remove this line in case we do not want to make use of the hard coded edges anymore.
             map.AddHardCodedEdges();
 
             // This loop is for debugging purposes such that we can check which cells have a location added to them.
             foreach (Cell cell in map.GetCells())
-            {
-                if (cell.Location != null)
                 {
-                    Console.WriteLine($"Row: {cell.Index.Row}, Col: {cell.Index.Column}");  
+                    if (cell is Location)
+                    {
+                        Console.WriteLine($"Row: {cell.Index.Row}, Col: {cell.Index.Column}");
+                    }
                 }
-            }
             //reDraw image method
             //bmp = new Bitmap(mapPictureBox.Width,mapPictureBox.Height);
         }
 
+
         private void pictureBox1_Paint_1(object sender, PaintEventArgs e)
         {
-            int cellSize = Cell.CellSize;
-            int numOfCells = map.NumberOfCells;
-            ListofRectangles = new List<Rectangle>();
-            Console.WriteLine($"Number of Cells: {numOfCells}");
-
-
             //change to Graphics.FromImage(bmp) for redraw 
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.Black);
+            SolidBrush sb = new SolidBrush(Color.Black);
 
-            DrawRoads(e);
-
-            for (int y = 0; y <= map.NumberOfCells; ++y)
+            foreach (Cell c in map.GetCells())
             {
-                // (x1, y1) to (x2, y2)
-                // With cell size 50 and the map picture box having width of 602 pixels.
-                // Number of cells = 602 / 50, truncated thus = 12.
-                // y = 0 || (0, 0) -> (600, 0)
-                // y = 0 || (0, 50) -> (600, 50)
-                // y = 0 || (0, 100) -> (600, 100)
-                // Drawing the horizontal lines first.
-         
-                g.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
-
+                if (drawHeatMap)
+                {
+                    sb.Color = c.GetHeatMapCellColor();
+                    g.FillRectangle(sb, c.CellRectangle);
+                }
+                else
+                {
+                    sb.Color = SystemColors.ActiveCaption;
+                    g.FillRectangle(sb, c.CellRectangle);
+                }
             }
 
-            // The same as above but now vertical lines are drawn
-            for (int x = 0; x <= numOfCells; ++x)
+            foreach (Road r in map.Edges) 
+            {
+                //Draw Line
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                p.Color = r.LineColor;
+                p.Width = r.LineWidth;
+                g.DrawLine(p, r.Vertex1.Center, r.Vertex2.Center);
+
+                //Draw String
+                sb.Color = r.StringColor;
+                Font f = new Font("Arial", 13, FontStyle.Bold);
+                g.DrawString(r.initialCost.ToString(), f, sb, 0.5f * (r.Vertex1.Center.X + r.Vertex2.Center.X) - f.Size, 0.5f * (r.Vertex1.Center.Y + r.Vertex2.Center.Y) - f.Size / 2);
+            }
+
+            foreach(Cell c in map.GetCells())
             {
 
                 g.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
 
-            }
-            int k = 10;
-            foreach (Cell cell in map.GetCells())
-            {
-                if (cell.Location != null)
+                g.DrawRectangle(p, c.CellRectangle);              
+                if (c is Location)
                 {
-                    Rectangle rect = new Rectangle(cell.Location.LocationPoint, cell.Location._Size);
+                    //Draw Location
+                    sb.Color = ((Location)c).CircleFillColor;
+                    g.FillEllipse(sb, c.CellRectangle);
+                    p.Color = ((Location)c).CircleColor;
+                    g.DrawEllipse(p, c.CellRectangle);
+                    sb.Color = ((Location)c).StringColor; 
+                    g.DrawString(string.Format("{0,2}", ((Location)c).LocationID), this.Font, sb, ((Location)c).Center.X - this.Font.Size, ((Location)c).Center.Y - this.Font.Size / 2);
 
-                    g.FillEllipse(new SolidBrush(Color.LightYellow), rect);
-                    g.DrawEllipse(new Pen(Color.Black), rect);
-                    g.DrawString(string.Format("{0,2}", cell.Location.LocationID + 1), this.Font, new SolidBrush(Color.Black), cell.Location.LocationPoint.X +17, cell.Location.LocationPoint.Y + 20);
-                    //removed +1 from locationid above
-                    ListofRectangles.Add(rect);
-                    map.Add(cell.Location);
-                    k += 10;
                 }
             }
-            DrawRoadWeights(e);
+            foreach(Location c in selectedLocations)
+            {
+                p.Color = Color.Yellow;
+                p.Width = c.CellLineWidth;
+                g.DrawRectangle(p, c.CellRectangle);
+            }
+            foreach (Location w in map.Warehouses)
+            {
+                foreach (Vehicle v in ((Warehouse)w.Building).Vehicles)
+                {
+                    v.PicBox.BringToFront();
+                }
+            }
+            foreach (Location s in map.Shops)
+            {
+                ((Shop)s.Building).picBox.BringToFront();
+            }
+
+            foreach (Location w in map.Warehouses)
+            {
+                ((Warehouse)w.Building).picBox.BringToFront();
+            }
+
+
+            //---------------------------------------OLD WAY FOR DRAWING BELOW---------------------------------------
+            //int cellSize = Cell.CellSize;
+            //int numOfCells = map.NumberOfCells;
+            //ListofRectangles = new List<Rectangle>();
+            //Console.WriteLine($"Number of Cells: {numOfCells}");
+
+            //DrawRoads(e);         
+
+            //DrawRoadWeights(e);
+
+            //for (int y = 0; y <= map.NumberOfCells; ++y)
+            //{
+            //    // (x1, y1) to (x2, y2)
+            //    // With cell size 50 and the map picture box having width of 602 pixels.
+            //    // Number of cells = 602 / 50, truncated thus = 12.
+            //    // y = 0 || (0, 0) -> (600, 0)
+            //    // y = 0 || (0, 50) -> (600, 50)
+            //    // y = 0 || (0, 100) -> (600, 100)
+            //    // Drawing the horizontal lines first.
+            //    g.DrawLine(p, 0, y * cellSize, numOfCells * cellSize, y * cellSize);
+            //}
+            //// The same as above but now vertical lines are drawn
+            //for (int x = 0; x <= numOfCells; ++x)
+            //{
+            //    g.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
+            //}
+            //int k = 10;
+            //foreach (Cell cell in map.GetCells())
+            //{
+            //    if (cell is Location)
+            //    {
+            //        Rectangle rect = new Rectangle(((Location)cell).LocationPoint, ((Location)cell)._Size);
+
+            //        g.FillEllipse(new SolidBrush(Color.LightYellow), rect);
+            //        g.DrawEllipse(new Pen(Color.Black), rect);
+            //        g.DrawString(string.Format("{0,2}", ((Location)cell).LocationID + 1), this.Font, new SolidBrush(Color.Black), ((Location)cell).Center.X - this.Font.Size, ((Location)cell).Center.Y - this.Font.Size/2);
+            //        //removed +1 from locationid above
+            //        //ListofRectangles.Add(rect);
+            //        //map.Locations.Add(cell.Location);
+            //        k += 10;
+            //    }
+            //}
             //Redraw method.
             //mapPictureBox.Image = bmp;
+            //------------------------------------------------------------------------------
         }
 
         private void btnShop_Click(object sender, EventArgs e)
         {
             //Flip isShop boolean value
             isWarehouseBtnClicked = false;
+            roadModeEnabled = false;
+            locationModeEnabled = false;
             isShopBtnClicked = isShopBtnClicked ? false : true;
         }
 
         private void mapPictureBox_MouseEnter(object sender, EventArgs e)
         {
             //Change cursor when it enters picturebox if isShop OR isWarehouse is true
-            mapPictureBox.Cursor = isShopBtnClicked || isWarehouseBtnClicked ? Cursors.Hand : Cursors.Arrow; 
+            ((PictureBox)sender).Cursor = isShopBtnClicked || isWarehouseBtnClicked ? Cursors.Hand : Cursors.Arrow; 
+            
         }
-
+        private Vehicle createNewVehicle(Point ImagePosition)
+        {
+            PictureBox vehiclePicBox = new PictureBox();
+            vehiclePicBox.Image = Properties.Resources.vehicleIcon;
+            vehiclePicBox.Location = ImagePosition;
+            vehiclePicBox.Size = new Size(Cell.CellSize / 2, Cell.CellSize / 2);
+            vehiclePicBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            splitContainer1.Panel1.Controls.Add(vehiclePicBox);
+            vehiclePicBox.BringToFront();
+            return new Vehicle(vehiclePicBox);
+        }
         private void mapPictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            //If the shop or warehouse button was clicked AND a rectangle was clicked. Do action.
+            //Console.WriteLine("Click detected");
             Point mousePt = new Point(e.X, e.Y);
-            int CDIAMETER = 50;
+            if (((PictureBox)sender) != mapPictureBox) //change cursor 
             if (isShopBtnClicked)
             {
-                foreach (Rectangle r in ListofRectangles)
-                {
-                    if (r.Contains(mousePt))
+                int x = ((PictureBox)sender).Location.X - mapPictureBox.Location.X + e.X;
+                int y = ((PictureBox)sender).Location.Y - mapPictureBox.Location.Y + e.X;
+                mousePt = new Point(x, y);
                     {
                         Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
                         int id = clickedLocation.LocationID;
@@ -139,20 +225,107 @@ namespace MapLayout
                         splitContainer1.Panel1.Controls.Add(p);
                         p.BringToFront();
                         lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
-                    }
-                }
-            } else if(isWarehouseBtnClicked)
+            }
+           // Console.WriteLine("finding location at " + mousePt.X + " " + mousePt.Y);
+
+            
+            if (isShopBtnClicked || isWarehouseBtnClicked || roadModeEnabled)
+            {
+                //If the shop or warehouse button was clicked AND a rectangle was clicked. Do action.                
             {
                 foreach (Rectangle r in ListofRectangles)
                 {
-                    if (r.Contains(mousePt))
+                foreach (Location l in map.Locations)
+                {
+                    if (l.CellRectangle.Contains(mousePt)) //Mouse was above some location 
                     {
-                        Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
-                        int id = clickedLocation.LocationID;
-                        clickedLocation.Building = new Warehouse(); 
+                        if (roadModeEnabled)
+                        {
+                            if (selectedLocations.Contains(l))
+                            {
+                                selectedLocations.Remove(l);
+                            }
+                            else
+                            {
+                                selectedLocations.Add(l);
+                                if (selectedLocations.Count == 2)
+                                {
+                                    int cost;
+                                    if (int.TryParse(nudRoadCost.Value.ToString(), out cost))
+                                    {
+                                        bool succes = map.AddNewRoad(selectedLocations[0], selectedLocations[1], cost);
+                                        if (!succes) //There is already a road there
+                                        {
+                                            map.RemoveRoad(selectedLocations[0], selectedLocations[1]);
+                                            Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been removed");
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been added");
+                                        }
+                                        selectedLocations.Clear();
+                                    }
+                                    else
+                                    {
+                                        selectedLocations.Remove(l);
+                                        MessageBox.Show("Road cost is in wrong format, only integers allowed");
+                                    }
 
-                        //warehouse expects a list of shops.. each location has a building..
-                        //i can only make a list of buildings
+                                }
+                            }
+                            Map.RedrawMap();
+                        }
+                        else if (isShopBtnClicked || isWarehouseBtnClicked)
+                        {
+                            if (l.Building != null) //Remove building
+                            {
+                                if (l.Building is Warehouse)
+                                {
+                                    l.Building.picBox.Dispose();
+                                    map.RemoveBuilding(l);
+                                    Console.WriteLine("Warehouse has been removed from location" + l.LocationID);
+                                    if (isWarehouseBtnClicked)
+                                    {                                    
+                                        return;
+                                    }
+                                }
+                                else if (l.Building is Shop)
+                                {
+                                    l.Building.picBox.Dispose();
+                                    map.RemoveBuilding(l);
+                                    Console.WriteLine("Shop has been removed from location" + l.LocationID);
+                                    if (isShopBtnClicked)
+                                    {      
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("Impossible scenario");
+                                }
+                            }
+                            
+                            //Add building
+                            int id = l.LocationID;
+
+                            //Create picturebox
+                            PictureBox picBox = new PictureBox();
+                            Point ImagePosition = new Point((l.Index.Column * Cell.CellSize) + 4, (l.Index.Row * Cell.CellSize) + 4);
+                            picBox.Location = ImagePosition;
+                            picBox.Size = new Size(Cell.CellSize - 1, Cell.CellSize - 1);
+                            picBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                            picBox.MouseClick += mapPictureBox_MouseClick;
+                            picBox.MouseEnter += mapPictureBox_MouseEnter;
+
+                            //Set location building
+                            if (isShopBtnClicked)
+                            {
+                                picBox.Image = Properties.Resources.shopIcon;
+                                l.Building = new Shop(picBox, 500, 450);
+                                //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
+                                Console.WriteLine("Shop has been added to location" + l.LocationID);
+                            }
+                            else if (isWarehouseBtnClicked)
                         //no clue what to do for now
                         //check map.GetShops() for the method
 
@@ -178,21 +351,140 @@ namespace MapLayout
                             
                         /* Redraw method
                         using (Graphics g = Graphics.FromImage(bmp))
-                        {
-                            g.DrawRectangle(new Pen(Color.Black), new Rectangle(clickedLocation.LocationPoint, clickedLocation._Size));
-                            g.DrawImage(new Bitmap(Properties.Resources.warehouseIcon, clickedLocation._Size), clickedLocation.LocationPoint);
+                            {
+                                picBox.Image = Properties.Resources.warehouseIcon;
+                                l.Building = new Warehouse(picBox);
+
+                                ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
+                                ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
+                                //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
+                                Console.WriteLine("Warehouse has been added to location" + l.LocationID);
+                            }
+                            map.AddNewBuilding(l);
+
+                            //Others
+                            splitContainer1.Panel1.Controls.Add(picBox); //What does this do??
+                            picBox.BringToFront(); //Needs to be here and not in class Building in order to work!
                         }
-                        mapPictureBox.Image = bmp;
-                        */
+                        break;
                     }
                 }
             }
+            else
+            {
+                foreach (Cell c in map.GetCells())
+                {
+                    if (c.CellRectangle.Contains(mousePt)) //Mouse was above some location 
+                    {
+                        if (locationModeEnabled)
+                        {
+                            if (!(c is Location))
+                            {
+                                Location l = map.ChangeCellIntoLocation(c);
+                                map.Locations.Add(l);
+                                Console.WriteLine("Cell at col: " + c.Index.Column + " row: " + c.Index.Row + " is now location" + l.LocationID);
+                            }
+                            else
+                            {
+                                Location l = (Location)c;
+                                Console.WriteLine("Location" + l.LocationID + " has been removed");
+                                if (l.Building != null) //Remove Building
+                                {
+                                    l.Building.picBox.Dispose();
+                                    map.RemoveBuilding(l);
+                                }
+                                map.ChangeLocationIntoCell((Location)c);                                
+                            }
+                            Map.RedrawMap();
+                        }
+                        else
+                        {
+                            if (c.CellRectangle.Contains(mousePt)) //Mouse was above some location 
+                            {
+                                MessageBox.Show("Cell col:" + c.Index.Column + " row:" + c.Index.Row + " demand:" + c.Demand + " demandGrow:" + c.DemandGrow);
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            //---------------------------------------OLD WAY BELOW---------------------------------------
+            //if (isShopBtnClicked)
+            //{
+            //    foreach (Rectangle r in ListofRectangles)
+            //    {
+            //        if (r.Contains(mousePt))
+            //        {
+            //            Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
+            //            int id = clickedLocation.LocationID;
+            //            clickedLocation.Building = new Shop(100, 10);
+            //            PictureBox p = new PictureBox();
+            //            Point pPoint = new Point((clickedLocation.Index.Column * CDIAMETER) + 4, (clickedLocation.Index.Row * CDIAMETER) + 4);
+            //            p.Location = pPoint;
+            //            p.Size = new Size(49, 49);
+            //            p.Image = Properties.Resources.shopIcon;
+            //            p.SizeMode = PictureBoxSizeMode.StretchImage;
+            //            splitContainer1.Panel1.Controls.Add(p);
+            //            p.BringToFront();
+            //            lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
+            //        }
+            //    }
+            //} else if(isWarehouseBtnClicked)
+            //{
+            //    foreach (Rectangle r in ListofRectangles)
+            //    {
+            //        if (r.Contains(mousePt))
+            //        {
+            //            Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
+            //            int id = clickedLocation.LocationID;
+            //            clickedLocation.Building = new Warehouse(); 
+
+            //            //warehouse expects a list of shops.. each location has a building..
+            //            //i can only make a list of buildings
+            //            //no clue what to do for now
+            //            //check map.GetShops() for the method
+
+            //            /*
+            //             * So far i've only found 2 ways to do this. Create a picture box at the location clicked
+            //             * with the warehouse image on it.
+            //             * OR Redraw the image everytime with the new warehouse/shop
+            //             * im including both sets of code and you guys tell me what u think
+            //             * (picutrebox way still needs a small positioning fix)
+            //             * (redraw method is still kinda broken)
+            //             * Picturebox method admitted isnt the most efficient but i couldnt get the draw to work so i opted
+            //             * for something else temporarily
+            //             */
+            //            PictureBox p = new PictureBox();
+            //            Point pPoint = new Point((clickedLocation.Index.Column * CDIAMETER)+4, (clickedLocation.Index.Row * CDIAMETER)+4);
+            //            p.Location = pPoint;
+            //            p.Size = new Size(49,49);
+            //            p.Image = Properties.Resources.warehouseIcon;
+            //            p.SizeMode = PictureBoxSizeMode.StretchImage;
+            //            splitContainer1.Panel1.Controls.Add(p);
+            //            p.BringToFront();
+            //            lbLocationLog.Text = "Location #: " + id + " has been set to a Warehouse";
+
+            //            /* Redraw method
+            //            using (Graphics g = Graphics.FromImage(bmp))
+            //            {
+            //                g.DrawRectangle(new Pen(Color.Black), new Rectangle(clickedLocation.LocationPoint, clickedLocation._Size));
+            //                g.DrawImage(new Bitmap(Properties.Resources.warehouseIcon, clickedLocation._Size), clickedLocation.LocationPoint);
+            //            }
+            //            mapPictureBox.Image = bmp;
+            //            */
+            //        }
+            //    }
+            //}
+            //------------------------------------------------------------------------------
         }
 
         private void btnWarehouse_Click(object sender, EventArgs e)
         {
             //Flip warehouse bool value
             isShopBtnClicked = false;
+            roadModeEnabled = false;
+            locationModeEnabled = false;
             isWarehouseBtnClicked = isWarehouseBtnClicked ? false : true;
         }
 
@@ -202,23 +494,8 @@ namespace MapLayout
             mapPictureBox.Cursor = Cursors.Arrow;
             isShopBtnClicked = false;
             isWarehouseBtnClicked = false;
-        }
-
-        private void DrawRoads(PaintEventArgs e)
-        {
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            foreach (Road road in map.Edges)
-            {
-                e.Graphics.DrawLine(new Pen(Color.IndianRed, 3), road[0].Center, road[1].Center);
-            }
-        }
-
-        private void DrawRoadWeights(PaintEventArgs e)
-        {
-            foreach (Road road in map.Edges)
-            {
-                e.Graphics.DrawString(road.initialCost.ToString(), Font, new SolidBrush(Color.White), 0.5f * (road[0].Center.X + road[1].Center.X), 0.5f * (road[0].Center.Y + road[1].Center.Y));
-            }
+            locationModeEnabled = false;
+            roadModeEnabled = false;
         }
 
         private void simulateBtn_click(object sender, EventArgs e)
@@ -287,6 +564,120 @@ namespace MapLayout
                 // Display.
                 shortesRoutesRichTbx.Text += $"Warehouses at #{shortestRoad[0].LocationID + 1} to shop at #{shortestRoad[1].LocationID + 1}, takes {shortestRoad.initialCost} km.\n";
             }
+        }
+
+        private void btnDrawRoute_Click(object sender, EventArgs e)
+        {
+            int TolocationID = int.Parse(tbToLocationID.Text);
+            Location destination = map.GetLocationByID(TolocationID);
+            int FromlocationID = int.Parse(tbFromLocationID.Text);
+            Location start = map.GetLocationByID(FromlocationID);
+
+            DijkstraRoute myRoute = map.DistManager.DistDijkstra.GetRouteTo(start, destination);
+            List<Road> allRoads = map.Edges;
+            foreach (Road r in allRoads)
+            {
+                r.ResetDrawFields();
+            }
+            foreach (Road r in myRoute.Route)
+            {
+                r.LineColor = Color.Green;
+            }
+            Map.RedrawMap();
+        }
+
+        private void btnGetRoute_Click(object sender, EventArgs e)
+        {
+            int TolocationID = int.Parse(tbToLocationID.Text);
+            Location destination = map.GetLocationByID(TolocationID);
+            int FromlocationID = int.Parse(tbFromLocationID.Text);
+            Location start = map.GetLocationByID(FromlocationID);
+            DijkstraRoute myRoute = map.DistManager.DistDijkstra.GetRouteTo(start, destination);
+
+            string holder = "From " + FromlocationID + " to " + TolocationID + ": \n";
+            foreach (Road r in myRoute.Route)
+            {
+                holder += "Road: " + r.Vertex1.LocationID + " - " + r.Vertex2.LocationID + "\n";
+            }
+            MessageBox.Show(holder);
+        }
+
+        private void btnDrawDijkstra_Click(object sender, EventArgs e)
+        {
+            int FromlocationID = int.Parse(tbFromLocationID.Text);
+            Location start = map.GetLocationByID(FromlocationID);
+
+            map.DistManager.DistDijkstra.PlayDijkstraAnimation(start);
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timeStampCounter++;
+            map.NextTick(timeStampCounter);
+            string holder = "";
+            foreach (Location s in map.Shops)
+            {
+                holder += "SHOP" + s.LocationID + " stock: " + ((Shop)s.Building).Stock + " Restock: " + ((Shop)s.Building).RestockAmount + "\n";
+            }
+            holder += "Cell Max D: " + Cell.MaxDemand + " DG: " + Cell.MaxDemandGrow + "\n";
+            foreach(Cell c in map.GetCells())
+            {
+                holder += "Cell (" + c.Index.Column + "," + c.Index.Row + ") D: " + c.Demand + " DG: " + c.DemandGrow + "\n";
+            }
+            shortesRoutesRichTbx.Clear();
+            shortesRoutesRichTbx.Text += holder;
+            if (drawHeatMap) { Map.RedrawMap(); }
+
+        }
+
+        int timeStampCounter = 0;
+        private void btnStartSimulation_Click(object sender, EventArgs e)
+        {
+            map.PrepareForSimulation();
+            Map.RedrawMap();
+            timer1.Enabled = true;
+        }
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            if(timer1.Enabled)
+            {
+                timer1.Enabled = false;
+            }
+            else
+            {
+                timer1.Enabled = true;
+            }
+        }
+        private bool drawHeatMap = false;
+        private void btnHeatMap_Click(object sender, EventArgs e)
+        {
+            drawHeatMap = !drawHeatMap;
+            Map.RedrawMap();
+        }
+
+        private void btnSpeed_Click(object sender, EventArgs e)
+        {
+            int speed = int.Parse(tbFromLocationID.Text);
+            timer1.Interval = speed;
+        }
+
+        private bool roadModeEnabled = false;
+        private void btnRoadMode_Click(object sender, EventArgs e)
+        {
+            roadModeEnabled = true;
+            isWarehouseBtnClicked = false;
+            isShopBtnClicked = false;
+            locationModeEnabled = false;
+        }
+
+        private bool locationModeEnabled = false;
+        private void btnLocationMode_Click(object sender, EventArgs e)
+        {
+            locationModeEnabled = true;
+            roadModeEnabled = false;
+            isWarehouseBtnClicked = false;
+            isShopBtnClicked = false;
         }
     }
 }

@@ -14,11 +14,8 @@ namespace ClassLibrary
         private List<Road> allRoads;
         private List<Location> reachableLocations;
 
+        public int totalDetectedLocations { get { return reachableLocations.Count; } }
 
-        /// <summary>
-        /// Sets the initial values for the parameters
-        /// </summary>
-        /// <param name="Roads"></param>
         public Dijkstra(List<Road> Roads)
         {
             if(Roads == null) { throw new NullReferenceException(); }
@@ -30,9 +27,8 @@ namespace ClassLibrary
             UpdateAllStarts();
         }
         
-
         /// <summary>
-        /// Updated all the starts for all the routes
+        /// Updates all Dijkstra Routes
         /// </summary>
         public void UpdateAllStarts()
         {
@@ -45,7 +41,7 @@ namespace ClassLibrary
         }
 
         /// <summary>
-        /// Updates the start for the specified location
+        /// Update all Dijkstra routes that have startLocation as starting point
         /// </summary>
         /// <param name="startLocation"></param>
         public void UpdateSingleStart(Location startLocation)
@@ -70,7 +66,7 @@ namespace ClassLibrary
         }
 
         /// <summary>
-        /// Starts the animation for Dijkstra
+        /// Display in the form of an animation how a Dijkstra start is created. This does not create an actual Dijkstra start! Only animation!
         /// </summary>
         /// <param name="startLocation"></param>
         public void PlayDijkstraAnimation(Location startLocation)
@@ -80,12 +76,6 @@ namespace ClassLibrary
                 createDijkstraStart(startLocation, true);
             }
         }
-
-        /// <summary>
-        /// Checks all the available roads if they are connected to the given location and returns them
-        /// </summary>
-        /// <param name="loc"></param>
-        /// <returns></returns>
         private List<Road> getRoadsConnectedToLocation(Location loc)
         {
             List<Road> roadList = new List<Road>();
@@ -98,12 +88,6 @@ namespace ClassLibrary
             }
             return roadList;
         }
-
-        /// <summary>
-        /// Determines the smallest value of the list for the given list.
-        /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
         private int findLowestIndex(List<int> list)
         {
             if (list == null) { throw new NullReferenceException(); }
@@ -119,22 +103,13 @@ namespace ClassLibrary
             }
             return lowestIndex;
         }
-        /// <summary>
-        /// Calculates Dijkstra for the given location and returns a visualization of the process
-        /// </summary>
-        /// <param name="startLocation"></param>
-        /// <param name="animate"></param>
-        /// <returns>returns true if the animation is possible</returns>
-        private DijkstraStart createDijkstraStart(Location startLocation, bool animate)
-            //main methods for creating shortest routes accros the map
+        private DijkstraStart createDijkstraStart(Location startLocation, bool animate) //main methods for creating shortest routes accros the map
         {
             if (!reachableLocations.Contains(startLocation)) { throw new Exception("Unknown location detected"); }
             List<Road> currentRoads = new List<Road>(); //considered roads at the moment
             List<int> currentRoadsLenghts = new List<int>(); //road lenghts
             DijkstraStart dijkstraStart = new DijkstraStart(startLocation);
 
-
-            //sets the lengths of the roads.
             currentRoads = getRoadsConnectedToLocation(startLocation);
             foreach (Road r in currentRoads)
             {
@@ -241,11 +216,11 @@ namespace ClassLibrary
                 lowestIndex = -1;
             }
             if (!animate) { return dijkstraStart; }
+            else { Map.RedrawMap(); }
             return null;
         }
-
         /// <summary>
-        /// Find all reachable locations 
+        /// Finds all reachable locations with the given roads from the constructor
         /// </summary>
         private void detectedLocations() 
         {
