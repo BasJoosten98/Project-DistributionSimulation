@@ -202,7 +202,7 @@ namespace MapLayout
         }
         private void mapPictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("Click detected");
+            //Console.WriteLine("Click detected");
             Point mousePt = new Point(e.X, e.Y);
             if (((PictureBox)sender) != mapPictureBox) //change cursor 
             {
@@ -210,7 +210,7 @@ namespace MapLayout
                 int y = ((PictureBox)sender).Location.Y - mapPictureBox.Location.Y + e.X;
                 mousePt = new Point(x, y);
             }
-            Console.WriteLine("finding location at " + mousePt.X + " " + mousePt.Y);
+           // Console.WriteLine("finding location at " + mousePt.X + " " + mousePt.Y);
 
             
             if (isShopBtnClicked || isWarehouseBtnClicked || roadModeEnabled)
@@ -238,6 +238,11 @@ namespace MapLayout
                                         if (!succes) //There is already a road there
                                         {
                                             map.RemoveRoad(selectedLocations[0], selectedLocations[1]);
+                                            Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been removed");
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been added");
                                         }
                                         selectedLocations.Clear();
                                     }
@@ -253,13 +258,12 @@ namespace MapLayout
                         }
                         else if (isShopBtnClicked || isWarehouseBtnClicked)
                         {
-                            Console.WriteLine("location found");
-                            if (l.Building != null)
+                            if (l.Building != null) //Remove building
                             {
-                                l.Building.picBox.Dispose();
-                                map.RemoveBuilding(l);
                                 if (l.Building is Warehouse)
-                                {                               
+                                {
+                                    l.Building.picBox.Dispose();
+                                    map.RemoveBuilding(l);
                                     Console.WriteLine("Warehouse has been removed from location" + l.LocationID);
                                     if (isWarehouseBtnClicked)
                                     {                                    
@@ -268,14 +272,24 @@ namespace MapLayout
                                 }
                                 else if (l.Building is Shop)
                                 {
+                                    l.Building.picBox.Dispose();
+                                    map.RemoveBuilding(l);
                                     Console.WriteLine("Shop has been removed from location" + l.LocationID);
                                     if (isShopBtnClicked)
                                     {      
                                         return;
                                     }
                                 }
+                                else
+                                {
+                                    throw new Exception("Impossible scenario");
+                                }
                             }
+                            
+                            //Add building
                             int id = l.LocationID;
+
+                            //Create picturebox
                             PictureBox picBox = new PictureBox();
                             Point ImagePosition = new Point((l.Index.Column * Cell.CellSize) + 4, (l.Index.Row * Cell.CellSize) + 4);
                             picBox.Location = ImagePosition;
@@ -283,13 +297,14 @@ namespace MapLayout
                             picBox.SizeMode = PictureBoxSizeMode.StretchImage;
                             picBox.MouseClick += mapPictureBox_MouseClick;
                             picBox.MouseEnter += mapPictureBox_MouseEnter;
-                            map.RemoveBuilding(l);
+
+                            //Set location building
                             if (isShopBtnClicked)
                             {
                                 picBox.Image = Properties.Resources.shopIcon;
                                 l.Building = new Shop(picBox, 500, 450);
                                 //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
-                                Console.WriteLine("Location #: " + id + " has been set to a Shop");
+                                Console.WriteLine("Shop has been added to location" + l.LocationID);
                             }
                             else if (isWarehouseBtnClicked)
                             {
@@ -299,9 +314,11 @@ namespace MapLayout
                                 ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
                                 ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
                                 //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
-                                Console.WriteLine("Location #: " + id + " has been set to a WareHouse");
+                                Console.WriteLine("Warehouse has been added to location" + l.LocationID);
                             }
                             map.AddNewBuilding(l);
+
+                            //Others
                             splitContainer1.Panel1.Controls.Add(picBox); //What does this do??
                             picBox.BringToFront(); //Needs to be here and not in class Building in order to work!
                         }
@@ -321,16 +338,18 @@ namespace MapLayout
                             {
                                 Location l = map.ChangeCellIntoLocation(c);
                                 map.Locations.Add(l);
+                                Console.WriteLine("Cell at col: " + c.Index.Column + " row: " + c.Index.Row + " is now location" + l.LocationID);
                             }
                             else
                             {
                                 Location l = (Location)c;
-                                if(l.Building != null) //Remove Building
+                                Console.WriteLine("Location" + l.LocationID + " has been removed");
+                                if (l.Building != null) //Remove Building
                                 {
                                     l.Building.picBox.Dispose();
                                     map.RemoveBuilding(l);
                                 }
-                                map.ChangeLocationIntoCell((Location)c);
+                                map.ChangeLocationIntoCell((Location)c);                                
                             }
                             Map.RedrawMap();
                         }
@@ -434,23 +453,6 @@ namespace MapLayout
             locationModeEnabled = false;
             roadModeEnabled = false;
         }
-
-        //private void DrawRoads(PaintEventArgs e)
-        //{
-        //    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-        //    foreach (Road road in map.Edges)
-        //    {
-        //        e.Graphics.DrawLine(new Pen(Color.IndianRed, 3), road[0].Center, road[1].Center);
-        //    }
-        //}
-
-        //private void DrawRoadWeights(PaintEventArgs e)
-        //{
-        //    foreach (Road road in map.Edges)
-        //    {
-        //        e.Graphics.DrawString(road.initialCost.ToString(), Font, new SolidBrush(Color.White), 0.5f * (road[0].Center.X + road[1].Center.X), 0.5f * (road[0].Center.Y + road[1].Center.Y));
-        //    }
-        //}
 
         private void simulateBtn_click(object sender, EventArgs e)
         {
