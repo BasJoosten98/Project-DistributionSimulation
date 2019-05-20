@@ -14,42 +14,30 @@ namespace ClassLibrary
 		public int Stock { get; set; }
         public int RestockAmount { get; set; }
         public int ID { get; set; }
+        public int Radius { get; set; }
 
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
-        public Shop(PictureBox PicBox, int stock, int restockamount)
-            :base(PicBox)
+        public Shop(PictureBox PicBox, int stock, int restockamount) : base(PicBox)
         {
             Stock = stock;
             Capacity = stock;
             RestockAmount = restockamount;
+            Radius = 2;
             ID = ++id;
         }
-
-<<<<<<< HEAD
-        public Shop (int stock, int restockamount)
-        {
-            Stock = stock;
-            Capacity = stock;
-            RestockAmount = restockamount;
-            ID = ++id;
-        }
-=======
-        //public Shop (int stock, int restockamount)
-        //{
-        //    Stock = stock;
-        //    Capacity = stock;
-        //    RestockAmount = restockamount;
-        //}
->>>>>>> DistMan
 
         public virtual void OnLowStockReached(LowStockReachedEventArgs e)
         {
             LowStockReached?.Invoke(this, e);
         }
 
-		public void Sell(int demand)
+		public int Sell(int demand)
 		{
+            if(demand > Stock)
+            {
+                demand = Stock;
+            }
             Stock -= demand;
             if (Stock <= RestockAmount)
             {
@@ -57,13 +45,17 @@ namespace ClassLibrary
                 args.TimeReached = DateTime.Now;
                 OnLowStockReached(args);
             }
-
+            return demand; //AMOUNT THAT HAS BEEN SOLD
             
 		}
+<<<<<<< HEAD
+
         public void nextTick(int demand)
         {
             Sell(demand);
         }
+=======
+>>>>>>> DistMan
         
 	}
 }

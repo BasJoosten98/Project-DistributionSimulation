@@ -7,8 +7,8 @@ using System.Windows.Forms;
 namespace ClassLibrary
 {
 	public abstract class Building
-	{
-        public PictureBox picBox;
+    {
+        public PictureBox picBox; //picturebox that contains a picture of Warehouse or Shop
         public Building(PictureBox PicBox)
         {
             picBox = PicBox;

@@ -8,12 +8,12 @@ namespace ClassLibrary
 {
 	public class Vehicle
 	{
-        public static int capacity = 40;
+        public static int capacity = 150;
         private static int idCounter = 0;
 		private int id;
-        private PictureBox picBox;
-        List<Delivery> deliveryQueue;
-        List<Delivery> finishedDeliveries;
+        public PictureBox picBox;
+        List<Delivery> deliveryQueue; //list of deliveries that this vehicle needs to do
+        List<Delivery> finishedDeliveries; //list of deliveries that this vehicle has finished
 
         public PictureBox PicBox { get { return picBox; } }
 
@@ -26,11 +26,19 @@ namespace ClassLibrary
             idCounter++;
         }
 
+        /// <summary>
+        /// Add given delivery to the deliveries queue
+        /// </summary>
+        /// <param name="d"></param>
         public void AddDeliveryToQueue(Delivery d)
         {
             deliveryQueue.Add(d);
         }
 
+        /// <summary>
+        /// Calculates when this vehicle can start deliverying a new delivery
+        /// </summary>
+        /// <returns></returns>
         public int lastDeliveryFinishDeltaTime()
         {
             int sum = 0;
@@ -41,19 +49,19 @@ namespace ClassLibrary
             return sum;
         }
 
-        public void nextTick()
+        public void NextTick()
         {
-            if(deliveryQueue.Count != 0)
+            if(deliveryQueue.Count != 0) //Check if this vehicle has any delivery
             {
-                deliveryQueue[0].nextTick();
-                calculateAndSetPosition();
-                if (deliveryQueue[0].Route.RouteLenght == deliveryQueue[0].TotalTravelTime) //Delivery happenend!
+                deliveryQueue[0].NextTick(); //Update delivery
+                calculateAndSetPosition(); //Set vehicle position
+                if (deliveryQueue[0].Route.RouteLenght == deliveryQueue[0].TotalTravelTime) //Delivery at shop happenend!
                 {
                     Shop temp = ((Shop)deliveryQueue[0].Route.EndPoint.Building);
                     temp.Stock += capacity;
                     Console.WriteLine("Shop" + temp.ID + " has been restocked by vehicle" + id + ", new stock = " + temp.Stock);                    
                 }
-                if (2*deliveryQueue[0].Route.RouteLenght == deliveryQueue[0].TotalTravelTime) //Delivery happenend!
+                if (2*deliveryQueue[0].Route.RouteLenght == deliveryQueue[0].TotalTravelTime) //Returned to warehouse
                 {
                     finishedDeliveries.Add(deliveryQueue[0]);
                     deliveryQueue.RemoveAt(0);
@@ -61,6 +69,9 @@ namespace ClassLibrary
 
             }
         }
+        /// <summary>
+        /// Update vehicle position based on delivery position
+        /// </summary>
         private void calculateAndSetPosition()
         {
             if(deliveryQueue.Count != 0)

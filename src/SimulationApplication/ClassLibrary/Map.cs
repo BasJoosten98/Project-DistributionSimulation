@@ -10,17 +10,23 @@ namespace ClassLibrary
     public class Map : IEnumerable
     {
         public int Id { get; set; }
+        // Another test for relation with locations.
+        public ICollection<Location> LocationsDb { get; set; }
         public List<Location> Warehouses { get; }
         public List<Location> Shops { get; }
         public List<Location> Locations = new List<Location>();
         public List<Road> Edges = new List<Road>();
         private Random rng;
+        private Random rng2;
         private Cell[,] cells;
         private static PictureBox mapPicBox;
         private DistributionManager distributionManager;
 
         public int NumberOfCells { get; set; }
         public DistributionManager DistManager { get { return distributionManager; } }
+
+        public Map()
+        { }
 
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
@@ -39,6 +45,13 @@ namespace ClassLibrary
             }
             // Seed the random generator to get reproducable results.
             rng = new Random(0);
+            rng2 = new Random();
+
+            foreach (Cell c in cells)
+            {
+                c.SetDemandGrow(rng2.Next(2, 5));
+            }
+
 
             while (numberOfLocations > 0)
             {
@@ -48,11 +61,8 @@ namespace ClassLibrary
                     // Set location object to beparth of this cell 
                     // and decrement number of locations to be added to the cells/map.
                     //c.Location = new Location(c.Index.Row, c.Index.Column);
-                    Location newLocation = new Location(c.Index.Column, c.Index.Row);
-                    cells[c.Index.Column, c.Index.Row] = newLocation;
-                    // Add the cell's location object to the list of vertices.
+                    Location newLocation = ChangeCellIntoLocation(c);
                     Locations.Add(newLocation);
-                    newLocation.Demand = 2;
                     numberOfLocations--;
                 }
             }
@@ -88,23 +98,104 @@ namespace ClassLibrary
                 r.initialCost = rng.Next(1, 6);
             }
         }
-
-        public void nextTick()
+        /// <summary>
+        /// Changes Cell into Location
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public Location ChangeCellIntoLocation(Cell c)
         {
+            Location l = new Location(c.Index.Column, c.Index.Row);
+            l.SetDemandGrow(c.Demand);
+            cells[c.Index.Column, c.Index.Row] = l;
+            return l;
+        }
+        /// <summary>
+        /// Changes Location into Cell
+        /// </summary>
+        /// <param name="l"></param>
+        /// <returns></returns>
+        public Cell ChangeLocationIntoCell(Location l)
+        {
+            Cell c = new Cell(l.Index.Column, l.Index.Row);
+            c.SetDemandGrow(l.Demand);
+            cells[l.Index.Column, l.Index.Row] = c;
+            Locations.Remove(l);
+            for(int i = 0; i < Edges.Count; i++)
+            {
+                if(Edges[i].Vertex1 == l || Edges[i].Vertex2 == l)
+                {
+                    Edges.RemoveAt(i);
+                    i--;
+                }
+            }
+            return c;
+        }
+
+        public void NextTick()
+        {
+            List<Cell> tempList = new List<Cell>();
+            foreach(Cell c in cells)
+            {
+                tempList.Add(c);
+            }
+            while(tempList.Count > 0)
+            {
+                int r = rng2.Next(0, tempList.Count);
+                tempList[r].NextTick();
+                tempList.RemoveAt(r);
+            }
             foreach(Location w in Warehouses)
             {
-                ((Warehouse)w.Building).nextTick();
+                ((Warehouse)w.Building).NextTick();
             }
-            foreach(Location s in Shops)
-            {
-                ((Shop)s.Building).nextTick(s.Demand);
-            }
-            distributionManager.nextTick();
+            distributionManager.NextTick();
         }
-        public void CreateDistributionManager() //should be called when map is forseen with warehouses and shops!
+        private void createDistributionManager() //should be called when map is forseen with warehouses and shops!
         {
             Dijkstra dijkstra = new Dijkstra(Edges);
             distributionManager = new DistributionManager(dijkstra, Warehouses, Shops);
+        }
+        /// <summary>
+        /// Preparing Map and all it's atributes for the start of the simulation
+        /// </summary>
+        public void PrepareForSimulation()
+        {
+            createDistributionManager();
+
+        }
+        public bool AddNewRoad(Location l1, Location l2, int cost)
+        {
+            Road r = getRoadByLocations(l1, l2);
+            if (r == null)
+            {
+                Road temp = new Road(l1, l2);
+                temp.initialCost = cost;
+                Edges.Add(temp);
+                return true;
+            }
+            return false;
+        }
+        private Road getRoadByLocations(Location l1, Location l2)
+        {
+            foreach (Road r in Edges)
+            {
+                if ((r.Vertex1 == l1 && r.Vertex2 == l2) || (r.Vertex1 == l2 && r.Vertex2 == l1))
+                {
+                    return r;
+                }
+            }
+            return null;
+        }
+        public bool RemoveRoad(Location l1, Location l2)
+        {
+            Road r = getRoadByLocations(l1, l2);
+            if(r != null)
+            {
+                Edges.Remove(r);
+                return true;
+            }
+            return false;
         }
         public void AddNewBuilding(Location l)
         {
@@ -115,6 +206,55 @@ namespace ClassLibrary
             else if (l.Building is Shop)
             {
                 Shops.Add(l);
+                applyShopRadiusToCells(l);
+            }
+        }
+        private Cell getCellByIndex(int column, int row)
+        {
+            foreach(Cell c in cells)
+            {
+                if(c.Index.Column == column && c.Index.Row == row)
+                {
+                    return c;
+                }
+            }
+            return null;
+        }
+        /// <summary>
+        /// Provide shopRadius to all nearby Cells (based on the Radius of the given Shop)
+        /// </summary>
+        /// <param name="shopLocation"></param>
+        private void applyShopRadiusToCells(Location shopLocation)
+        {
+            Shop shop = (Shop)shopLocation.Building;
+            for(int col = shopLocation.Index.Column - shop.Radius; col <= shopLocation.Index.Column + shop.Radius; col++)
+            {
+                for (int row = shopLocation.Index.Row - shop.Radius; row <= shopLocation.Index.Row + shop.Radius; row++)
+                {
+                    Cell c = getCellByIndex(col, row);
+                    if(c != null)
+                    {
+                        int distance;
+                        if(Math.Abs(row - shopLocation.Index.Row) > Math.Abs(col - shopLocation.Index.Column))
+                        {
+                            distance = Math.Abs(row - shopLocation.Index.Row);
+                        }
+                        else
+                        {
+                            distance = Math.Abs(col - shopLocation.Index.Column);
+                        }
+                        int demandEffect = c.Demand - distance;
+                        c.AddShopRadius(shop, demandEffect);
+                    }
+                }
+            }
+
+        }
+        private void removeShopRadiusFromCells(Shop s)
+        {
+            foreach(Cell c in cells)
+            {
+                c.RemoveShopRadius(s);
             }
         }
         public void RemoveBuilding(Location l)
@@ -122,10 +262,15 @@ namespace ClassLibrary
             if (l.Building is Warehouse)
             {
                 Warehouses.Remove(l);
+                l.Building.picBox.Dispose();
+                ((Warehouse)l.Building).RemoveAllvehicles();
+                
             }
             else if (l.Building is Shop)
             {
                 Shops.Remove(l);
+                removeShopRadiusFromCells((Shop)l.Building);
+                l.Building.picBox.Dispose();
             }
             l.Building = null;
         }
