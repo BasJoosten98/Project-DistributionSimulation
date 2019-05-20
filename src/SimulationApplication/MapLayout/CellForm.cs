@@ -14,12 +14,12 @@ namespace MapLayout
     public partial class CellForm : Form
     {
 
-        private Cell cell;
+        private Location location;
 
-        public CellForm(Cell c)
+        public CellForm(Location l)
         {
             InitializeComponent();
-            cell = c;
+            location = l;
             initValues();
         }
 
@@ -29,14 +29,14 @@ namespace MapLayout
             updateGui();
         }
 
-        //Initialize values in the GUI based on the info of the cell that was passed in the constructor.
+        //Initialize values in the GUI based on the info of the location that was passed in the constructor.
         private void initValues()
         {
-            lbRow.Text = cell.Index.Row.ToString();
-            lbCol.Text = cell.Index.Column.ToString();
-            nudDemand.Value = cell.Demand;
+            lbRow.Text = location.Index.Row.ToString();
+            lbCol.Text = location.Index.Column.ToString();
+            nudDemand.Value = location.Demand;
             checkCellBuilding();
-            updateGui();           
+            updateGui();
         }
 
         // Check which building is selected in the combobox and update GUI accordingly.
@@ -44,30 +44,43 @@ namespace MapLayout
         {
             if (cbType.SelectedIndex == 1)
             {
-                gbBuilding.Name = "Shop Info";
-                gbBuilding.Enabled = true;
-                // Might need to cast to shop first...If so then just make a shop variable 
-                //nudStock.Value = cell.Location.Shop.Stock;
-                //nudRestock.Value= cell.Location.Shop.Restock;
-                //lbIDnum.Text = cell.Location.Shop.ID.ToString();
+
+                gbBInfo.Name = "Shop Info";
+                gbBInfo.Enabled = true;
+
+                if(location.Building is Shop)
+                {
+                    Shop s = (Shop)location.Building;
+
+                    //Building does not have any of these values..figure out solution
+                    //nudStock.Value = s.Stock;
+                    //nudRestock.Value = s.RestockAmount;
+                    //lbIDnum.Text = s.ID.ToString();
+                } else
+                {
+                    nudStock.Value = 0;
+                    nudRestock.Value = 0;
+                    lbIDnum.Text = "0";
+                }
+
             }
             else if (cbType.SelectedIndex == 2)
             {
-                gbBuilding.Name = "Warehouse Info";
-                gbBuilding.Enabled = false;
+                gbBInfo.Name = "Warehouse Info";
+                gbBInfo.Enabled = false;
                 nudStock.Value = 0;
                 nudRestock.Value = 0;
                 lbIDnum.Text = "0";
             }
             else
             {
-                gbBuilding.Name = "Building Info";
+                gbBInfo.Name = "Building Info";
                 //nudStock.Enabled = false;
                 //nudRestock.Enabled = false;
                 nudStock.Value = 0;
                 nudRestock.Value = 0;
                 lbIDnum.Text = "0";
-                gbBuilding.Enabled = false;
+                gbBInfo.Enabled = false;
 
             }
         }
@@ -75,31 +88,85 @@ namespace MapLayout
         //Update ComboBox based on the type of building the cell has.
         private void checkCellBuilding()
         {
-            /* if(cell.Location != null) {
-                   if (cell.Location.Building.GetType() == typeof(Shop)) {
-                       cbType.SelectedIndex = 1;
-                   } else {
-                       cbType.SelectedIndex = 2;
-                   }
-            } else {
+            if (location.Building != null)
+            {
+                if (location.Building.GetType() == typeof(Shop))
+                {
+                    cbType.SelectedIndex = 1;
+                }
+                else
+                {
+                    cbType.SelectedIndex = 2;
+                }
+            }
+            else
+            {
                 cbType.SelectedIndex = 0;
             }
-            */
         }
 
         private void bSave_Click(object sender, EventArgs e)
         {
-            //cell.Demand = Convert.ToInt32(nudDemand.Value);
+            location.SetDemandGrow(Convert.ToInt32(nudDemand.Value));
+            PictureBox p;
 
-            if (cbType.SelectedIndex == 1 )
+            if (cbType.SelectedIndex == 1)
             {
                 int stock = Convert.ToInt32(nudStock.Value);
                 int reStock = Convert.ToInt32(nudRestock.Value);
-                // cell.Location.Building = new Shop (stock,restock)
-            } else if (cbType.SelectedIndex == 2)
-            {
-                //cell.Location.Building = new Warehouse()
+                p = genPicturebox(Type.Shop);
+                location.Building = new Shop(p, stock, reStock);
             }
+            else if (cbType.SelectedIndex == 2)
+            {
+                p = genPicturebox(Type.Warehouse);
+                location.Building = new Warehouse(p);
+            } else
+            {
+                p = genPicturebox(Type.None);
+            }
+        }
+
+        //Generate a picturebox to put in the shop/warehouse constructor.
+        private PictureBox genPicturebox(Type type)
+        {
+            PictureBox picBox = new PictureBox();
+            Point ImagePosition = new Point((location.Index.Column * Cell.CellSize) + 4, (location.Index.Row * Cell.CellSize) + 4);
+            picBox.Location = ImagePosition;
+            picBox.Size = new Size(Cell.CellSize - 1, Cell.CellSize - 1);
+            picBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            //Not sure how to add the mouse click yet
+            //picBox.MouseClick += mapPictureBox_MouseClick;
+            //picBox.MouseEnter += mapPictureBox_MouseEnter;
+
+            if (type == Type.Shop)
+            {
+                picBox.Image = Properties.Resources.shopIcon;
+                location.Building = new Shop(picBox, 500, 450);
+                //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
+                Console.WriteLine("Shop has been added to location" + location.LocationID);
+            }
+            else if (type == Type.Warehouse)
+            {
+                picBox.Image = Properties.Resources.warehouseIcon;
+                location.Building = new Warehouse(picBox);
+                //Not sure how to add the vehicles yet.
+                //((Warehouse)location.Building).AddVehicle(createNewVehicle(ImagePosition));
+                //((Warehouse)location.Building).AddVehicle(createNewVehicle(ImagePosition));
+                //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
+                Console.WriteLine("Warehouse has been added to location" + location.LocationID);
+            } else
+            {
+
+            }
+            return picBox;  
+        }
+
+        enum Type
+        {
+            Shop,
+            Warehouse,
+            None
         }
     }
 }
