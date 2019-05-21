@@ -167,7 +167,6 @@ namespace ClassLibrary
             {
                 Statistics.Add(((Warehouse)w.Building).MakeStatistics(timeStamp));
             }
-            int k = 1;
         }
         private void createDistributionManager() //should be called when map is forseen with warehouses and shops!
         {

@@ -29,31 +29,31 @@
         private void InitializeComponent()
         {
             this.gbInfo = new System.Windows.Forms.GroupBox();
+            this.nudDemand = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lbRow = new System.Windows.Forms.Label();
             this.lbCol = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.lbRow = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.nudDemand = new System.Windows.Forms.NumericUpDown();
             this.gbBuilding = new System.Windows.Forms.GroupBox();
-            this.cbType = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.cbType = new System.Windows.Forms.ComboBox();
             this.bSave = new System.Windows.Forms.Button();
             this.gbBInfo = new System.Windows.Forms.GroupBox();
-            this.lbStock = new System.Windows.Forms.Label();
-            this.lbRestock = new System.Windows.Forms.Label();
-            this.nudStock = new System.Windows.Forms.NumericUpDown();
-            this.nudRestock = new System.Windows.Forms.NumericUpDown();
-            this.lbID = new System.Windows.Forms.Label();
             this.lbIDnum = new System.Windows.Forms.Label();
+            this.lbID = new System.Windows.Forms.Label();
+            this.nudRestock = new System.Windows.Forms.NumericUpDown();
+            this.nudStock = new System.Windows.Forms.NumericUpDown();
+            this.lbRestock = new System.Windows.Forms.Label();
+            this.lbStock = new System.Windows.Forms.Label();
             this.gbInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDemand)).BeginInit();
             this.gbBuilding.SuspendLayout();
             this.gbBInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudStock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRestock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStock)).BeginInit();
             this.SuspendLayout();
             // 
             // gbInfo
@@ -72,6 +72,32 @@
             this.gbInfo.TabIndex = 0;
             this.gbInfo.TabStop = false;
             this.gbInfo.Text = "Cell";
+            // 
+            // nudDemand
+            // 
+            this.nudDemand.Location = new System.Drawing.Point(69, 54);
+            this.nudDemand.Name = "nudDemand";
+            this.nudDemand.Size = new System.Drawing.Size(53, 20);
+            this.nudDemand.TabIndex = 7;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(6, 56);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(57, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Demand:";
+            // 
+            // lbRow
+            // 
+            this.lbRow.AutoSize = true;
+            this.lbRow.Location = new System.Drawing.Point(38, 33);
+            this.lbRow.Name = "lbRow";
+            this.lbRow.Size = new System.Drawing.Size(13, 13);
+            this.lbRow.TabIndex = 5;
+            this.lbRow.Text = "0";
             // 
             // lbCol
             // 
@@ -118,32 +144,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Location";
             // 
-            // lbRow
-            // 
-            this.lbRow.AutoSize = true;
-            this.lbRow.Location = new System.Drawing.Point(38, 33);
-            this.lbRow.Name = "lbRow";
-            this.lbRow.Size = new System.Drawing.Size(13, 13);
-            this.lbRow.TabIndex = 5;
-            this.lbRow.Text = "0";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(6, 56);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(57, 13);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Demand:";
-            // 
-            // nudDemand
-            // 
-            this.nudDemand.Location = new System.Drawing.Point(69, 54);
-            this.nudDemand.Name = "nudDemand";
-            this.nudDemand.Size = new System.Drawing.Size(53, 20);
-            this.nudDemand.TabIndex = 7;
-            // 
             // gbBuilding
             // 
             this.gbBuilding.Controls.Add(this.label6);
@@ -154,6 +154,16 @@
             this.gbBuilding.TabIndex = 1;
             this.gbBuilding.TabStop = false;
             this.gbBuilding.Text = "Building";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(6, 29);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(35, 13);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Type";
             // 
             // cbType
             // 
@@ -167,16 +177,6 @@
             this.cbType.Size = new System.Drawing.Size(142, 21);
             this.cbType.TabIndex = 0;
             this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(6, 29);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(35, 13);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "Type";
             // 
             // bSave
             // 
@@ -203,37 +203,14 @@
             this.gbBInfo.TabStop = false;
             this.gbBInfo.Text = "Building Info";
             // 
-            // lbStock
+            // lbIDnum
             // 
-            this.lbStock.AutoSize = true;
-            this.lbStock.Location = new System.Drawing.Point(7, 44);
-            this.lbStock.Name = "lbStock";
-            this.lbStock.Size = new System.Drawing.Size(35, 13);
-            this.lbStock.TabIndex = 0;
-            this.lbStock.Text = "Stock";
-            // 
-            // lbRestock
-            // 
-            this.lbRestock.AutoSize = true;
-            this.lbRestock.Location = new System.Drawing.Point(6, 70);
-            this.lbRestock.Name = "lbRestock";
-            this.lbRestock.Size = new System.Drawing.Size(54, 13);
-            this.lbRestock.TabIndex = 1;
-            this.lbRestock.Text = "Restock#";
-            // 
-            // nudStock
-            // 
-            this.nudStock.Location = new System.Drawing.Point(156, 42);
-            this.nudStock.Name = "nudStock";
-            this.nudStock.Size = new System.Drawing.Size(142, 20);
-            this.nudStock.TabIndex = 2;
-            // 
-            // nudRestock
-            // 
-            this.nudRestock.Location = new System.Drawing.Point(156, 68);
-            this.nudRestock.Name = "nudRestock";
-            this.nudRestock.Size = new System.Drawing.Size(142, 20);
-            this.nudRestock.TabIndex = 3;
+            this.lbIDnum.AutoSize = true;
+            this.lbIDnum.Location = new System.Drawing.Point(155, 20);
+            this.lbIDnum.Name = "lbIDnum";
+            this.lbIDnum.Size = new System.Drawing.Size(13, 13);
+            this.lbIDnum.TabIndex = 5;
+            this.lbIDnum.Text = "0";
             // 
             // lbID
             // 
@@ -245,14 +222,47 @@
             this.lbID.TabIndex = 4;
             this.lbID.Text = "ID";
             // 
-            // lbIDnum
+            // nudRestock
             // 
-            this.lbIDnum.AutoSize = true;
-            this.lbIDnum.Location = new System.Drawing.Point(155, 20);
-            this.lbIDnum.Name = "lbIDnum";
-            this.lbIDnum.Size = new System.Drawing.Size(13, 13);
-            this.lbIDnum.TabIndex = 5;
-            this.lbIDnum.Text = "0";
+            this.nudRestock.Location = new System.Drawing.Point(156, 68);
+            this.nudRestock.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudRestock.Name = "nudRestock";
+            this.nudRestock.Size = new System.Drawing.Size(142, 20);
+            this.nudRestock.TabIndex = 3;
+            // 
+            // nudStock
+            // 
+            this.nudStock.Location = new System.Drawing.Point(156, 42);
+            this.nudStock.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudStock.Name = "nudStock";
+            this.nudStock.Size = new System.Drawing.Size(142, 20);
+            this.nudStock.TabIndex = 2;
+            // 
+            // lbRestock
+            // 
+            this.lbRestock.AutoSize = true;
+            this.lbRestock.Location = new System.Drawing.Point(6, 70);
+            this.lbRestock.Name = "lbRestock";
+            this.lbRestock.Size = new System.Drawing.Size(54, 13);
+            this.lbRestock.TabIndex = 1;
+            this.lbRestock.Text = "Restock#";
+            // 
+            // lbStock
+            // 
+            this.lbStock.AutoSize = true;
+            this.lbStock.Location = new System.Drawing.Point(7, 44);
+            this.lbStock.Name = "lbStock";
+            this.lbStock.Size = new System.Drawing.Size(35, 13);
+            this.lbStock.TabIndex = 0;
+            this.lbStock.Text = "Stock";
             // 
             // CellForm
             // 
@@ -272,8 +282,8 @@
             this.gbBuilding.PerformLayout();
             this.gbBInfo.ResumeLayout(false);
             this.gbBInfo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudStock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudRestock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStock)).EndInit();
             this.ResumeLayout(false);
 
         }

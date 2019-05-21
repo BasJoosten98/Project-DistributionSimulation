@@ -53,10 +53,11 @@ namespace MapLayout
                     Shop s = (Shop)location.Building;
 
                     //Building does not have any of these values..figure out solution
-                    //nudStock.Value = s.Stock;
-                    //nudRestock.Value = s.RestockAmount;
-                    //lbIDnum.Text = s.ID.ToString();
-                } else
+                    nudStock.Value = s.Stock;
+                    nudRestock.Value = s.RestockAmount;
+                    lbIDnum.Text = s.ID.ToString();
+                }
+                else
                 {
                     nudStock.Value = 0;
                     nudRestock.Value = 0;
