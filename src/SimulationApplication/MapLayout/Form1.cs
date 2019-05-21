@@ -354,7 +354,20 @@ namespace MapLayout
                         {
                             if (c.CellRectangle.Contains(mousePt)) //Mouse was above some location 
                             {
-                                MessageBox.Show("Cell col:" + c.Index.Column + " row:" + c.Index.Row + " demand:" + c.Demand + " demandGrow:" + c.DemandGrow);
+                                Location location = null;
+                                foreach(Location  l in map.Locations)
+                                {
+                                    if( c == l )
+                                    {
+                                        location = l;
+                                    }
+                                }
+                                if(location != null)
+                                {
+                                    CellForm cForm = new CellForm(location);
+                                    cForm.Show();
+                                }
+
                             }
                         }
                         break;
