@@ -32,7 +32,7 @@ namespace ClassLibrary
             this.min_cost = int.MaxValue;
             this.permanent = false;
             this.visited = false;
-            this.Radius = 2;
+            this.Radius = 3;
 
         }
         public Location(int column, int row, int Radius)

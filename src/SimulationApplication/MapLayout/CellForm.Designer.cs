@@ -239,12 +239,13 @@
             // 
             // lbRestock
             // 
-            this.lbRestock.AutoSize = true;
-            this.lbRestock.Location = new System.Drawing.Point(6, 70);
-            this.lbRestock.Name = "lbRestock";
-            this.lbRestock.Size = new System.Drawing.Size(54, 13);
-            this.lbRestock.TabIndex = 1;
-            this.lbRestock.Text = "Restock#";
+            this.lbID.AutoSize = true;
+            this.lbID.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lbID.Location = new System.Drawing.Point(9, 20);
+            this.lbID.Name = "lbID";
+            this.lbID.Size = new System.Drawing.Size(18, 13);
+            this.lbID.TabIndex = 4;
+            this.lbID.Text = "ID";
             // 
             // lbStock
             // 

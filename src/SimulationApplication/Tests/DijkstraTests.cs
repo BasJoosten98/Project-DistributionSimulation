@@ -11,10 +11,20 @@ namespace SimulationApplicationTests
     public class DijkstraTests
     {
         private Random rgn = new Random();
-        [Fact()]
-        public void DetectLocationsTest()
+
+        [Theory]
+        [InlineData(2)]
+        [InlineData(5)]
+        [InlineData(20)]
+        [InlineData(-1)]
+        public void DetectLocationsTest(int totalLoc)
         {
-            int totalLocations = rgn.Next(2, 11);
+            int totalLocations = totalLoc;
+            if (totalLoc < 2)
+            {
+                totalLocations = rgn.Next(2, 11);
+            }
+            
             List<Location> locations = new List<Location>();
             List<Road> roads = new List<Road>();
             for (int i = 0; i < totalLocations; i++)
@@ -37,10 +47,20 @@ namespace SimulationApplicationTests
 
             Assert.True(d.totalDetectedLocations == totalLocations);
         }
-        [Fact()]
-        public void ReturnDijkstraRouteTest()
+
+        [Theory]
+        [InlineData(2)]
+        [InlineData(5)]
+        [InlineData(20)]
+        [InlineData(-1)]
+        public void ReturnDijkstraRouteTest(int totalLoc)
         {
-            int totalLocations = rgn.Next(3, 11);
+            int totalLocations = totalLoc;
+            if (totalLoc < 2)
+            {
+                totalLocations = rgn.Next(2, 11);
+            }
+
             List<Location> locations = new List<Location>();
             List<Road> roads = new List<Road>();
             for (int i = 0; i < totalLocations; i++)
@@ -64,10 +84,19 @@ namespace SimulationApplicationTests
             DijkstraRoute dr = d.GetRouteTo(locations[rgn.Next(0, split)], locations[rgn.Next(split, totalLocations - 1)]);
             Assert.True(dr != null);
         }
-        [Fact()]
-        public void ReturnShortestDijkstraRouteTest()
+        [Theory]
+        [InlineData(2)]
+        [InlineData(5)]
+        [InlineData(20)]
+        [InlineData(-1)]
+        public void ReturnShortestDijkstraRouteTest(int totalLoc)
         {
-            int totalLocations = rgn.Next(4, 11);
+            int totalLocations = totalLoc;
+            if (totalLoc < 2)
+            {
+                totalLocations = rgn.Next(2, 11);
+            }
+
             List<Location> locations = new List<Location>();
             List<Road> roads = new List<Road>();
             for (int i = 0; i < totalLocations; i++)
@@ -94,10 +123,19 @@ namespace SimulationApplicationTests
             DijkstraRoute dr = d.GetRouteTo(locations[0], locations[totalLocations - 1]);
             Assert.True(dr.RouteLenght < 50);
         }
-        [Fact()]
-        public void UnreachableLocationTest()
+        [Theory]
+        [InlineData(4)]
+        [InlineData(9)]
+        [InlineData(20)]
+        [InlineData(-1)]
+        public void UnreachableLocationTest(int totalLoc)
         {
-            int totalLocations = rgn.Next(4, 11);
+            int totalLocations = totalLoc;
+            if (totalLoc < 4)
+            {
+                totalLocations = rgn.Next(2, 11);
+            }
+
             List<Location> locations = new List<Location>();
             List<Road> roads = new List<Road>();
             for (int i = 0; i < totalLocations; i++)
