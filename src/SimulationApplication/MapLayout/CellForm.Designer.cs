@@ -46,12 +46,12 @@
             this.tbStock = new System.Windows.Forms.TextBox();
             this.lbIDnum = new System.Windows.Forms.Label();
             this.lbID = new System.Windows.Forms.Label();
-            this.lbRestock = new System.Windows.Forms.Label();
             this.lbStock = new System.Windows.Forms.Label();
             this.tbReStock = new System.Windows.Forms.TextBox();
             this.gbWarehouse = new System.Windows.Forms.GroupBox();
             this.tbVehicles = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.gbInfo.SuspendLayout();
             this.gbBInfo.SuspendLayout();
             this.gbWarehouse.SuspendLayout();
@@ -198,10 +198,10 @@
             // 
             // gbBInfo
             // 
+            this.gbBInfo.Controls.Add(this.label1);
             this.gbBInfo.Controls.Add(this.tbStock);
             this.gbBInfo.Controls.Add(this.lbIDnum);
             this.gbBInfo.Controls.Add(this.lbID);
-            this.gbBInfo.Controls.Add(this.lbRestock);
             this.gbBInfo.Controls.Add(this.lbStock);
             this.gbBInfo.Controls.Add(this.tbReStock);
             this.gbBInfo.Location = new System.Drawing.Point(144, 13);
@@ -228,16 +228,6 @@
             this.lbIDnum.Text = "0";
             // 
             // lbID
-            // 
-            this.lbID.AutoSize = true;
-            this.lbID.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lbID.Location = new System.Drawing.Point(9, 20);
-            this.lbID.Name = "lbID";
-            this.lbID.Size = new System.Drawing.Size(18, 13);
-            this.lbID.TabIndex = 4;
-            this.lbID.Text = "ID";
-            // 
-            // lbRestock
             // 
             this.lbID.AutoSize = true;
             this.lbID.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -291,6 +281,15 @@
             this.label9.TabIndex = 1;
             this.label9.Text = "Vehicles";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 70);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(47, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Restock";
+            // 
             // CellForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -325,7 +324,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.GroupBox gbBInfo;
-        private System.Windows.Forms.Label lbRestock;
         private System.Windows.Forms.Label lbStock;
         private System.Windows.Forms.Label lbID;
         private System.Windows.Forms.Label lbIDnum;
@@ -338,5 +336,6 @@
         private System.Windows.Forms.GroupBox gbWarehouse;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox tbVehicles;
+        private System.Windows.Forms.Label label1;
     }
 }
