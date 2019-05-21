@@ -15,158 +15,130 @@ namespace MapLayout
     {
 
         private Location location;
+        private Cell cell;
 
-        public CellForm(Location l)
+        public CellForm(Location l, Cell c)
         {
             InitializeComponent();
+            gbBInfo.Hide();
+            gbWarehouse.Hide();
             location = l;
+            cell = c;
             initValues();
         }
 
-        //Update Gui everytime index of combobox is changed
-        private void cbType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            updateGui();
-        }
-
-        //Initialize values in the GUI based on the info of the location that was passed in the constructor.
+        //Initialize values in the GUI based on the info of the CELL that was passed in the constructor.
         private void initValues()
         {
-            lbRow.Text = location.Index.Row.ToString();
-            lbCol.Text = location.Index.Column.ToString();
-            nudDemand.Value = location.Demand;
-            checkCellBuilding();
-            updateGui();
+            lbRow.Text = cell.Index.Row.ToString();
+            lbCol.Text = cell.Index.Column.ToString();
+            lbDemand.Text = cell.Demand.ToString();
+            tbGrowth.Text = cell.DemandGrow.ToString();
+       
+            checkCell();
         }
 
-        // Check which building is selected in the combobox and update GUI accordingly.
-        private void updateGui()
+        //Checks if the location passed in the constructor is not null (meaning the cell has a location). 
+        //if so, detect whether it is a shop or warehouse and update gui accordingly.
+        //if not, then cell has no location. apply minor gui changes.
+        private void checkCell()
         {
-            if (cbType.SelectedIndex == 1)
+            if (location != null)
             {
-
-                gbBInfo.Name = "Shop Info";
-                gbBInfo.Enabled = true;
-
-                if(location.Building is Shop)
+                if(location.Building != null)
                 {
-                    Shop s = (Shop)location.Building;
-
-                    //Building does not have any of these values..figure out solution
-                    //nudStock.Value = s.Stock;
-                    //nudRestock.Value = s.RestockAmount;
-                    //lbIDnum.Text = s.ID.ToString();
+                    if (location.Building.GetType() == typeof(Shop))
+                    {
+                        Shop s = (Shop)location.Building;
+                        lbBuilding.Text = "Shop";
+                        tbStock.Text = s.Stock.ToString();
+                        tbReStock.Text = s.RestockAmount.ToString();
+                        lbIDnum.Text = s.ID.ToString();
+                        gbBInfo.Show();
+                    }
+                    else
+                    {
+                        Warehouse w = (Warehouse)location.Building;
+                        lbBuilding.Text = "Warehouse";
+                        tbVehicles.Text = w.Vehicles.Count.ToString();
+                        gbWarehouse.Show();
+                    }
                 } else
                 {
-                    nudStock.Value = 0;
-                    nudRestock.Value = 0;
-                    lbIDnum.Text = "0";
-                }
-
-            }
-            else if (cbType.SelectedIndex == 2)
-            {
-                gbBInfo.Name = "Warehouse Info";
-                gbBInfo.Enabled = false;
-                nudStock.Value = 0;
-                nudRestock.Value = 0;
-                lbIDnum.Text = "0";
-            }
-            else
-            {
-                gbBInfo.Name = "Building Info";
-                //nudStock.Enabled = false;
-                //nudRestock.Enabled = false;
-                nudStock.Value = 0;
-                nudRestock.Value = 0;
-                lbIDnum.Text = "0";
-                gbBInfo.Enabled = false;
-
-            }
-        }
-
-        //Update ComboBox based on the type of building the cell has.
-        private void checkCellBuilding()
-        {
-            if (location.Building != null)
-            {
-                if (location.Building.GetType() == typeof(Shop))
-                {
-                    cbType.SelectedIndex = 1;
-                }
-                else
-                {
-                    cbType.SelectedIndex = 2;
+                    lbBuilding.Text = "None";
+                    gbBInfo.Show();
+                    gbBInfo.Enabled = false;
                 }
             }
             else
             {
-                cbType.SelectedIndex = 0;
+                lbBuilding.Text = "None";
+                gbBInfo.Show();
+                gbBInfo.Enabled = false;
+                lbLocation.Text = "Position";
             }
         }
 
         private void bSave_Click(object sender, EventArgs e)
         {
-            location.SetDemandGrow(Convert.ToInt32(nudDemand.Value));
-            PictureBox p;
+            cell.SetDemandGrow(Convert.ToInt32(tbGrowth.Text));
 
-            if (cbType.SelectedIndex == 1)
+            switch (lbBuilding.Text)
             {
-                int stock = Convert.ToInt32(nudStock.Value);
-                int reStock = Convert.ToInt32(nudRestock.Value);
-                p = genPicturebox(Type.Shop);
-                location.Building = new Shop(p, stock, reStock);
-            }
-            else if (cbType.SelectedIndex == 2)
-            {
-                p = genPicturebox(Type.Warehouse);
-                location.Building = new Warehouse(p);
-            } else
-            {
-                p = genPicturebox(Type.None);
+                case "Shop":
+                    Shop s = (Shop)location.Building;
+                    s.Stock = Convert.ToInt32(tbStock.Text);
+                    s.RestockAmount = Convert.ToInt32(tbReStock.Text);
+                    break;
+                case "Warehouse":
+                    setVehicles(Convert.ToInt32(tbVehicles.Text));            
+                    break;
             }
         }
 
-        //Generate a picturebox to put in the shop/warehouse constructor.
-        private PictureBox genPicturebox(Type type)
+        //Some logic that add or remove a certain amount of vehicles in the list based on what is in the textbox 
+        //and how many vehicles are in the list.
+        private void setVehicles(int amount)
         {
-            PictureBox picBox = new PictureBox();
+            Warehouse w = (Warehouse)location.Building;
             Point ImagePosition = new Point((location.Index.Column * Cell.CellSize) + 4, (location.Index.Row * Cell.CellSize) + 4);
-            picBox.Location = ImagePosition;
-            picBox.Size = new Size(Cell.CellSize - 1, Cell.CellSize - 1);
-            picBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            //Not sure how to add the mouse click yet
-            //picBox.MouseClick += mapPictureBox_MouseClick;
-            //picBox.MouseEnter += mapPictureBox_MouseEnter;
+            int listSize = w.Vehicles.Count;
+            if (amount >= 0)
+            {
+                if (amount > listSize)
+                {
+                    int delta = Math.Abs(amount - listSize);
 
-            if (type == Type.Shop)
-            {
-                picBox.Image = Properties.Resources.shopIcon;
-                location.Building = new Shop(picBox, 500, 450);
-                //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
-                Console.WriteLine("Shop has been added to location" + location.LocationID);
-            }
-            else if (type == Type.Warehouse)
-            {
-                picBox.Image = Properties.Resources.warehouseIcon;
-                location.Building = new Warehouse(picBox);
-                //Not sure how to add the vehicles yet.
-                //((Warehouse)location.Building).AddVehicle(createNewVehicle(ImagePosition));
-                //((Warehouse)location.Building).AddVehicle(createNewVehicle(ImagePosition));
-                //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
-                Console.WriteLine("Warehouse has been added to location" + location.LocationID);
+                    for (int i = 0; i < delta; i++)
+                    {
+                        w.AddVehicle(genNewVehicle(ImagePosition));
+                    }
+                }
+                else if (amount < listSize)
+                {
+                    int delta = Math.Abs(amount - listSize);
+                    w.removeVehicleAmt(delta);
+                }
             } else
             {
-
+                MessageBox.Show("Please input a value above or equal to 0");
             }
-            return picBox;  
+
+
         }
 
-        enum Type
+        //Copied vehicle picturebox creation code from form1 createNewVehicle Method. Simple to add a picturebox to vehicle constructor.
+        private Vehicle genNewVehicle(Point ImagePosition)
         {
-            Shop,
-            Warehouse,
-            None
+            PictureBox vehiclePicBox = new PictureBox();
+            vehiclePicBox.Image = Properties.Resources.vehicleIcon;
+            vehiclePicBox.Location = ImagePosition;
+            vehiclePicBox.Size = new Size(Cell.CellSize / 2, Cell.CellSize / 2);
+            vehiclePicBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            //splitContainer1.Panel1.Controls.Add(vehiclePicBox); uh not sure if i need this.
+            vehiclePicBox.BringToFront();
+            return new Vehicle(vehiclePicBox);
         }
     }
+
 }

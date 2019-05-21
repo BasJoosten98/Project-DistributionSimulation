@@ -21,18 +21,18 @@ namespace MapLayout
         //List<Rectangle> ListofRectangles;
         //redraw image method
         //Bitmap bmp;
-        
+
 
         public Form1()
         {
             InitializeComponent();
 
             // This could be set later on, maybe even via the app config file or by the user.
-            const int CELLSIZE = 40;    
+            const int CELLSIZE = 40;
 
             // The result represents the number of cells we can create in both width and height (Square grid/map) based on the cell size.
             int numberOfCells;
-            if(mapPictureBox.Width <= mapPictureBox.Height) { numberOfCells = mapPictureBox.Width / CELLSIZE; }
+            if (mapPictureBox.Width <= mapPictureBox.Height) { numberOfCells = mapPictureBox.Width / CELLSIZE; }
             else { numberOfCells = mapPictureBox.Height / CELLSIZE; }
             map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE, MapBox: mapPictureBox);
 
@@ -183,8 +183,8 @@ namespace MapLayout
         private void mapPictureBox_MouseEnter(object sender, EventArgs e)
         {
             //Change cursor when it enters picturebox if isShop OR isWarehouse is true
-            ((PictureBox)sender).Cursor = isShopBtnClicked || isWarehouseBtnClicked ? Cursors.Hand : Cursors.Arrow; 
-            
+            ((PictureBox)sender).Cursor = isShopBtnClicked || isWarehouseBtnClicked ? Cursors.Hand : Cursors.Arrow;
+
         }
         private Vehicle createNewVehicle(Point ImagePosition)
         {
@@ -354,20 +354,22 @@ namespace MapLayout
                         {
                             if (c.CellRectangle.Contains(mousePt)) //Mouse was above some location 
                             {
-                                Location location = null;
-                                foreach(Location  l in map.Locations)
+                                //Only allow this funtionality when simulation is not running
+                                if (!timer1.Enabled)
                                 {
-                                    if( c == l )
+                                    Location location = null;
+                                    //find the location that is in the cell thats clicked.
+                                    foreach (Location l in map.Locations)
                                     {
-                                        location = l;
+                                        if (c == l)
+                                        {
+                                            location = l;
+                                        }
                                     }
-                                }
-                                if(location != null)
-                                {
-                                    CellForm cForm = new CellForm(location);
+                                    CellForm cForm = new CellForm(location, c);
                                     cForm.Show();
-                                }
 
+                                }
                             }
                         }
                         break;
@@ -586,7 +588,7 @@ namespace MapLayout
                 holder += "SHOP" + s.LocationID + " stock: " + ((Shop)s.Building).Stock + " Restock: " + ((Shop)s.Building).RestockAmount + "\n";
             }
             holder += "Cell Max D: " + Cell.MaxDemand + " DG: " + Cell.MaxDemandGrow + "\n";
-            foreach(Cell c in map.GetCells())
+            foreach (Cell c in map.GetCells())
             {
                 holder += "Cell (" + c.Index.Column + "," + c.Index.Row + ") D: " + c.Demand + " DG: " + c.DemandGrow + "\n";
             }
@@ -606,7 +608,7 @@ namespace MapLayout
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            if(timer1.Enabled)
+            if (timer1.Enabled)
             {
                 timer1.Enabled = false;
             }

@@ -50,6 +50,10 @@ namespace ClassLibrary
         {
             vehicles.Add(v);
         }
+        public void removeVehicleAmt(int x)
+        {
+            vehicles.RemoveRange(0, x);
+        }
         public Warehouse(List<Shop> shops) { Shops = shops; }
 
         /// <summary>
