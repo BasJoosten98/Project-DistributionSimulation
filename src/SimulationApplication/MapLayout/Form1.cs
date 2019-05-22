@@ -286,7 +286,7 @@ namespace MapLayout
                             //Add building
                             int id = l.LocationID;
 
-                            //Create picturebox
+                            //Create picturebox for building
                             PictureBox picBox = new PictureBox();
                             Point ImagePosition = new Point((l.Index.Column * Cell.CellSize) + 4, (l.Index.Row * Cell.CellSize) + 4);
                             picBox.Location = ImagePosition;
@@ -300,17 +300,12 @@ namespace MapLayout
                             {
                                 picBox.Image = Properties.Resources.shopIcon;
                                 l.Building = new Shop(picBox, 500, 450);
-                                //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
                                 Console.WriteLine("Shop has been added to location" + l.LocationID);
                             }
                             else if (isWarehouseBtnClicked)
                             {
                                 picBox.Image = Properties.Resources.warehouseIcon;
                                 l.Building = new Warehouse(picBox);
-
-                                ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
-                                ((Warehouse)l.Building).AddVehicle(createNewVehicle(ImagePosition));
-                                //lbLocationLog.Text = "Location #: " + id + " has been set to a WareHouse";
                                 Console.WriteLine("Warehouse has been added to location" + l.LocationID);
                             }
                             map.AddNewBuilding(l);
@@ -601,9 +596,30 @@ namespace MapLayout
         int timeStampCounter = 0;
         private void btnStartSimulation_Click(object sender, EventArgs e)
         {
+            createAllvehicles();
             map.PrepareForSimulation();
             Map.RedrawMap();
             timer1.Enabled = true;
+            btnCursor.Enabled = true;
+            btnWarehouse.Enabled = false;
+            btnShop.Enabled = false;
+            btnRoadMode.Enabled = false;
+            btnLocationMode.Enabled = false;
+            btnCursor_Click(this, new EventArgs());
+        }
+        private void createAllvehicles()
+        {
+            foreach(Location l in map.Warehouses)
+            {
+                Point ImagePosition = new Point((l.Index.Column * Cell.CellSize) + 4, (l.Index.Row * Cell.CellSize) + 4);
+                Warehouse w = (Warehouse)l.Building;
+
+                for(int i = 1; i <= w.TotalVehiclesAtStart; i++)
+                {
+                    Vehicle temp = createNewVehicle(ImagePosition);
+                    w.AddVehicle(temp);
+                }
+            }
         }
 
         private void btnPause_Click(object sender, EventArgs e)

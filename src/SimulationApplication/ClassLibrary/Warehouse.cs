@@ -12,9 +12,11 @@ namespace ClassLibrary
 	{
 		private List<Vehicle> vehicles;
 		private List<Shop> shops;
+        private int totalvehiclesAtStart;
 
         public List<Road> Roads { get; }
         public List<Vehicle> Vehicles { get {return vehicles; } }
+        public int TotalVehiclesAtStart { get { return totalvehiclesAtStart; } set { if (value >= 1) { totalvehiclesAtStart = value; } else { throw new Exception("Total Vehicles per Warehouse should be greater than 0"); } } }
 
         public List<Shop> Shops
         {
@@ -43,6 +45,15 @@ namespace ClassLibrary
             :base(PicBox)
         {
             //Roads = new List<Road>();
+            TotalVehiclesAtStart = 1;
+            vehicles = new List<Vehicle>();
+        }
+        public Warehouse(PictureBox PicBox, int totalVehicles)
+            : base(PicBox)
+        {
+            //Roads = new List<Road>();
+            if(totalVehicles < 1) { throw new Exception("Total Vehicles per Warehouse should be greater than 0"); }
+            this.totalvehiclesAtStart = totalVehicles;
             vehicles = new List<Vehicle>();
         }
 
@@ -50,11 +61,6 @@ namespace ClassLibrary
         {
             vehicles.Add(v);
         }
-        public void removeVehicleAmt(int x)
-        {
-            vehicles.RemoveRange(0, x);
-        }
-        public Warehouse(List<Shop> shops) { Shops = shops; }
 
         /// <summary>
         /// Event that triggers when a shop needs to restock 

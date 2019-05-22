@@ -281,8 +281,7 @@ namespace ClassLibrary
             {
                 Warehouses.Remove(l);
                 l.Building.picBox.Dispose();
-                ((Warehouse)l.Building).RemoveAllvehicles();
-                
+                ((Warehouse)l.Building).RemoveAllvehicles();                
             }
             else if (l.Building is Shop)
             {

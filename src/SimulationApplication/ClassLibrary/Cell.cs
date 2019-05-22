@@ -98,6 +98,7 @@ namespace ClassLibrary
         /// <param name="Demand"></param>
         public void SetDemandGrow(int Demand)
         {
+            if(Demand < 0) { throw new Exception("Demand must be greater than or equal to 0"); }
             this.demand = Demand;
             this.demandGrow = Demand;
             if(Demand > maxDemand)

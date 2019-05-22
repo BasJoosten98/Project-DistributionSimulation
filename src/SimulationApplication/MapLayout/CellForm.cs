@@ -60,7 +60,7 @@ namespace MapLayout
                     {
                         Warehouse w = (Warehouse)location.Building;
                         lbBuilding.Text = "Warehouse";
-                        tbVehicles.Text = w.Vehicles.Count.ToString();
+                        tbVehicles.Text = w.TotalVehiclesAtStart.ToString();
                         gbWarehouse.Show();
                     }
                 } else
@@ -101,44 +101,31 @@ namespace MapLayout
         private void setVehicles(int amount)
         {
             Warehouse w = (Warehouse)location.Building;
-            Point ImagePosition = new Point((location.Index.Column * Cell.CellSize) + 4, (location.Index.Row * Cell.CellSize) + 4);
-            int listSize = w.Vehicles.Count;
-            if (amount >= 0)
+            //Point ImagePosition = new Point((location.Index.Column * Cell.CellSize) + 4, (location.Index.Row * Cell.CellSize) + 4);
+            //int listSize = w.Vehicles.Count;
+            if (amount > 0)
             {
-                if (amount > listSize)
-                {
-                    int delta = Math.Abs(amount - listSize);
-
-                    for (int i = 0; i < delta; i++)
-                    {
-                        w.AddVehicle(genNewVehicle(ImagePosition));
-                    }
-                }
-                else if (amount < listSize)
-                {
-                    int delta = Math.Abs(amount - listSize);
-                    w.removeVehicleAmt(delta);
-                }
+                w.TotalVehiclesAtStart = amount;
             } else
             {
-                MessageBox.Show("Please input a value above or equal to 0");
+                MessageBox.Show("Total Vehicles must be greater than 0");
             }
 
 
         }
 
         //Copied vehicle picturebox creation code from form1 createNewVehicle Method. Simple to add a picturebox to vehicle constructor.
-        private Vehicle genNewVehicle(Point ImagePosition)
-        {
-            PictureBox vehiclePicBox = new PictureBox();
-            vehiclePicBox.Image = Properties.Resources.vehicleIcon;
-            vehiclePicBox.Location = ImagePosition;
-            vehiclePicBox.Size = new Size(Cell.CellSize / 2, Cell.CellSize / 2);
-            vehiclePicBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            //splitContainer1.Panel1.Controls.Add(vehiclePicBox); uh not sure if i need this.
-            vehiclePicBox.BringToFront();
-            return new Vehicle(vehiclePicBox);
-        }
+        //private Vehicle genNewVehicle(Point ImagePosition)
+        //{
+        //    PictureBox vehiclePicBox = new PictureBox();
+        //    vehiclePicBox.Image = Properties.Resources.vehicleIcon;
+        //    vehiclePicBox.Location = ImagePosition;
+        //    vehiclePicBox.Size = new Size(Cell.CellSize / 2, Cell.CellSize / 2);
+        //    vehiclePicBox.SizeMode = PictureBoxSizeMode.StretchImage;
+        //    //splitContainer1.Panel1.Controls.Add(vehiclePicBox); uh not sure if i need this.
+        //    vehiclePicBox.BringToFront();
+        //    return new Vehicle(vehiclePicBox);
+        //}
     }
 
 }

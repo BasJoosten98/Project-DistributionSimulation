@@ -11,22 +11,26 @@ namespace ClassLibrary
 	{
         private int tempSold = 0; //needed for statistics
         private StatisticsShop tempStat = null; //needed for statistics
+        private int restockAmount;
+        private int stock;
 
         public static int id;
         public int Capacity { get; set; }
-		public int Stock { get; set; }
-        public int RestockAmount { get; set; }
+		public int Stock { get { return this.stock; } set { if (value >= 0) { this.stock = value; } else { throw new Exception("Stock must be greater than or equal to 0"); } } }
+        public int RestockAmount { get { return this.restockAmount; }set { if (value >= 0) { this.restockAmount = value; } else { throw new Exception("Restock must be greater than or equal to 0"); } } }
         public int ID { get; set; }
 
 
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
-        public Shop(PictureBox PicBox, int stock, int restockamount)
+        public Shop(PictureBox PicBox, int StockAmount, int Restock)
             :base(PicBox)
         {
-            Stock = stock;
+            if(Restock < 0) { throw new Exception("Restock must be greater than or equal to 0"); }
+            if (StockAmount < 0) { throw new Exception("Stock must be greater than or equal to 0"); }
+            stock = StockAmount;
             Capacity = stock;
-            RestockAmount = restockamount;
+            restockAmount = Restock;
             ID = ++id;
         }
 
