@@ -160,8 +160,10 @@
     <Compile Include="DijkstraStart.cs" />
     <Compile Include="DistributionManager.cs" />
     <Compile Include="Entities\Building.cs" />
+    <Compile Include="Entities\Cell.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Map.cs" />
+    <Compile Include="Entities\Road.cs" />
     <Compile Include="Entities\Shop.cs" />
     <Compile Include="Entities\Warehouse.cs" />
     <Compile Include="Events\LowStockReachedEventArgs.cs" />
