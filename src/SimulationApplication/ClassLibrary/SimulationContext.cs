@@ -17,7 +17,6 @@ namespace ClassLibrary
             if (!optionsBuilder.IsConfigured)
             {
                 var envVariable = ConfigurationManager.AppSettings["envVariableName"];
-                Console.WriteLine(envVariable);
                 string connectionString = Environment.GetEnvironmentVariable(envVariable);
                 optionsBuilder.UseMySql(connectionString);
             }
@@ -26,14 +25,9 @@ namespace ClassLibrary
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            #region Location
-            modelBuilder.Entity<Entities.Location>()
-                .HasKey(location => new { location.MapId, location.RowIndex, location.ColumnIndex });
-            #endregion
-
-            #region Map
-
+            #region Road
+            modelBuilder.Entity<Entities.Road>()
+                .HasKey(road => new { road.MapId, road.Location1Id, road.Location2Id });
             #endregion
         }
     }

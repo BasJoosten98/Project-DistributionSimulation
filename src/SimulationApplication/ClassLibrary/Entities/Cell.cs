@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Entities
 {
-    class Cell
+    public class Cell
     {
-        public int MapId { get; set; }
+        public int Id { get; set; }
         public int RowIndex { get; set; }
         public int ColumnIndex { get; set; }
         public int Demand { get; set; }
+        public int DemandGrowthPerTick { get; set; }
+
+        // Foreign Key
+        public int MapId { get; set; }
+        public Map Map { get; set; }
     }
 }
