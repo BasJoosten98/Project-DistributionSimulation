@@ -663,5 +663,10 @@ namespace MapLayout
             isWarehouseBtnClicked = false;
             isShopBtnClicked = false;
         }
+
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

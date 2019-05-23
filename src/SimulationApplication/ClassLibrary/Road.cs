@@ -8,6 +8,7 @@ namespace ClassLibrary
 {
 	public class Road
 	{
+        public Entities.Road RoadEntity { get; }
         //Drawing fields
         private static int idCounter = 0;
         public int id;
@@ -15,7 +16,6 @@ namespace ClassLibrary
         public Color StringColor = Color.Yellow;
         public int LineWidth = 3;
 
-        
         //other fields
         public Location Vertex1 { get; set; }
         public Location Vertex2 { get; set; }
@@ -24,12 +24,14 @@ namespace ClassLibrary
 
         public Road(Location Vertex1, Location Vertex2)
         {
-
             this.Vertex1 = Vertex1;
             this.Vertex2 = Vertex2;
             id = idCounter;
             idCounter++;
             this.initialCost = 1;
+
+            // Location entity needs to be made and added to the location object such that we can use it in the road entity
+            RoadEntity = new Entities.Road() { InitialCost = initialCost, Location1 = Vertex1, Location2 = Vertex2 };
         }
 
         /// <summary>

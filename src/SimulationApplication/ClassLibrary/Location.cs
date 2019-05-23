@@ -9,8 +9,7 @@ namespace ClassLibrary
 {
     public class Location : Cell, IComparable
     {
-        // Primary key
-        public int Id { get; set; }
+        public Entities.Location LocationEntity { get; }
         // Test for one to many relationship.
         // In this case a location belongs to a map, and multiple locations may belong to the same map.
         public int MapId { get; set; }
@@ -42,6 +41,7 @@ namespace ClassLibrary
             this.visited = false;
             this.Radius = 3;
 
+            LocationEntity = new Entities.Location() { RowIndex = row, ColumnIndex = column };
         }
         public Location(int column, int row, int Radius)
             : base(column, row)
@@ -52,6 +52,8 @@ namespace ClassLibrary
             this.permanent = false;
             this.visited = false;
             this.Radius = Radius;
+
+            LocationEntity = new Entities.Location() { RowIndex = row, ColumnIndex = column, Radius = Radius };
         }
 
         /// <summary>

@@ -9,6 +9,7 @@ namespace ClassLibrary
 {
     public class Map : IEnumerable
     {
+        public Entities.Map MapEntity { get; }
         private List<Location> warehouses = new List<Location>();
         private List<Statistics> statistics = new List<Statistics>();
         private List<Location> shops = new List<Location>();
@@ -102,6 +103,8 @@ namespace ClassLibrary
             {
                 r.initialCost = rng.Next(1, 6);
             }
+
+            MapEntity = new Entities.Map() { CellSize = cellSize, NumberOfCells = numberOfCells, Roads = Edges };
         }
         
         /// <summary>

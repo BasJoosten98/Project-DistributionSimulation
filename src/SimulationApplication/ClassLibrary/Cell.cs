@@ -10,6 +10,8 @@ namespace ClassLibrary
 {
     public class Cell
     {
+        public Entities.Cell CellEntity { get; }
+
         //Drawing fields
         public Color CellColor = Color.Black;
         public int CellLineWidth = 1;
@@ -38,9 +40,13 @@ namespace ClassLibrary
 
         public Cell(int columnNumber, int rowNumber, int demand)
         {
+            // Construct an equivalent Cell Entity for communication with the database.
+            CellEntity = new Entities.Cell() { RowIndex = rowNumber, ColumnIndex = columnNumber, Demand = demand, DemandGrowthPerTick = demand };
+
             Index = new Index(columnNumber, rowNumber);
             CellRectangle = new Rectangle(new Point(Index.Column * CellSize, Index.Row * CellSize), new Size(CellSize, CellSize));
             SetDemandGrow(demand);
+
         }
         public Cell(int columnNumber, int rowNumber) : this(columnNumber, rowNumber, 0)
         { }
