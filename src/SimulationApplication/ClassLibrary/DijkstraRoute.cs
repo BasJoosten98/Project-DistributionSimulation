@@ -12,7 +12,14 @@ namespace ClassLibrary
         private Location endPoint;
 
         public List<Road> Route { get { return route; } }
+        /// <summary>
+        /// Determines the point in which the route ended
+        /// </summary>
         public Location EndPoint { get { return endPoint; } }
+
+        /// <summary>
+        /// Shows the lengts of the route
+        /// </summary>
         public int RouteLenght
         {
             get
@@ -26,11 +33,16 @@ namespace ClassLibrary
             }
         }
 
+
         public DijkstraRoute(List<Road> Route, Location EndPoint)
         {
             this.route = Route;
             endPoint = EndPoint;
         }
+        /// <summary>
+        /// Returns a copy of the current route.
+        /// </summary>
+        /// <returns>List<Road></returns>
         public List<Road> CopyRoute()
         {
             List<Road> temp = new List<Road>();

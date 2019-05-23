@@ -45,9 +45,9 @@ namespace ClassLibrary
         public Cell(int columnNumber, int rowNumber) : this(columnNumber, rowNumber, 0)
         { }
 
-        public void AddShopRadius(Shop s, int Demand) 
+        public void AddShopRadius(Shop s, int DemandPercentage) 
         {
-            ShopRadius temp = new ShopRadius(s, Demand);
+            ShopRadius temp = new ShopRadius(s, DemandPercentage);
             foreach (ShopRadius sr in shopRadiuses)
             {
                 if (sr.Shop == s)
@@ -68,7 +68,7 @@ namespace ClassLibrary
                 }
             }
         }
-        public void NextTick() 
+        public void NextTick(int timeStamp) 
         {
             //BUY FROM SHOPS
             List<ShopRadius> temp = new List<ShopRadius>();
@@ -101,6 +101,7 @@ namespace ClassLibrary
         /// <param name="Demand"></param>
         public void SetDemandGrow(int Demand)
         {
+            if(Demand < 0) { throw new Exception("Demand must be greater than or equal to 0"); }
             this.demand = Demand;
             this.demandGrow = Demand;
             if(Demand > maxDemand)
@@ -121,15 +122,23 @@ namespace ClassLibrary
         {
             double maxPercentage = (double)this.demand / maxDemand;
             Color heatColor;
+            if(maxPercentage > 1)
+            {
+                throw new Exception("Percentage > 1 is not allowed");
+            }
             if(maxPercentage >= 0.5) //green
             {
                 double otherColors = 255 - Math.Floor((maxPercentage - 0.5) * 2 * 255); 
                 heatColor = Color.FromArgb((int)otherColors, 255, (int)otherColors);
             }
-            else //red
+            else if(maxPercentage >= 0) //red
             {
                 double otherColors = 255 - Math.Floor((0.5 - maxPercentage) * 2 * 255);
                 heatColor = Color.FromArgb(255, (int) otherColors, (int)otherColors);
+            }
+            else
+            {
+                throw new Exception("Negative percentage is not allowed");
             }
              
             return heatColor;

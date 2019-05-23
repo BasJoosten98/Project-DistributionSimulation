@@ -12,9 +12,11 @@ namespace ClassLibrary
 	{
 		private List<Vehicle> vehicles;
 		private List<Shop> shops;
+        private int totalvehiclesAtStart;
 
         public List<Road> Roads { get; }
         public List<Vehicle> Vehicles { get {return vehicles; } }
+        public int TotalVehiclesAtStart { get { return totalvehiclesAtStart; } set { if (value >= 1) { totalvehiclesAtStart = value; } else { throw new Exception("Total Vehicles per Warehouse should be greater than 0"); } } }
 
         public List<Shop> Shops
         {
@@ -43,6 +45,15 @@ namespace ClassLibrary
             :base(PicBox)
         {
             //Roads = new List<Road>();
+            TotalVehiclesAtStart = 1;
+            vehicles = new List<Vehicle>();
+        }
+        public Warehouse(PictureBox PicBox, int totalVehicles)
+            : base(PicBox)
+        {
+            //Roads = new List<Road>();
+            if(totalVehicles < 1) { throw new Exception("Total Vehicles per Warehouse should be greater than 0"); }
+            this.totalvehiclesAtStart = totalVehicles;
             vehicles = new List<Vehicle>();
         }
 
@@ -51,6 +62,11 @@ namespace ClassLibrary
             vehicles.Add(v);
         }
 
+        /// <summary>
+        /// Event that triggers when a shop needs to restock 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Item_LowStockReached(object sender, LowStockReachedEventArgs e)
         {
             // Logic to get a vehicle to simulate traveling to the shop
@@ -83,12 +99,22 @@ namespace ClassLibrary
         {
             return shops.Find(shop => shop.ID == ID);
         }
-        public void NextTick()
+        public void NextTick(int timeStamp)
         {
             foreach(Vehicle v in vehicles)
             {
-                v.NextTick();
+                v.NextTick(timeStamp);
             }          
+        }
+        public StatisticsWarehouse MakeStatistics(int timeStamp)
+        {
+            List<StatisticsVehicle> vehiclesStat = new List<StatisticsVehicle>();
+            foreach(Vehicle v in vehicles)
+            {
+                vehiclesStat.Add(v.MakeStatistics(timeStamp));
+            }
+            StatisticsWarehouse temp = new StatisticsWarehouse(timeStamp, this, vehiclesStat);
+            return temp;
         }
     }
 }

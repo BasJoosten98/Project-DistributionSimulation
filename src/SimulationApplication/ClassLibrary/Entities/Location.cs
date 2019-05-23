@@ -8,6 +8,7 @@ namespace ClassLibrary.Entities
 {
     public class Location : Cell
     {
+        public int Radius { get; set; }
         public Building Building { get; set; }
     }
 }

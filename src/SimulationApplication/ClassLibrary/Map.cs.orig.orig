@@ -9,11 +9,21 @@ namespace ClassLibrary
 {
     public class Map : IEnumerable
     {
+<<<<<<< HEAD
+        public int Id { get; set; }
+        // Another test for relation with locations.
+        public ICollection<Location> LocationsDb { get; set; }
+        public List<Location> Warehouses { get; }
+        public List<Location> Shops { get; }
+        public List<Location> Locations = new List<Location>();
+        public List<Road> Edges = new List<Road>();
+=======
         private List<Location> warehouses = new List<Location>();
         private List<Statistics> statistics = new List<Statistics>();
         private List<Location> shops = new List<Location>();
         private List<Location> locations = new List<Location>();
         private List<Road> edges = new List<Road>();
+>>>>>>> master
         private Random rng;
         private Random rng2;
         private Cell[,] cells;
@@ -28,6 +38,11 @@ namespace ClassLibrary
         public List<Location> Locations { get { return locations; } }
         public List<Road> Edges { get { return edges; } }
 
+<<<<<<< HEAD
+        public Map()
+        { }
+
+=======
         /// <summary>
         /// Creates a map objects and initializes with the given values
         /// </summary>
@@ -35,6 +50,7 @@ namespace ClassLibrary
         /// <param name="numberOfCells"></param>
         /// <param name="cellSize"></param>
         /// <param name="MapBox"></param>
+>>>>>>> master
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
             mapPicBox = MapBox;

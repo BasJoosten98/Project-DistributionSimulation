@@ -42,9 +42,9 @@ namespace ClassLibrary
         /// <param name="Route"></param>
         /// <param name="Vehicle"></param>
         /// <param name="WarehouseLoc"></param>
-        private void createDelivery(DijkstraRoute Route, Vehicle Vehicle, Location WarehouseLoc)
+        private void createDelivery(DijkstraRoute Route, Vehicle Vehicle, Location WarehouseLoc, int timeStamp)
         {
-            Delivery temp = new Delivery(Route, WarehouseLoc);
+            Delivery temp = new Delivery(Route, WarehouseLoc, timeStamp);
             createdDeliveries.Add(temp);
             Vehicle.AddDeliveryToQueue(temp);
         }
@@ -84,7 +84,7 @@ namespace ClassLibrary
         /// <summary>
         /// Provide deliveries to shops
         /// </summary>
-        private void forseeDeliveries()
+        private void forseeDeliveries(int timeStamp)
         {
             List<Location> lowStockShops = getShopsWithLowStockOrdered();
             checkDeliveriesIsFinished();
@@ -109,26 +109,32 @@ namespace ClassLibrary
                 int outTime;
                 Vehicle outVehicle;
                 DijkstraRoute tempRoute;
-                ((Warehouse)warehouses[0].Building).fastestVehicleAvailableTime(out outVehicle, out outTime);
+                //((Warehouse)warehouses[0].Building).fastestVehicleAvailableTime(out outVehicle, out outTime);
 
-                DijkstraRoute bestRoute = myDijkstra.GetRouteTo(warehouses[0], s);
-                int totalTimeSpan = bestRoute.RouteLenght + outTime;
-                Vehicle bestVehicle = outVehicle;
-                Location bestWarehouse = warehouses[0];
-                for(int i = 1; i < warehouses.Count; i++)
+                DijkstraRoute bestRoute = null;
+                int totalTimeSpan = int.MaxValue;
+                Vehicle bestVehicle = null;
+                Location bestWarehouse = null;
+                for(int i = 0; i < warehouses.Count; i++)
                 {
-                    ((Warehouse)warehouses[i].Building).fastestVehicleAvailableTime(out outVehicle, out outTime);
-                    tempRoute = myDijkstra.GetRouteTo(warehouses[i], s);
-                    if(tempRoute.RouteLenght + outTime < totalTimeSpan)
+                    ((Warehouse)warehouses[i].Building).fastestVehicleAvailableTime(out outVehicle, out outTime); //get fastest time
+                    tempRoute = myDijkstra.GetRouteTo(warehouses[i], s); //get route (can be null)
+                    if (tempRoute != null) //there is a route from warehouse to shop
                     {
-                        bestRoute = tempRoute;
-                        totalTimeSpan = tempRoute.RouteLenght + outTime;
-                        bestVehicle = outVehicle;
-                        bestWarehouse = warehouses[i];
+                        if (tempRoute.RouteLenght + outTime < totalTimeSpan)
+                        {
+                            bestRoute = tempRoute;
+                            totalTimeSpan = tempRoute.RouteLenght + outTime;
+                            bestVehicle = outVehicle;
+                            bestWarehouse = warehouses[i];
+                        }
                     }
                 }
-                createDelivery(bestRoute, bestVehicle, bestWarehouse);
-                Console.WriteLine("New delivery for SHOP" + s.LocationID + " Stock: " + ((Shop)s.Building).Stock);
+                if(bestRoute != null) //There was a best route found for this delivery
+                {
+                    createDelivery(bestRoute, bestVehicle, bestWarehouse, timeStamp);
+                }
+                //Console.WriteLine("New delivery for SHOP" + s.LocationID + " Stock: " + ((Shop)s.Building).Stock);
             }
         }
 
@@ -148,9 +154,9 @@ namespace ClassLibrary
             }
         }
 
-        public void NextTick()
+        public void NextTick(int timeStamp)
         {
-            forseeDeliveries();
+            forseeDeliveries(timeStamp);
         }
     }
 }

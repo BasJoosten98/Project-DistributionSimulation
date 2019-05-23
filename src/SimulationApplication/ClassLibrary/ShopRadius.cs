@@ -9,13 +9,13 @@ namespace ClassLibrary
     class ShopRadius
     {
         private Shop shop; 
-        private int demandEffect;
+        private int demandPercentage;
 
         public Shop Shop { get { return this.shop; } }
         public ShopRadius(Shop s, int Demand)
         {
             shop = s;
-            demandEffect = Demand;
+            demandPercentage = Demand;
         }
 
         /// <summary>
@@ -25,8 +25,8 @@ namespace ClassLibrary
         /// <returns></returns>
         public int BuyFromShop(int availableDemand)
         {
-            if(demandEffect < availableDemand) { availableDemand = demandEffect; }
-            int sold = shop.Sell(availableDemand);
+            int totalDemand = (int)Math.Floor((double)availableDemand * demandPercentage / 100);
+            int sold = shop.Sell(totalDemand);
             return sold;
         }
     }

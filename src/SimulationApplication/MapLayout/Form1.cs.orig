@@ -44,6 +44,11 @@ namespace MapLayout
                     Console.WriteLine($"Row: {cell.Index.Row}, Col: {cell.Index.Column}");
                 }
             }
+<<<<<<< HEAD
+            //reDraw image method
+            //bmp = new Bitmap(mapPictureBox.Width,mapPictureBox.Height);
+=======
+>>>>>>> master
         }
 
 

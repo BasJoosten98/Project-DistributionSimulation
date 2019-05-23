@@ -32,6 +32,9 @@ namespace ClassLibrary
             this.initialCost = 1;
         }
 
+        /// <summary>
+        /// Changes the color of the text line and the length of the line
+        /// </summary>
         public void ResetDrawFields()
         {
             LineColor = Color.Black;

@@ -125,6 +125,7 @@ namespace ClassLibrary
             //ANIMATION
             if (animate)
             {
+                // resets all roads to black color
                 foreach (Road r in allRoads)
                 {
                     r.ResetDrawFields();
@@ -141,12 +142,15 @@ namespace ClassLibrary
                 //ANIMATION
                 if (animate)
                 {
+                    // colors the potential roads with yellow
                     foreach(Road r in currentRoads)
                     {
                         r.LineColor = Color.Yellow;
                     }
                     Map.RedrawMapNow();
+                    // makes the system wait 2 seconds
                     System.Threading.Thread.Sleep(2000);
+                    // after it colors all potential yellow it colors the best green.
                     currentRoad.LineColor = Color.Green;
                 }
 
@@ -157,6 +161,8 @@ namespace ClassLibrary
                 if (newLocation == null) { throw new NullReferenceException(); }
                 DijkstraRoute previousDijkstraRoute = dijkstraStart.GetRouteTo(prevLocation);
                 List<Road> newRoute;
+
+                //makes a copy of the current route and adds the current road
                 if (previousDijkstraRoute != null)
                 {
                     newRoute = previousDijkstraRoute.CopyRoute();
@@ -164,6 +170,7 @@ namespace ClassLibrary
                 }
                 else
                 {
+                    // makes a new route and adds the road to it
                     newRoute = new List<Road>();
                     newRoute.Add(currentRoad);
                 }
@@ -176,9 +183,11 @@ namespace ClassLibrary
 
                 List<Road> newAddingRoads = getRoadsConnectedToLocation(newLocation);
                 newAddingRoads.Remove(currentRoad);
-                for(int i = 0; i < newAddingRoads.Count; i++) //filter out already existing roads in currentRoads
-                {
-                    if(dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex1) && dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex2))
+
+                //filter out already existing roads in currentRoads
+                for (int i = 0; i < newAddingRoads.Count; i++) {
+                    if(dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex1) &&
+                        dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex2))
                     {
                         if (currentRoads.Contains(newAddingRoads[i]))
                         {
@@ -230,12 +239,12 @@ namespace ClassLibrary
         }
 
         /// <summary>
-        /// Returns a Dijkstra route from StartPoint to EndPoint
+        /// Getting route from StartPoint to EndPoint
         /// </summary>
         /// <param name="StartPoint"></param>
         /// <param name="EndPoint"></param>
-        /// <returns></returns>
-        public DijkstraRoute GetRouteTo(Location StartPoint, Location EndPoint) //Getting route from StartPoint to EndPoint
+        /// <returns>DijkstraRoute</returns>
+        public DijkstraRoute GetRouteTo(Location StartPoint, Location EndPoint) 
         {
             foreach (DijkstraStart s in startingPoints)
             {

@@ -21,8 +21,6 @@ namespace ClassLibrary
         public Color StringColor = Color.Black;
 
         private static int locationID;
-        //public const int CRADIUS = 25; // circle radius
-        //public const int CDIAMETER = 50; // circle diameter might have something to do with the diameter of the cell someone should look into it
 
         public int LocationID { get; set; }
         public Building Building { get; set; }
@@ -30,9 +28,7 @@ namespace ClassLibrary
         public int min_cost { get; set; } // keeps the minimal cost of this vertex
         public bool permanent { get; set; } // used for deijsktra
         public bool visited { get; set; } // checks if it has been seen 
-
-        //public int PositionX { get; }
-        //public int PositionY { get; }
+        public int Radius { get; set; }
 
         public Location()
         { }
@@ -40,13 +36,22 @@ namespace ClassLibrary
         public Location(int column, int row) : base(column, row)
         {
             LocationID = locationID++;
-            //PositionX = x;
-            //PositionY = y;
 
             this.min_cost = int.MaxValue;
             this.permanent = false;
             this.visited = false;
+            this.Radius = 3;
 
+        }
+        public Location(int column, int row, int Radius)
+            : base(column, row)
+        {
+            LocationID = locationID++;
+
+            this.min_cost = int.MaxValue;
+            this.permanent = false;
+            this.visited = false;
+            this.Radius = Radius;
         }
 
         /// <summary>
@@ -64,6 +69,11 @@ namespace ClassLibrary
         /// </summary>
         public Size _Size { get { return new Size(Cell.CellSize, Cell.CellSize); } }
 
+        /// <summary>
+        /// Compares the LocationID's of the given location
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public int CompareTo(object obj)
         {
             return this.LocationID.CompareTo((obj as Location).LocationID);

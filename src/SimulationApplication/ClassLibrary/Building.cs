@@ -15,7 +15,8 @@ namespace ClassLibrary
         }
         public Building()
         {
-
+            
         }
+
 	}
 }

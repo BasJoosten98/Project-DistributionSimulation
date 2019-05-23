@@ -8,12 +8,12 @@ namespace ClassLibrary
 {
 	public class Vehicle
 	{
-        public static int capacity = 150;
+        public static int capacity = 500;
         private static int idCounter = 0;
 		private int id;
         public PictureBox picBox;
-        List<Delivery> deliveryQueue; //list of deliveries that this vehicle needs to do
-        List<Delivery> finishedDeliveries; //list of deliveries that this vehicle has finished
+        private List<Delivery> deliveryQueue; //list of deliveries that this vehicle needs to do
+        private List<Delivery> finishedDeliveries; //list of deliveries that this vehicle has finished
 
         public PictureBox PicBox { get { return picBox; } }
 
@@ -49,17 +49,17 @@ namespace ClassLibrary
             return sum;
         }
 
-        public void NextTick()
+        public void NextTick(int timeStamp)
         {
             if(deliveryQueue.Count != 0) //Check if this vehicle has any delivery
             {
-                deliveryQueue[0].NextTick(); //Update delivery
+                deliveryQueue[0].NextTick(timeStamp); //Update delivery
                 calculateAndSetPosition(); //Set vehicle position
                 if (deliveryQueue[0].Route.RouteLenght == deliveryQueue[0].TotalTravelTime) //Delivery at shop happenend!
                 {
                     Shop temp = ((Shop)deliveryQueue[0].Route.EndPoint.Building);
                     temp.Stock += capacity;
-                    Console.WriteLine("Shop" + temp.ID + " has been restocked by vehicle" + id + ", new stock = " + temp.Stock);                    
+                    //Console.WriteLine("Shop" + temp.ID + " has been restocked by vehicle" + id + ", new stock = " + temp.Stock);                    
                 }
                 if (2*deliveryQueue[0].Route.RouteLenght == deliveryQueue[0].TotalTravelTime) //Returned to warehouse
                 {
@@ -80,5 +80,32 @@ namespace ClassLibrary
                 picBox.Location = position;
             }
         }
-	}
+        public StatisticsVehicle MakeStatistics(int timeStamp)
+        {
+            DeliveryStatus stat = DeliveryStatus.NOTSTARTED;
+            if (deliveryQueue.Count > 0)
+            {
+                if (deliveryQueue[0] != null)
+                {
+                    stat = deliveryQueue[0].Status;
+                }
+            }
+            int totalDriven = 0;
+            foreach(Delivery d in deliveryQueue)
+            {
+                totalDriven += d.TotalTravelTime;
+            }
+            foreach (Delivery d in finishedDeliveries)
+            {
+                totalDriven += d.TotalTravelTime;
+            }
+            int resTime = 0;
+            foreach (Delivery d in finishedDeliveries)
+            {
+                resTime += (d.StartTime - d.CreateTime);
+            }
+            StatisticsVehicle temp = new StatisticsVehicle(timeStamp, this, stat, totalDriven, finishedDeliveries.Count, finishedDeliveries.Count + deliveryQueue.Count, resTime);
+            return temp;
+        }
+    }
 }

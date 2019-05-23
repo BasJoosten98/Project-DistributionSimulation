@@ -90,9 +90,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+=======
+    <None Include="App.config" />
+>>>>>>> master
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\shopIcon.png" />
   </ItemGroup>
   <ItemGroup>

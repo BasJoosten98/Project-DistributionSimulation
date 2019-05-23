@@ -11,8 +11,13 @@ namespace ClassLibrary
     {
         public int Id { get; set; }
         public List<Location> Warehouses { get; }
+<<<<<<< HEAD
+        public List<Location> Locations;
+=======
+        public List<Statistics> Statistics = new List<Statistics>();
         public List<Location> Shops { get; }
         public List<Location> Locations = new List<Location>();
+>>>>>>> origin/DistMan
         public List<Road> Edges = new List<Road>();
         private Random rng;
         private Random rng2;
@@ -23,11 +28,27 @@ namespace ClassLibrary
         public int NumberOfCells { get; set; }
         public DistributionManager DistManager { get { return distributionManager; } }
 
+
+        /// <summary>
+        /// Creates a map objects and initializes with the given values
+        /// </summary>
+        /// <param name="numberOfLocations"></param>
+        /// <param name="numberOfCells"></param>
+        /// <param name="cellSize"></param>
+        /// <param name="MapBox"></param>
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
             Warehouses = new List<Location>();
+<<<<<<< HEAD
+            Locations = new List<Location>();
+=======
             Shops = new List<Location>();
+>>>>>>> origin/DistMan
             mapPicBox = MapBox;
+            if (numberOfCells < 0)
+            {
+                numberOfCells = 0;
+            }
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
             cells = new Cell[NumberOfCells, NumberOfCells];
@@ -48,6 +69,11 @@ namespace ClassLibrary
             }
 
 
+            if (numberOfLocations > NumberOfCells * NumberOfCells)
+            {
+                numberOfLocations = NumberOfCells * NumberOfCells;
+            }
+
             while (numberOfLocations > 0)
             {
                 Cell c = GenerateRandomLocation();
@@ -56,11 +82,7 @@ namespace ClassLibrary
                     // Set location object to beparth of this cell 
                     // and decrement number of locations to be added to the cells/map.
                     //c.Location = new Location(c.Index.Row, c.Index.Column);
-<<<<<<< HEAD
-                    Location newLocation = new Location(c.Index.Column, c.Index.Row);
-                    cells[c.Index.Column, c.Index.Row] = newLocation;
-                    // Add the cell's location object to the list of vertices.
-=======
+                    Location newLocation = ChangeCellIntoLocation(c);
                     Location newLocation = ChangeCellIntoLocation(c);
 >>>>>>> DistMan
                     Locations.Add(newLocation);
@@ -69,7 +91,13 @@ namespace ClassLibrary
             }
             // Prints the count property of the List of location objects.
             Console.WriteLine(V);
-
+        }
+        /// <summary>
+        /// Moved the hard coded edges to a public method that will be called inside the form
+        /// since this was hindering the creation of test cases.
+        /// </summary>
+        public void AddHardCodedEdges()
+        {
             // Hard coded roads/edges from location 
             // 1 -> 2, weight: 3
             Edges.Add(new Road(Locations[0], Locations[1]));
@@ -133,7 +161,7 @@ namespace ClassLibrary
             return c;
         }
 
-        public void NextTick()
+        public void NextTick(int timeStamp)
         {
             List<Cell> tempList = new List<Cell>();
             foreach(Cell c in cells)
@@ -143,14 +171,27 @@ namespace ClassLibrary
             while(tempList.Count > 0)
             {
                 int r = rng2.Next(0, tempList.Count);
-                tempList[r].NextTick();
+                tempList[r].NextTick(timeStamp);
                 tempList.RemoveAt(r);
             }
-            foreach(Location w in Warehouses)
+            distributionManager.NextTick(timeStamp);
+            foreach (Location w in Warehouses)
             {
-                ((Warehouse)w.Building).NextTick();
+                ((Warehouse)w.Building).NextTick(timeStamp);
             }
-            distributionManager.NextTick();
+            updateStatistics(timeStamp);
+        }
+        private void updateStatistics(int timeStamp)
+        {
+            foreach(Location s in Shops)
+            {
+                Statistics.Add(((Shop)s.Building).MakeStatistics(timeStamp));
+            }
+            foreach (Location w in Warehouses)
+            {
+                Statistics.Add(((Warehouse)w.Building).MakeStatistics(timeStamp));
+            }
+            int k = 1;
         }
         private void createDistributionManager() //should be called when map is forseen with warehouses and shops!
         {
@@ -228,9 +269,10 @@ namespace ClassLibrary
         private void applyShopRadiusToCells(Location shopLocation)
         {
             Shop shop = (Shop)shopLocation.Building;
-            for(int col = shopLocation.Index.Column - shop.Radius; col <= shopLocation.Index.Column + shop.Radius; col++)
+            int downPerDistance = (int)Math.Floor((double)100 / (shopLocation.Radius + 1));
+            for(int col = shopLocation.Index.Column - shopLocation.Radius; col <= shopLocation.Index.Column + shopLocation.Radius; col++)
             {
-                for (int row = shopLocation.Index.Row - shop.Radius; row <= shopLocation.Index.Row + shop.Radius; row++)
+                for (int row = shopLocation.Index.Row - shopLocation.Radius; row <= shopLocation.Index.Row + shopLocation.Radius; row++)
                 {
                     Cell c = getCellByIndex(col, row);
                     if(c != null)
@@ -244,8 +286,8 @@ namespace ClassLibrary
                         {
                             distance = Math.Abs(col - shopLocation.Index.Column);
                         }
-                        int demandEffect = c.Demand - distance;
-                        c.AddShopRadius(shop, demandEffect);
+                        int demandPercentage = 100 - distance * downPerDistance;
+                        c.AddShopRadius(shop, demandPercentage);
                     }
                 }
             }
@@ -275,21 +317,37 @@ namespace ClassLibrary
             }
             l.Building = null;
         }
+
+        /// <summary>
+        /// Redraws the map 
+        /// </summary>
         public static void RedrawMap()
         {
             mapPicBox.Invalidate();
         }
+        /// <summary>
+        /// Redraws the map fast
+        /// </summary>
         public static void RedrawMapNow()
         {
             mapPicBox.Refresh();
         }
 
+        /// <summary>
+        /// Returns a copy of the cells NOT IMPLEMENTD YET
+        /// </summary>
+        /// <returns></returns>
         public Cell[,] GetCells()
         {
             // Preferably this will be a copy, and perhaps not a shallow one.
             return cells;
         }
 
+        /// <summary>
+        /// Returns a specific location by the inputed LocationID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Location</returns>
         public Location GetLocationByID(int id)
         {
             foreach(Location l in Locations)
@@ -302,6 +360,11 @@ namespace ClassLibrary
             return null;
         }
 
+        /// <summary>
+        /// Returns a specific cell by the specified location
+        /// </summary>
+        /// <param name="l"></param>
+        /// <returns>Location</returns>
         public Location getCellByLocation(Location l)
         {
             foreach(Location loc in Locations)
@@ -314,9 +377,13 @@ namespace ClassLibrary
             return null;
         }
 
+        /// <summary>
+        /// Return a cell at index [x, y] where x and y are numbers between 0 and NumOfCells (exclusive)
+        /// </summary>
+        /// <returns></returns>
         private Cell GenerateRandomLocation()
         {
-            // Return a cell at index [x, y] where x and y are numbers between 0 and NumOfCells (exclusive)
+            
             return cells[rng.Next(0, NumberOfCells), rng.Next(0, NumberOfCells)]; 
         }
 
