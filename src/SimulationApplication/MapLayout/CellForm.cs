@@ -42,9 +42,7 @@ namespace MapLayout
         //if so, detect whether it is a shop or warehouse and update gui accordingly.
         //if not, then cell has no location. apply minor gui changes.
         private void checkCell()
-        {
-            if()
-
+        { 
             if (location != null)
             {
                 if (location.Building != null)
