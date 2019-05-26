@@ -4,30 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
     public class Location : Cell, IComparable
     {
-        public Entities.Location LocationEntity { get; }
-        // Test for one to many relationship.
-        // In this case a location belongs to a map, and multiple locations may belong to the same map.
-        public int MapId { get; set; }
-        public Map Map { get; set; }
-        //drawing fields
-        public Color CircleColor = Color.Black;
-        public Color CircleFillColor = Color.LightYellow;
-        public Color StringColor = Color.Black;
-
-        private static int locationID;
-
-        public int LocationID { get; set; }
-        public Building Building { get; set; }
-        public int source_id { get; set; }
-        public int min_cost { get; set; } // keeps the minimal cost of this vertex
-        public bool permanent { get; set; } // used for deijsktra
-        public bool visited { get; set; } // checks if it has been seen 
         public int Radius { get; set; }
+        public Building Building { get; set; }
+
+        //drawing fields
+        [NotMapped]
+        public Color CircleColor = Color.Black;
+        [NotMapped]
+        public Color CircleFillColor = Color.LightYellow;
+        [NotMapped]
+        public Color StringColor = Color.Black;
+        [NotMapped]
+        private static int locationID;
+        [NotMapped]
+        public int LocationID { get; set; }
+        [NotMapped]
+        public int source_id { get; set; }
+        [NotMapped]
+        public int min_cost { get; set; } // keeps the minimal cost of this vertex
+        [NotMapped]
+        public bool permanent { get; set; } // used for deijsktra
+        [NotMapped]
+        public bool visited { get; set; } // checks if it has been seen 
 
         public Location()
         { }
