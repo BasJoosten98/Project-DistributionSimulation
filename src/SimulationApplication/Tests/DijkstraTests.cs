@@ -107,7 +107,7 @@ namespace SimulationApplicationTests
             for (int i = 0; i < locations.Count - 1; i++)
             {
                 Road temp = new Road(locations[i], locations[i + 1]);
-                temp.initialCost = rgn.Next(1, 4);
+                temp.InitialCost = rgn.Next(1, 4);
                 roads.Add(temp);
             }
             int randomRoadsCount = (int)Math.Floor((double)totalLocations / 2);
@@ -116,7 +116,7 @@ namespace SimulationApplicationTests
                 int num1 = rgn.Next(0, randomRoadsCount);
                 int num2 = rgn.Next(randomRoadsCount, totalLocations);
                 Road temp = new Road(locations[num1], locations[num2]);
-                temp.initialCost = rgn.Next(50, 100);
+                temp.InitialCost = rgn.Next(50, 100);
                 roads.Add(temp);
             }
             Dijkstra d = new Dijkstra(roads);

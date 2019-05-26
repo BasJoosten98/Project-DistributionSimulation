@@ -4,30 +4,48 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
     public class Map : IEnumerable
     {
-        public Entities.Map MapEntity { get; }
-        private List<Location> warehouses = new List<Location>();
-        private List<Statistics> statistics = new List<Statistics>();
-        private List<Location> shops = new List<Location>();
-        private List<Location> locations = new List<Location>();
-        private List<Road> edges = new List<Road>();
-        private Random rng;
-        private Random rng2;
-        private Cell[,] cells;
-        private static PictureBox mapPicBox;
-        private DistributionManager distributionManager;
-
+        public int Id { get; set; }
         public int NumberOfCells { get; set; }
+        public int CellSize { get; set; }
+        public List<Cell> Cells { get; set; }
+        public List<Road> Edges { get; set; }
+
+        [NotMapped]
+        private List<Location> warehouses = new List<Location>();
+        [NotMapped]
+        private List<Statistics> statistics = new List<Statistics>();
+        [NotMapped]
+        private List<Location> shops = new List<Location>();
+        [NotMapped]
+        private List<Location> locations = new List<Location>();
+        [NotMapped]
+        private List<Road> edges = new List<Road>();
+        [NotMapped]
+        private Random rng;
+        [NotMapped]
+        private Random rng2;
+        [NotMapped]
+        private Cell[,] cells;
+        [NotMapped]
+        private static PictureBox mapPicBox;
+        [NotMapped]
+        private DistributionManager distributionManager;
+        [NotMapped]
         public DistributionManager DistManager { get { return distributionManager; } }
+        [NotMapped]
         public List<Location> Warehouses { get { return warehouses; } }
+        [NotMapped]
         public List<Statistics> Statistics { get { return statistics; } }
+        [NotMapped]
         public List<Location> Shops { get { return shops; } }
+        [NotMapped]
         public List<Location> Locations { get { return locations; } }
-        public List<Road> Edges { get { return edges; } }
 
         /// <summary>
         /// Creates a map objects and initializes with the given values
@@ -38,9 +56,6 @@ namespace ClassLibrary
         /// <param name="MapBox"></param>
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
-            // Construct the map entity.
-            MapEntity = new Entities.Map() { CellSize = cellSize, NumberOfCells = numberOfCells };
-
             mapPicBox = MapBox;
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
@@ -51,6 +66,7 @@ namespace ClassLibrary
                 {
                     Cell c = new Cell(columnCount, rowCount);
                     cells[columnCount, rowCount] = c;
+                    Cells.Add(c);
                 }
             }
 
@@ -144,7 +160,7 @@ namespace ClassLibrary
             // Remove the roads from the road collection.
             for (int i = 0; i < Edges.Count; i++)
             {
-                if(Edges[i].Vertex1 == l || Edges[i].Vertex2 == l)
+                if(Edges[i].Location1 == l || Edges[i].Location2 == l)
                 {
                     Edges.RemoveAt(i);
                     i--;
@@ -203,12 +219,7 @@ namespace ClassLibrary
             if (r == null)
             {
                 Road temp = new Road(l1, l2);
-                temp.initialCost = cost;
-
-                // Road entity
-                temp.RoadEntity.InitialCost = cost;
-                MapEntity.Roads.Add(temp.RoadEntity);
-
+                temp.InitialCost = cost;
                 Edges.Add(temp);
                 return true;
             }
@@ -218,7 +229,7 @@ namespace ClassLibrary
         {
             foreach (Road r in Edges)
             {
-                if ((r.Vertex1 == l1 && r.Vertex2 == l2) || (r.Vertex1 == l2 && r.Vertex2 == l1))
+                if ((r.Location1 == l1 && r.Location2 == l2) || (r.Location1 == l2 && r.Location2 == l1))
                 {
                     return r;
                 }
@@ -488,7 +499,7 @@ namespace ClassLibrary
                 if ((e[0] == V1 && e[1] == V2) || (e[0] == V2 && e[1] == V1))
                 {
 
-                    e.initialCost += 1;
+                    e.InitialCost += 1;
 
                     return;
                 }

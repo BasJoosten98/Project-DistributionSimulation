@@ -76,12 +76,12 @@ namespace MapLayout
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 p.Color = r.LineColor;
                 p.Width = r.LineWidth;
-                g.DrawLine(p, r.Vertex1.Center, r.Vertex2.Center);
+                g.DrawLine(p, r.Location1.Center, r.Location2.Center);
 
                 //Draw String
                 sb.Color = r.StringColor;
                 Font f = new Font("Arial", 13, FontStyle.Bold);
-                g.DrawString(r.initialCost.ToString(), f, sb, 0.5f * (r.Vertex1.Center.X + r.Vertex2.Center.X) - f.Size, 0.5f * (r.Vertex1.Center.Y + r.Vertex2.Center.Y) - f.Size / 2);
+                g.DrawString(r.InitialCost.ToString(), f, sb, 0.5f * (r.Location1.Center.X + r.Location2.Center.X) - f.Size, 0.5f * (r.Location1.Center.Y + r.Location2.Center.Y) - f.Size / 2);
             }
 
             foreach (Cell c in map.GetCells())
@@ -496,7 +496,7 @@ namespace MapLayout
                                 // This is done as an intermediary step to compare different min costs (which belong to a vertex) later on.
                                 // Otherwise there was no way to compare the distance from different warehouses to the same shop (as information
                                 // gets lost because we have to reset the values of vertices to rerun Dijkstra multiple times.
-                                r.initialCost = location.min_cost;
+                                r.InitialCost = location.min_cost;
                                 ((Warehouse)warehouse.Building).Roads.Add(r);
                             }
                         }
@@ -516,20 +516,20 @@ namespace MapLayout
                 {
                     if (j == 0)
                     {
-                        shortestPath = ((Warehouse)map.Warehouses[j].Building).Roads[i].initialCost;
+                        shortestPath = ((Warehouse)map.Warehouses[j].Building).Roads[i].InitialCost;
                         shortestRoad = ((Warehouse)map.Warehouses[j].Building).Roads[i];
                     }
                     else
                     {
-                        if (((Warehouse)map.Warehouses[j].Building).Roads[i].initialCost < shortestPath)
+                        if (((Warehouse)map.Warehouses[j].Building).Roads[i].InitialCost < shortestPath)
                         {
-                            shortestPath = ((Warehouse)map.Warehouses[j].Building).Roads[i].initialCost;
+                            shortestPath = ((Warehouse)map.Warehouses[j].Building).Roads[i].InitialCost;
                             shortestRoad = ((Warehouse)map.Warehouses[j].Building).Roads[i];
                         }
                     }
                 }
                 // Display.
-                shortesRoutesRichTbx.Text += $"Warehouses at #{shortestRoad[0].LocationID + 1} to shop at #{shortestRoad[1].LocationID + 1}, takes {shortestRoad.initialCost} km.\n";
+                shortesRoutesRichTbx.Text += $"Warehouses at #{shortestRoad[0].LocationID + 1} to shop at #{shortestRoad[1].LocationID + 1}, takes {shortestRoad.InitialCost} km.\n";
             }
         }
 
@@ -564,7 +564,7 @@ namespace MapLayout
             string holder = "From " + FromlocationID + " to " + TolocationID + ": \n";
             foreach (Road r in myRoute.Route)
             {
-                holder += "Road: " + r.Vertex1.LocationID + " - " + r.Vertex2.LocationID + "\n";
+                holder += "Road: " + r.Location1.LocationID + " - " + r.Location2.LocationID + "\n";
             }
             MessageBox.Show(holder);
         }

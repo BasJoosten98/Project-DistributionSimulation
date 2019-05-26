@@ -87,7 +87,7 @@ namespace ClassLibrary.Tests
                 map.Edges.Add(new Road(map.Locations[source], map.Locations[destination]));
                 Assert.True(map.Edges.Count == 1);
                 Road edge = map.Edges[0]; // As the collection should only hold 1 edge.
-                Assert.True(edge.Vertex1 == map.Locations[source] && edge.Vertex2 == map.Locations[destination]);
+                Assert.True(edge.Location1 == map.Locations[source] && edge.Location2 == map.Locations[destination]);
             }
 
         }

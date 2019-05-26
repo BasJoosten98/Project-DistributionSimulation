@@ -3,34 +3,42 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
 	public class Road
 	{
-        public Entities.Road RoadEntity { get; }
+        // Fields for storage
+        public Map Map { get; set; }
+        public Location Location1 { get; set; }
+        public Location Location2 { get; set; }
+        public int InitialCost { get; set; }
+
+        // Foreign Key
+        public int MapId { get; set; }
+        public int Location1Id { get; set; }
+        public int Location2Id { get; set; }
+
         //Drawing fields
+        [NotMapped]
         private static int idCounter = 0;
+        [NotMapped]
         public int id;
+        [NotMapped]
         public Color LineColor = Color.Black;
+        [NotMapped]
         public Color StringColor = Color.Yellow;
+        [NotMapped]
         public int LineWidth = 3;
 
-        //other fields
-        public Location Vertex1 { get; set; }
-        public Location Vertex2 { get; set; }
-
-        public int initialCost { get; set; }
-
-        public Road(Location Vertex1, Location Vertex2)
+        public Road(Location location1, Location location2)
         {
-            this.Vertex1 = Vertex1;
-            this.Vertex2 = Vertex2;
+            Location1 = location1;
+            Location2 = location2;
             id = idCounter;
             idCounter++;
-            this.initialCost = 1;
-
-            RoadEntity = new Entities.Road() { Location1 = Vertex1.LocationEntity, Location2 = Vertex2.LocationEntity, InitialCost = initialCost };
+            InitialCost = 1;
         }
 
         /// <summary>
@@ -46,8 +54,8 @@ namespace ClassLibrary
         public Point onRoadLocation(int deltaTime, Location to)
         {
             Location from;
-            if(to == Vertex1) { from = Vertex2; }
-            else { from = Vertex1; }
+            if(to == Location1) { from = Location2; }
+            else { from = Location1; }
             //if(deltaTime == 0)
             //{
             //    return from.Center;
@@ -57,22 +65,19 @@ namespace ClassLibrary
             //    return to.Center;
             //}
             //return new Point((from.Center.X + to.Center.X) / 2, (from.Center.Y + to.Center.Y) / 2);
-            return new Point(from.Center.X + deltaTime * (to.Center.X - from.Center.X) / initialCost, from.Center.Y + deltaTime * (to.Center.Y - from.Center.Y)/initialCost);
+            return new Point(from.Center.X + deltaTime * (to.Center.X - from.Center.X) / InitialCost, from.Center.Y + deltaTime * (to.Center.Y - from.Center.Y)/InitialCost);
         }
 
         public Location this[int index]
         {
-
             get
             {
-
                 switch (index)
                 {
 
-                    case 0: return Vertex1;
-                    case 1: return Vertex2;
+                    case 0: return Location1;
+                    case 1: return Location2;
                 }
-
                 throw new IndexOutOfRangeException();
             }
         }

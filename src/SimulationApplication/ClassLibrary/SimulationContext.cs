@@ -6,11 +6,11 @@ namespace ClassLibrary
 {
     public class SimulationContext : DbContext
     {
-        public DbSet<Entities.Building> Buildings { get; set; }
-        public DbSet<Entities.Location> Locations { get; set; }
-        public DbSet<Entities.Map> Maps { get; set; }
-        public DbSet<Entities.Shop> Shops { get; set; }
-        public DbSet<Entities.Warehouse> Warehouses { get; set; }
+        public DbSet<Building> Buildings { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Map> Maps { get; set; }
+        public DbSet<Shop> Shops { get; set; }
+        public DbSet<Warehouse> Warehouses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -27,12 +27,12 @@ namespace ClassLibrary
             base.OnModelCreating(modelBuilder);
 
             #region Road
-            modelBuilder.Entity<Entities.Road>()
+            modelBuilder.Entity<Road>()
                 .HasKey(road => new { road.MapId, road.Location1Id, road.Location2Id });
             #endregion
 
             #region Cell
-            modelBuilder.Entity<Entities.Cell>()
+            modelBuilder.Entity<Cell>()
                 .HasKey(cell => new { cell.MapId, cell.RowIndex, cell.ColumnIndex });
             #endregion
         }

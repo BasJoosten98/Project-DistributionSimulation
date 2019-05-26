@@ -29,13 +29,13 @@ namespace ClassLibrary
         public Delivery(DijkstraRoute dRoute, Location startLoc, int timeStamp)
         {
             if(!(dRoute.EndPoint.Building is Shop)) { throw new Exception("Building needs to be a shop!"); }
-            if(dRoute.Route[0].Vertex1 != startLoc && dRoute.Route[0].Vertex2 != startLoc) { throw new Exception("Unkown startLocation"); }
+            if(dRoute.Route[0].Location1 != startLoc && dRoute.Route[0].Location2 != startLoc) { throw new Exception("Unkown startLocation"); }
             route = dRoute;
             status = DeliveryStatus.NOTSTARTED;
             totalTravelTime = 0;
             createTime = timeStamp;
-            if(dRoute.Route[0].Vertex1 == startLoc) { nextLocation = dRoute.Route[0].Vertex2; }
-            else { nextLocation = dRoute.Route[0].Vertex1; }
+            if(dRoute.Route[0].Location1 == startLoc) { nextLocation = dRoute.Route[0].Location2; }
+            else { nextLocation = dRoute.Route[0].Location1; }
             currentRoad = dRoute.Route[0];
         }
 
@@ -60,20 +60,20 @@ namespace ClassLibrary
 
                 for (int i = 0; i < route.Route.Count; i++)
                 {
-                    sum += route.Route[i].initialCost;
+                    sum += route.Route[i].InitialCost;
                     if (sum >= totalTravelTime) //new next location
                     {
                         if (currentRoad != route.Route[i] && i != 0)
                         {
-                            if (route.Route[i].Vertex1 == nextLocation) { nextLocation = route.Route[i].Vertex2; }
-                            else { nextLocation = route.Route[i].Vertex1; }
+                            if (route.Route[i].Location1 == nextLocation) { nextLocation = route.Route[i].Location2; }
+                            else { nextLocation = route.Route[i].Location1; }
                             currentRoad = route.Route[i];
                         }
                         break;
                     }
                 }
-                if (currentRoad.Vertex1 != nextLocation && currentRoad.Vertex2 != nextLocation) { throw new Exception("currentroad mismatches nextLocation"); }
-                deltaTravelTime = currentRoad.initialCost - (sum - totalTravelTime);
+                if (currentRoad.Location1 != nextLocation && currentRoad.Location2 != nextLocation) { throw new Exception("currentroad mismatches nextLocation"); }
+                deltaTravelTime = currentRoad.InitialCost - (sum - totalTravelTime);
                 if (totalTravelTime == route.RouteLenght)
                 {
                     status = DeliveryStatus.COMINGBACK;
@@ -86,20 +86,20 @@ namespace ClassLibrary
                 sum = route.RouteLenght;
                 for (int i = route.Route.Count - 1; i >= 0; i--)
                 {
-                    sum += route.Route[i].initialCost;
+                    sum += route.Route[i].InitialCost;
                     if (sum >= totalTravelTime) //new next location
                     {
                         if (currentRoad != route.Route[i])
                         {
-                            if (route.Route[i].Vertex1 == nextLocation) { nextLocation = route.Route[i].Vertex2; }
-                            else { nextLocation = route.Route[i].Vertex1; }
+                            if (route.Route[i].Location1 == nextLocation) { nextLocation = route.Route[i].Location2; }
+                            else { nextLocation = route.Route[i].Location1; }
                             currentRoad = route.Route[i];
                         }
                         break;
                     }
                 }
-                if (currentRoad.Vertex1 != nextLocation && currentRoad.Vertex2 != nextLocation) { throw new Exception("currentroad mismatches nextLocation"); }
-                deltaTravelTime = currentRoad.initialCost - (sum - totalTravelTime);
+                if (currentRoad.Location1 != nextLocation && currentRoad.Location2 != nextLocation) { throw new Exception("currentroad mismatches nextLocation"); }
+                deltaTravelTime = currentRoad.InitialCost - (sum - totalTravelTime);
                 if (totalTravelTime == 2 * route.RouteLenght)
                 {
                     status = DeliveryStatus.FINISHED;

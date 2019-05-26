@@ -81,7 +81,7 @@ namespace ClassLibrary
             List<Road> roadList = new List<Road>();
             foreach(Road r in allRoads)
             {
-                if(r.Vertex1 == loc || r.Vertex2 == loc)
+                if(r.Location1 == loc || r.Location2 == loc)
                 {
                     roadList.Add(r);
                 }
@@ -113,7 +113,7 @@ namespace ClassLibrary
             currentRoads = getRoadsConnectedToLocation(startLocation);
             foreach (Road r in currentRoads)
             {
-                currentRoadsLenghts.Add(r.initialCost);
+                currentRoadsLenghts.Add(r.InitialCost);
             }
 
             int lowestIndex;
@@ -155,8 +155,8 @@ namespace ClassLibrary
                 }
 
                 //claim new shortest route
-                if (dijkstraStart.isConnectedToLocation(currentRoad.Vertex1)) { prevLocation = currentRoad.Vertex1; } else { newLocation = currentRoad.Vertex1; }
-                if (dijkstraStart.isConnectedToLocation(currentRoad.Vertex2)) { prevLocation = currentRoad.Vertex2; } else { newLocation = currentRoad.Vertex2; }
+                if (dijkstraStart.isConnectedToLocation(currentRoad.Location1)) { prevLocation = currentRoad.Location1; } else { newLocation = currentRoad.Location1; }
+                if (dijkstraStart.isConnectedToLocation(currentRoad.Location2)) { prevLocation = currentRoad.Location2; } else { newLocation = currentRoad.Location2; }
                 if (prevLocation == null) { throw new NullReferenceException(); }
                 if (newLocation == null) { throw new NullReferenceException(); }
                 DijkstraRoute previousDijkstraRoute = dijkstraStart.GetRouteTo(prevLocation);
@@ -186,8 +186,8 @@ namespace ClassLibrary
 
                 //filter out already existing roads in currentRoads
                 for (int i = 0; i < newAddingRoads.Count; i++) {
-                    if(dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex1) &&
-                        dijkstraStart.isConnectedToLocation(newAddingRoads[i].Vertex2))
+                    if(dijkstraStart.isConnectedToLocation(newAddingRoads[i].Location1) &&
+                        dijkstraStart.isConnectedToLocation(newAddingRoads[i].Location2))
                     {
                         if (currentRoads.Contains(newAddingRoads[i]))
                         {
@@ -203,7 +203,7 @@ namespace ClassLibrary
                 //Adding new roads and calculating new roads lenghts
                 foreach(Road r in newAddingRoads)
                 {
-                    int roadLenght = r.initialCost + currentRoadLenght;
+                    int roadLenght = r.InitialCost + currentRoadLenght;
                     currentRoads.Add(r);
                     currentRoadsLenghts.Add(roadLenght);
                 }
@@ -227,13 +227,13 @@ namespace ClassLibrary
             reachableLocations = new List<Location>();
             foreach (Road r in allRoads)
             {
-                if (!reachableLocations.Contains(r.Vertex1))
+                if (!reachableLocations.Contains(r.Location1))
                 {
-                    reachableLocations.Add(r.Vertex1);
+                    reachableLocations.Add(r.Location1);
                 }
-                if (!reachableLocations.Contains(r.Vertex2))
+                if (!reachableLocations.Contains(r.Location2))
                 {
-                    reachableLocations.Add(r.Vertex2);
+                    reachableLocations.Add(r.Location2);
                 }
             }
         }
