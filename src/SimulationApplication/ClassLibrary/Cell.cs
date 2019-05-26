@@ -5,34 +5,44 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
     public class Cell
     {
-        public Entities.Cell CellEntity { get; set; }
+        public int RowIndex { get; set; }
+        public int ColumnIndex { get; set; }
+        public int Demand { get; set; }
+        public int DemandGrowthPerTick { get; set; }
+
+        // Foreign Key
+        public int MapId { get; set; }
+        public Map Map { get; set; }
 
         //Drawing fields
+        [NotMapped]
         public Color CellColor = Color.Black;
+        [NotMapped]
         public int CellLineWidth = 1;
-
-
         //Cell fields
-        private static int maxDemand = 0; 
+        [NotMapped]
+        private static int maxDemand = 0;
+        [NotMapped]
         private static int maxDemandGrow = 0;
+        [NotMapped]
         private static Random rand = new Random();
-
-        private int demand; //Current demand of the cell
-        private int demandGrow; //Demand grow per tick
-        private List<ShopRadius> shopRadiuses = new List<ShopRadius>(); 
-
+        [NotMapped]
+        private List<ShopRadius> shopRadiuses = new List<ShopRadius>();
+        [NotMapped]
         public static int MaxDemand { get { return maxDemand; } }
+        [NotMapped]
         public static int MaxDemandGrow { get { return maxDemandGrow;  } }
-        public int Demand { get { return this.demand; } }
-        public int DemandGrow { get { return this.demandGrow; } }
+        [NotMapped]
         public static int CellSize { get; set; }
+        [NotMapped]
         public Index Index { get; set; }
-
+        [NotMapped]
         public Rectangle CellRectangle;
 
         public Cell()
@@ -81,15 +91,15 @@ namespace ClassLibrary
             while(temp.Count > 0)
             {
                 int r = rand.Next(0, temp.Count);
-                demand -= temp[r].BuyFromShop(demand);
+                Demand -= temp[r].BuyFromShop(Demand);
                 temp.RemoveAt(r);
             }
 
             //APPLY DEMAND GROW
-            demand += DemandGrow;
-            if(demand > maxDemand)
+            Demand += DemandGrowthPerTick;
+            if(Demand > maxDemand)
             {
-                maxDemand = demand;
+                maxDemand = Demand;
             }
         }
         public virtual void ResetDrawFields()
@@ -100,20 +110,20 @@ namespace ClassLibrary
         /// <summary>
         /// Set the demandGrow and demand of this cell
         /// </summary>
-        /// <param name="Demand"></param>
-        public void SetDemandGrow(int Demand)
+        /// <param name="demand"></param>
+        public void SetDemandGrow(int demand)
         {
-            if(Demand < 0) { throw new Exception("Demand must be greater than or equal to 0"); }
-            this.demand = Demand;
-            this.demandGrow = Demand;
+            if(demand < 0) { throw new Exception("Demand must be greater than or equal to 0"); }
+            Demand = demand;
+            DemandGrowthPerTick = demand;
 
-            if (Demand > maxDemand)
+            if (demand > maxDemand)
             {
-                maxDemand = Demand;
+                maxDemand = demand;
             }
-            if(Demand > maxDemandGrow)
+            if(demand > maxDemandGrow)
             {
-                maxDemandGrow = Demand;
+                maxDemandGrow = demand;
             }
         }
         
@@ -123,7 +133,7 @@ namespace ClassLibrary
         /// <returns></returns>
         public Color GetHeatMapCellColor() 
         {
-            double maxPercentage = (double)this.demand / maxDemand;
+            double maxPercentage = (double)this.Demand / maxDemand;
             Color heatColor;
             if(maxPercentage > 1)
             {

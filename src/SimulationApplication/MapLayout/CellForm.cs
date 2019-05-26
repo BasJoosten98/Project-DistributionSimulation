@@ -33,7 +33,7 @@ namespace MapLayout
             lbRow.Text = cell.Index.Row.ToString();
             lbCol.Text = cell.Index.Column.ToString();
             lbDemand.Text = cell.Demand.ToString();
-            tbGrowth.Text = cell.DemandGrow.ToString();
+            tbGrowth.Text = cell.DemandGrowthPerTick.ToString();
 
             checkCell();
         }

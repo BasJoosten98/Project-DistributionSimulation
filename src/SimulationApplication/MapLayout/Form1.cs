@@ -589,7 +589,7 @@ namespace MapLayout
             holder += "Cell Max D: " + Cell.MaxDemand + " DG: " + Cell.MaxDemandGrow + "\n";
             foreach (Cell c in map.GetCells())
             {
-                holder += "Cell (" + c.Index.Column + "," + c.Index.Row + ") D: " + c.Demand + " DG: " + c.DemandGrow + "\n";
+                holder += "Cell (" + c.Index.Column + "," + c.Index.Row + ") D: " + c.Demand + " DG: " + c.DemandGrowthPerTick + "\n";
             }
             shortesRoutesRichTbx.Clear();
             shortesRoutesRichTbx.Text += holder;
