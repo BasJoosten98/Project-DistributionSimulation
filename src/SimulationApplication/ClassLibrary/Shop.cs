@@ -24,6 +24,7 @@ namespace ClassLibrary
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
         public Shop(PictureBox PicBox, int StockAmount, int Restock)
+            :base(PicBox)
         {
             if (Restock < 0) { throw new Exception("Restock must be greater than or equal to 0"); }
             if (StockAmount < 0) { throw new Exception("Stock must be greater than or equal to 0"); }
