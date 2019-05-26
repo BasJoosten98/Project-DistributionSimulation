@@ -50,8 +50,6 @@ namespace ClassLibrary
             this.permanent = false;
             this.visited = false;
             this.Radius = Radius;
-
-            LocationEntity = new Entities.Location(Radius, row, column);
         }
 
         /// <summary>

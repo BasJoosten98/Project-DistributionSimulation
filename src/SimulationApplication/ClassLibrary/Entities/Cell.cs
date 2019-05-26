@@ -17,15 +17,21 @@ namespace ClassLibrary.Entities
         public int MapId { get; set; }
         public Map Map { get; set; }
 
-        public Cell(int rowIndex, int columnIndex) : this(rowIndex, columnIndex, 0)
+        public Cell(Map map, int rowIndex, int columnIndex) : this(map, rowIndex, columnIndex, 0)
         { }
 
-        public Cell(int rowIndex, int columnIndex, int demand)
+        public Cell(Map map, int rowIndex, int columnIndex, int demand)
         {
+            Map = map;
             RowIndex = rowIndex;
             ColumnIndex = columnIndex;
             Demand = demand;
             DemandGrowthPerTick = demand;
+        }
+
+        public override string ToString()
+        {
+            return $"Cell: ({RowIndex}, {ColumnIndex})";
         }
     }
 }

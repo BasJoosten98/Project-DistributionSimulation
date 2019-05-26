@@ -11,7 +11,7 @@ namespace ClassLibrary.Entities
         public int Radius { get; set; }
         public Building Building { get; set; }
 
-        public Location (int radius, int rowIndex, int columnIndex) : base(rowIndex, columnIndex)
+        public Location (Map map, int radius, int rowIndex, int columnIndex) : base(map, rowIndex, columnIndex)
         {
             Radius = radius;
         }

@@ -10,7 +10,7 @@ namespace ClassLibrary
 {
     public class Cell
     {
-        public Entities.Cell CellEntity { get; }
+        public Entities.Cell CellEntity { get; set; }
 
         //Drawing fields
         public Color CellColor = Color.Black;
@@ -40,12 +40,9 @@ namespace ClassLibrary
 
         public Cell(int columnNumber, int rowNumber, int demand)
         {
-            // Construct an equivalent Cell Entity for communication with the database.
             Index = new Index(columnNumber, rowNumber);
             CellRectangle = new Rectangle(new Point(Index.Column * CellSize, Index.Row * CellSize), new Size(CellSize, CellSize));
             SetDemandGrow(demand);
-
-            CellEntity = new Entities.Cell(rowNumber, columnNumber, demand);
         }
         public Cell(int columnNumber, int rowNumber) : this(columnNumber, rowNumber, 0)
         { }
@@ -109,10 +106,6 @@ namespace ClassLibrary
             if(Demand < 0) { throw new Exception("Demand must be greater than or equal to 0"); }
             this.demand = Demand;
             this.demandGrow = Demand;
-
-            // Update the demand for the cell entity as well.
-            CellEntity.Demand = Demand;
-            CellEntity.DemandGrowthPerTick = Demand;
 
             if (Demand > maxDemand)
             {
