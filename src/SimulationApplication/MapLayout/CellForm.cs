@@ -34,7 +34,7 @@ namespace MapLayout
             lbCol.Text = cell.Index.Column.ToString();
             lbDemand.Text = cell.Demand.ToString();
             tbGrowth.Text = cell.DemandGrow.ToString();
-       
+
             checkCell();
         }
 
@@ -43,9 +43,11 @@ namespace MapLayout
         //if not, then cell has no location. apply minor gui changes.
         private void checkCell()
         {
+            if()
+
             if (location != null)
             {
-                if(location.Building != null)
+                if (location.Building != null)
                 {
                     if (location.Building.GetType() == typeof(Shop))
                     {
@@ -63,7 +65,8 @@ namespace MapLayout
                         tbVehicles.Text = w.TotalVehiclesAtStart.ToString();
                         gbWarehouse.Show();
                     }
-                } else
+                }
+                else
                 {
                     lbBuilding.Text = "None";
                     gbBInfo.Show();
@@ -81,17 +84,34 @@ namespace MapLayout
 
         private void bSave_Click(object sender, EventArgs e)
         {
-            cell.SetDemandGrow(Convert.ToInt32(tbGrowth.Text));
+            int growth = Convert.ToInt32(tbGrowth.Text);
+            if (growth >= 0)
+            {
+                cell.SetDemandGrow(growth);
+            }
+            else
+            {
+                MessageBox.Show("Demand cannot be less than 0");
+            }
+
 
             switch (lbBuilding.Text)
             {
                 case "Shop":
                     Shop s = (Shop)location.Building;
-                    s.Stock = Convert.ToInt32(tbStock.Text);
-                    s.RestockAmount = Convert.ToInt32(tbReStock.Text);
+                    int stock = Convert.ToInt32(tbStock.Text);
+                    int reStock = Convert.ToInt32(tbReStock.Text);
+                    if (stock >= 0 && reStock >= 0)
+                    {
+                        s.Stock = stock;
+                        s.RestockAmount = reStock;
+                    } else
+                    {
+                        MessageBox.Show("Neither stock or restock can be less than 0");
+                    }
                     break;
                 case "Warehouse":
-                    setVehicles(Convert.ToInt32(tbVehicles.Text));            
+                    setVehicles(Convert.ToInt32(tbVehicles.Text));
                     break;
             }
         }
@@ -106,12 +126,20 @@ namespace MapLayout
             if (amount > 0)
             {
                 w.TotalVehiclesAtStart = amount;
-            } else
+            }
+            else
             {
                 MessageBox.Show("Total Vehicles must be greater than 0");
             }
 
 
+        }
+
+        public void disableFields()
+        {
+            gbBInfo.Enabled = false;
+            gbWarehouse.Enabled = false;
+            tbGrowth.Enabled = false;
         }
 
         //Copied vehicle picturebox creation code from form1 createNewVehicle Method. Simple to add a picturebox to vehicle constructor.

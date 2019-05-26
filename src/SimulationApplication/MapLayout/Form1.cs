@@ -352,21 +352,23 @@ namespace MapLayout
                             if (c.CellRectangle.Contains(mousePt)) //Mouse was above some location 
                             {
                                 //Only allow this funtionality when simulation is not running
-                                if (!timer1.Enabled)
-                                {
-                                    Location location = null;
-                                    //find the location that is in the cell thats clicked.
-                                    foreach (Location l in map.Locations)
-                                    {
-                                        if (c == l)
-                                        {
-                                            location = l;
-                                        }
-                                    }
-                                    CellForm cForm = new CellForm(location, c);
-                                    cForm.Show();
 
+                                Location location = null;
+                                //find the location that is in the cell thats clicked.
+                                foreach (Location l in map.Locations)
+                                {
+                                    if (c == l)
+                                    {
+                                        location = l;
+                                    }
                                 }
+
+                                bool isTimerOn = timer1.Enabled ? true : false;
+
+                                CellForm cForm = new CellForm(location, c);
+                                if(isTimerOn)
+                                    cForm.disableFields();
+                                cForm.Show();
                             }
                         }
                         break;
@@ -611,12 +613,12 @@ namespace MapLayout
         }
         private void createAllvehicles()
         {
-            foreach(Location l in map.Warehouses)
+            foreach (Location l in map.Warehouses)
             {
                 Point ImagePosition = new Point((l.Index.Column * Cell.CellSize) + 4, (l.Index.Row * Cell.CellSize) + 4);
                 Warehouse w = (Warehouse)l.Building;
 
-                for(int i = 1; i <= w.TotalVehiclesAtStart; i++)
+                for (int i = 1; i <= w.TotalVehiclesAtStart; i++)
                 {
                     Vehicle temp = createNewVehicle(ImagePosition);
                     w.AddVehicle(temp);
