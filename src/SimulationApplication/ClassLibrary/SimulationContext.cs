@@ -26,15 +26,13 @@ namespace ClassLibrary
         {
             base.OnModelCreating(modelBuilder);
 
-            #region Road
-            modelBuilder.Entity<Road>()
-                .HasKey(road => new { road.MapId, road.Location1Id, road.Location2Id });
-            #endregion
-
             #region Cell
             modelBuilder.Entity<Cell>()
-                .HasKey(cell => new { cell.MapId, cell.RowIndex, cell.ColumnIndex });
+                .HasKey(cell => new { cell.RowIndex, cell.ColumnIndex });
             #endregion
+
+            modelBuilder.Entity<Road>()
+                .HasKey(road => new { road.Location1, road.Location2 });
         }
     }
 }

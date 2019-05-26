@@ -9,16 +9,10 @@ namespace ClassLibrary
 {
 	public class Road
 	{
-        // Fields for storage
-        public Map Map { get; set; }
+        // Fields
         public Location Location1 { get; set; }
         public Location Location2 { get; set; }
         public int InitialCost { get; set; }
-
-        // Foreign Key
-        public int MapId { get; set; }
-        public int Location1Id { get; set; }
-        public int Location2Id { get; set; }
 
         //Drawing fields
         [NotMapped]
