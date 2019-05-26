@@ -53,9 +53,11 @@ namespace ClassLibrary
             rng = new Random(0);
             rng2 = new Random();
 
+            int demand;
             foreach (Cell c in cells)
             {
-                c.SetDemandGrow(rng2.Next(2, 5));
+                demand = rng2.Next(2, 5);
+                c.SetDemandGrow(demand);
             }
 
 
@@ -64,9 +66,7 @@ namespace ClassLibrary
                 Cell c = GenerateRandomLocation();
                 if (!(c is Location))
                 {
-                    // Set location object to beparth of this cell 
                     // and decrement number of locations to be added to the cells/map.
-                    //c.Location = new Location(c.Index.Row, c.Index.Column);
                     Location newLocation = ChangeCellIntoLocation(c);
                     Locations.Add(newLocation);
                     numberOfLocations--;
@@ -75,42 +75,61 @@ namespace ClassLibrary
             // Prints the count property of the List of location objects.
             Console.WriteLine(V);
 
-            // Hard coded roads/edges from location 
-            // 1 -> 2, weight: 3
-            Edges.Add(new Road(Locations[0], Locations[1]));
-            // 2 -> 3, weight: 1
-            Edges.Add(new Road(Locations[1], Locations[2]));
-            // 1 -> 3, weight: 1
-            Edges.Add(new Road(Locations[0], Locations[2]));
-            // 3 -> 6, weight: 1
-            Edges.Add(new Road(Locations[2], Locations[5]));
-            // 6 -> 7, weight: 1
-            Edges.Add(new Road(Locations[5], Locations[6]));
-            // 1 -> 9, weight: 1
-            Edges.Add(new Road(Locations[0], Locations[8]));
-            // 4 -> 9, weight: 1
-            Edges.Add(new Road(Locations[3], Locations[8]));
-            // 4 -> 5, weight: 1
-            Edges.Add(new Road(Locations[3], Locations[4]));
-            // 5 -> 8, weight: 1
-            Edges.Add(new Road(Locations[4], Locations[7]));
-            // 10 -> 8, weight: 1
-            Edges.Add(new Road(Locations[9], Locations[7]));
-            // 10 -> 5, weight: 1
-            Edges.Add(new Road(Locations[9], Locations[4]));
-
-            List<Entities.Road> entityRoads = new List<Entities.Road>();
-            foreach (Road r in Edges)
+            // Construct the map entity.
+            MapEntity = new Entities.Map() { CellSize = cellSize, NumberOfCells = numberOfCells };
+            // Add all created cells to the map.
+            foreach (Cell c in cells)
             {
-                r.initialCost = rng.Next(1, 6);
-                entityRoads.Add(r.RoadEntity);
+                MapEntity.Cells.Add(c.CellEntity);
             }
+            // Create and add roads to the map entity.
 
-
-
-            MapEntity = new Entities.Map() { CellSize = cellSize, NumberOfCells = numberOfCells, Roads = entityRoads };
+            // 1 -> 2, weight: 3
+            Road r = new Road(Locations[0], Locations[1]);
+            Edges.Add(r);
+            MapEntity.Roads.Add(r.RoadEntity);
+            // 2 -> 3, weight: 1
+            r = new Road(Locations[1], Locations[2]);
+            Edges.Add(r);
+            MapEntity.Roads.Add(r.RoadEntity);
+            // 1 -> 3, weight: 1
+            r = new Road(Locations[0], Locations[2]);
+            Edges.Add(r);
+            MapEntity.Roads.Add(r.RoadEntity);
+            // 3 -> 6, weight: 1
+            r = new Road(Locations[2], Locations[5]);
+            Edges.Add(r);
+            MapEntity.Roads.Add(r.RoadEntity);
+            // 6 -> 7, weight: 1
+            r = new Road(Locations[5], Locations[6]);
+            Edges.Add(r);
+            MapEntity.Roads.Add(r.RoadEntity);
+            // 1 -> 9, weight: 1
+            r = new Road(Locations[0], Locations[8]);
+            Edges.Add(r);
+            MapEntity.Roads.Add(r.RoadEntity);
+            // 4 -> 9, weight: 1
+            r = new Road(Locations[3], Locations[8]);
+            Edges.Add(r);
+            MapEntity.Roads.Add(r.RoadEntity);
+            // 4 -> 5, weight: 1
+            r = new Road(Locations[3], Locations[4]);
+            Edges.Add(r);
+            MapEntity.Roads.Add(r.RoadEntity);
+            // 5 -> 8, weight: 1
+            r = new Road(Locations[4], Locations[7]);
+            Edges.Add(r);
+            MapEntity.Roads.Add(r.RoadEntity);
+            // 10 -> 8, weight: 1
+            r = new Road(Locations[9], Locations[7]);
+            Edges.Add(r);
+            MapEntity.Roads.Add(r.RoadEntity);
+            // 10 -> 5, weight: 1
+            r = new Road(Locations[9], Locations[4]);
+            Edges.Add(r);
+            MapEntity.Roads.Add(r.RoadEntity);
         }
-        
+
         /// <summary>
         /// Changes Cell into Location
         /// </summary>
@@ -121,6 +140,12 @@ namespace ClassLibrary
             Location l = new Location(c.Index.Column, c.Index.Row);
             l.SetDemandGrow(c.Demand);
             cells[c.Index.Column, c.Index.Row] = l;
+
+            // Obtain the cell from the map entity and remove it from the collection.
+            MapEntity.Cells.Remove(c.CellEntity);
+            // Create a location entity and add it to the map's collection of cells.
+            MapEntity.Cells.Add(l.LocationEntity);
+
             return l;
         }
         /// <summary>
@@ -130,14 +155,24 @@ namespace ClassLibrary
         /// <returns></returns>
         public Cell ChangeLocationIntoCell(Location l)
         {
+            // Remove the location entity from the collection of Cell Entities.
+            MapEntity.Cells.Remove(l.LocationEntity);
+
             Cell c = new Cell(l.Index.Column, l.Index.Row);
             c.SetDemandGrow(l.Demand);
             cells[l.Index.Column, l.Index.Row] = c;
             Locations.Remove(l);
-            for(int i = 0; i < Edges.Count; i++)
+
+            // Add cell entity to the collection.
+            MapEntity.Cells.Add(c.CellEntity);
+
+            // Remove the roads from the road collection.
+            for (int i = 0; i < Edges.Count; i++)
             {
                 if(Edges[i].Vertex1 == l || Edges[i].Vertex2 == l)
                 {
+                    // Hope they alligned.
+                    MapEntity.Roads.RemoveAt(i);
                     Edges.RemoveAt(i);
                     i--;
                 }
@@ -196,6 +231,11 @@ namespace ClassLibrary
             {
                 Road temp = new Road(l1, l2);
                 temp.initialCost = cost;
+
+                // Road entity
+                temp.RoadEntity.InitialCost = cost;
+                MapEntity.Roads.Add(temp.RoadEntity);
+
                 Edges.Add(temp);
                 return true;
             }
@@ -217,6 +257,8 @@ namespace ClassLibrary
             Road r = getRoadByLocations(l1, l2);
             if(r != null)
             {
+                // Remove the road entity.
+                MapEntity.Roads.Remove(r.RoadEntity);
                 Edges.Remove(r);
                 return true;
             }
@@ -276,6 +318,7 @@ namespace ClassLibrary
             }
 
         }
+
         private void removeShopRadiusFromCells(Shop s)
         {
             foreach(Cell c in cells)
@@ -283,6 +326,7 @@ namespace ClassLibrary
                 c.RemoveShopRadius(s);
             }
         }
+
         public void RemoveBuilding(Location l)
         {
             if (l.Building is Warehouse)
@@ -298,6 +342,8 @@ namespace ClassLibrary
                 l.Building.picBox.Dispose();
             }
             l.Building = null;
+            // Set the entity's building to null as well.
+            l.LocationEntity.Building = null;
         }
 
         /// <summary>

@@ -32,19 +32,17 @@ namespace ClassLibrary
         public Location()
         { }
 
-        public Location(int column, int row) : base(column, row)
+        public Location(int column, int row) : this(column, row, 0)
         {
-            LocationID = locationID++;
+            //LocationID = locationID++;
 
-            this.min_cost = int.MaxValue;
-            this.permanent = false;
-            this.visited = false;
-            this.Radius = 3;
-
-            LocationEntity = new Entities.Location() { RowIndex = row, ColumnIndex = column };
+            //this.min_cost = int.MaxValue;
+            //this.permanent = false;
+            //this.visited = false;
+            //this.Radius = 3;
         }
-        public Location(int column, int row, int Radius)
-            : base(column, row)
+
+        public Location(int column, int row, int Radius) : base(column, row)
         {
             LocationID = locationID++;
 
@@ -53,7 +51,7 @@ namespace ClassLibrary
             this.visited = false;
             this.Radius = Radius;
 
-            LocationEntity = new Entities.Location() { RowIndex = row, ColumnIndex = column, Radius = Radius };
+            LocationEntity = new Entities.Location(Radius, row, column);
         }
 
         /// <summary>

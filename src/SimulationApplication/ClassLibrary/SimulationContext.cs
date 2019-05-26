@@ -25,9 +25,15 @@ namespace ClassLibrary
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             #region Road
             modelBuilder.Entity<Entities.Road>()
                 .HasKey(road => new { road.MapId, road.Location1Id, road.Location2Id });
+            #endregion
+
+            #region Cell
+            modelBuilder.Entity<Entities.Cell>()
+                .HasKey(cell => new { cell.MapId, cell.RowIndex, cell.ColumnIndex });
             #endregion
         }
     }

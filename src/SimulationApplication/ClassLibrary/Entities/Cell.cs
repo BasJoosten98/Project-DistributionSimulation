@@ -8,7 +8,6 @@ namespace ClassLibrary.Entities
 {
     public class Cell
     {
-        public int Id { get; set; }
         public int RowIndex { get; set; }
         public int ColumnIndex { get; set; }
         public int Demand { get; set; }
@@ -17,5 +16,16 @@ namespace ClassLibrary.Entities
         // Foreign Key
         public int MapId { get; set; }
         public Map Map { get; set; }
+
+        public Cell(int rowIndex, int columnIndex) : this(rowIndex, columnIndex, 0)
+        { }
+
+        public Cell(int rowIndex, int columnIndex, int demand)
+        {
+            RowIndex = rowIndex;
+            ColumnIndex = columnIndex;
+            Demand = demand;
+            DemandGrowthPerTick = demand;
+        }
     }
 }
