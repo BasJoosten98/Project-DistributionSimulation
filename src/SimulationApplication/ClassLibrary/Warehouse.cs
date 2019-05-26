@@ -4,20 +4,25 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using ClassLibrary.Events;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
 	public class Warehouse : Building
 	{
+        [NotMapped]
 		private List<Vehicle> vehicles;
-		private List<Shop> shops;
+        [NotMapped]
+        private List<Shop> shops;
+        [NotMapped]
         private int totalvehiclesAtStart;
-
+        [NotMapped]
         public List<Road> Roads { get; }
+        [NotMapped]
         public List<Vehicle> Vehicles { get {return vehicles; } }
+        [NotMapped]
         public int TotalVehiclesAtStart { get { return totalvehiclesAtStart; } set { if (value >= 1) { totalvehiclesAtStart = value; } else { throw new Exception("Total Vehicles per Warehouse should be greater than 0"); } } }
-
+        [NotMapped]
         public List<Shop> Shops
         {
             get
@@ -33,6 +38,7 @@ namespace ClassLibrary
                 }
             }
         }
+
         public void RemoveAllvehicles()
         {
             foreach(Vehicle v in vehicles)
@@ -41,6 +47,7 @@ namespace ClassLibrary
             }
             vehicles.Clear();
         }
+
         public Warehouse(PictureBox PicBox)
             :base(PicBox)
         {
@@ -48,6 +55,7 @@ namespace ClassLibrary
             TotalVehiclesAtStart = 1;
             vehicles = new List<Vehicle>();
         }
+
         public Warehouse(PictureBox PicBox, int totalVehicles)
             : base(PicBox)
         {

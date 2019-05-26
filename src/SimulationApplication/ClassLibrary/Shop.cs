@@ -4,22 +4,29 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using ClassLibrary.Events;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassLibrary
 {
 	public class Shop : Building
 	{
-        private int tempSold = 0; //needed for statistics
-        private StatisticsShop tempStat = null; //needed for statistics
+        public int Stock { get { return stock; } set { if (value >= 0) { stock = value; } else { throw new Exception("Stock must be greater than or equal to 0"); } } }
+        public int RestockAmount { get { return restockAmount; } set { if (value >= 0) { restockAmount = value; } else { throw new Exception("Restock must be greater than or equal to 0"); } } }
+
+        [NotMapped]
         private int restockAmount;
+        [NotMapped]
         private int stock;
-
+        [NotMapped]
+        private int tempSold = 0; //needed for statistics
+        [NotMapped]
+        private StatisticsShop tempStat = null; //needed for statistics
+        [NotMapped]
         public static int id;
+        [NotMapped]
         public int Capacity { get; set; }
-		public int Stock { get { return this.stock; } set { if (value >= 0) { this.stock = value; } else { throw new Exception("Stock must be greater than or equal to 0"); } } }
-        public int RestockAmount { get { return this.restockAmount; }set { if (value >= 0) { this.restockAmount = value; } else { throw new Exception("Restock must be greater than or equal to 0"); } } }
+        [NotMapped]
         public int ID { get; set; }
-
 
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
