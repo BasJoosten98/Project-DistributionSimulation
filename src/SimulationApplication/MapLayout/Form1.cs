@@ -677,7 +677,7 @@ namespace MapLayout
             // Store the map entity.
             using (context = new SimulationContext())
             {
-                context.Maps.Add(map.MapEntity);
+                context.Maps.Add(map);
                 context.SaveChanges();
             }
         }

@@ -47,16 +47,14 @@ namespace ClassLibrary
         [NotMapped]
         public List<Location> Locations { get { return locations; } }
 
-        /// <summary>
-        /// Creates a map objects and initializes with the given values
-        /// </summary>
-        /// <param name="numberOfLocations"></param>
-        /// <param name="numberOfCells"></param>
-        /// <param name="cellSize"></param>
-        /// <param name="MapBox"></param>
-        public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
+        public Map(int numberOfCells, int cellSize)
         {
-            mapPicBox = MapBox;
+            // Seed the random generator to get reproducable results.
+            rng = new Random(0);
+
+            Cells = new List<Cell>();
+            Edges = new List<Road>();
+
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
             cells = new Cell[NumberOfCells, NumberOfCells];
@@ -70,8 +68,6 @@ namespace ClassLibrary
                 }
             }
 
-            // Seed the random generator to get reproducable results.
-            rng = new Random(0);
             rng2 = new Random();
 
             int demand;
@@ -80,8 +76,24 @@ namespace ClassLibrary
                 demand = rng2.Next(2, 5);
                 c.SetDemandGrow(demand);
             }
+        }
 
+        /// <summary>
+        /// Creates a map objects and initializes with the given values
+        /// </summary>
+        /// <param name="numberOfLocations"></param>
+        /// <param name="numberOfCells"></param>
+        /// <param name="cellSize"></param>
+        /// <param name="MapBox"></param>
+        public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox) : this(numberOfCells, cellSize)
+        {
+            mapPicBox = MapBox;
+            CreateRandomLocations(numberOfLocations);
+            CreateHardCodedEdges();
+        }
 
+        private void CreateRandomLocations(int numberOfLocations)
+        {
             while (numberOfLocations > 0)
             {
                 Cell c = GenerateRandomLocation();
@@ -93,10 +105,10 @@ namespace ClassLibrary
                     numberOfLocations--;
                 }
             }
-            // Prints the count property of the List of location objects.
-            Console.WriteLine(V);
+        }
 
-            // Create and add roads to the map entity
+        private void CreateHardCodedEdges()
+        {
             // 1 -> 2, weight: 3
             Road r = new Road(Locations[0], Locations[1]);
             Edges.Add(r);
@@ -324,8 +336,6 @@ namespace ClassLibrary
                 l.Building.picBox.Dispose();
             }
             l.Building = null;
-            // Set the entity's building to null as well.
-            l.LocationEntity.Building = null;
         }
 
         /// <summary>

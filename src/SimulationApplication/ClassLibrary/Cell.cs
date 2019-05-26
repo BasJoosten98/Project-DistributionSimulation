@@ -53,6 +53,8 @@ namespace ClassLibrary
             Index = new Index(columnNumber, rowNumber);
             CellRectangle = new Rectangle(new Point(Index.Column * CellSize, Index.Row * CellSize), new Size(CellSize, CellSize));
             SetDemandGrow(demand);
+            RowIndex = rowNumber;
+            ColumnIndex = columnNumber;
         }
         public Cell(int columnNumber, int rowNumber) : this(columnNumber, rowNumber, 0)
         { }
