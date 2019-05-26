@@ -99,12 +99,16 @@ namespace ClassLibrary
             // 10 -> 5, weight: 1
             Edges.Add(new Road(Locations[9], Locations[4]));
 
+            List<Entities.Road> entityRoads = new List<Entities.Road>();
             foreach (Road r in Edges)
             {
                 r.initialCost = rng.Next(1, 6);
+                entityRoads.Add(r.RoadEntity);
             }
 
-            MapEntity = new Entities.Map() { CellSize = cellSize, NumberOfCells = numberOfCells, Roads = Edges };
+
+
+            MapEntity = new Entities.Map() { CellSize = cellSize, NumberOfCells = numberOfCells, Roads = entityRoads };
         }
         
         /// <summary>

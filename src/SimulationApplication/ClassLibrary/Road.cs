@@ -31,7 +31,7 @@ namespace ClassLibrary
             this.initialCost = 1;
 
             // Location entity needs to be made and added to the location object such that we can use it in the road entity
-            RoadEntity = new Entities.Road() { InitialCost = initialCost, Location1 = Vertex1, Location2 = Vertex2 };
+            RoadEntity = new Entities.Road() { InitialCost = initialCost, Location1 = Vertex1.LocationEntity, Location2 = Vertex2.LocationEntity };
         }
 
         /// <summary>
