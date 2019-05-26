@@ -10,12 +10,46 @@ namespace ClassLibrary
 {
 	public class Shop : Building
 	{
-        public int Stock { get { return stock; } set { if (value >= 0) { stock = value; } else { throw new Exception("Stock must be greater than or equal to 0"); } } }
-        public int RestockAmount { get { return restockAmount; } set { if (value >= 0) { restockAmount = value; } else { throw new Exception("Restock must be greater than or equal to 0"); } } }
+        public int Stock
+        {
+            get
+            {
+                return stock;
+            }
+            set
+            {
+                if (value >= 0)
+                {
+                    stock = value;
+                }
+                else
+                {
+                    throw new Exception("Stock must be greater than or equal to 0");
+                }
+            }
+        }
 
-        [NotMapped]
+        public int RestockAmount
+        {
+            get
+            {
+                return restockAmount;
+            }
+            set
+            {
+                if (value >= 0)
+                {
+                    restockAmount = value;
+                }
+                else
+                {
+                    throw new Exception("Restock must be greater than or equal to 0");
+                }
+            }
+        }
+        
         private int restockAmount;
-        [NotMapped]
+        
         private int stock;
         [NotMapped]
         private int tempSold = 0; //needed for statistics
@@ -30,13 +64,20 @@ namespace ClassLibrary
 
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
-        public Shop(PictureBox PicBox, int StockAmount, int Restock)
+        public Shop()
+        { }
+
+        public Shop(int stockAmount, int restock)
         {
-            if (Restock < 0) { throw new Exception("Restock must be greater than or equal to 0"); }
-            if (StockAmount < 0) { throw new Exception("Stock must be greater than or equal to 0"); }
-            stock = StockAmount;
-            restockAmount = Restock;
+            Stock = stockAmount;
+            RestockAmount = restock;
         }
+
+        //public Shop(PictureBox pictureBox, int stockAmount, int restock) : this(stockAmount, restock)
+        //{
+        //    picBox = pictureBox;
+        //}
+
         /// <summary>
         /// Event that triggers when the stock is low
         /// </summary>
@@ -49,7 +90,6 @@ namespace ClassLibrary
 		public int Sell(int demand)
 		{
             if(demand > Stock)
-        /// <param name="demand"></param>
             {
                 demand = Stock;
             }

@@ -32,13 +32,16 @@ namespace ClassLibrary
         [NotMapped]
         public int LineWidth = 3;
 
-        public Road(Location location1, Location location2)
+        public Road()
+        { }
+
+        public Road(Location location1, Location location2, int initialCost = 1)
         {
             Location1 = location1;
             Location2 = location2;
             id = idCounter;
             idCounter++;
-            InitialCost = 1;
+            InitialCost = initialCost;
         }
 
         /// <summary>

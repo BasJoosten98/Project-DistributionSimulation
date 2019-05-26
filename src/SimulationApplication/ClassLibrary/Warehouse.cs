@@ -48,6 +48,9 @@ namespace ClassLibrary
             vehicles.Clear();
         }
 
+        public Warehouse()
+        { }
+
         public Warehouse(PictureBox PicBox)
             :base(PicBox)
         {
