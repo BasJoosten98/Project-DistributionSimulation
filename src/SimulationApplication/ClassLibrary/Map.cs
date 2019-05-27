@@ -67,7 +67,7 @@ namespace ClassLibrary
                 }
             }
 
-            rng2 = new Random();
+            rng2 = new Random(0);
 
             int demand;
             foreach (Cell c in cells)
@@ -107,41 +107,37 @@ namespace ClassLibrary
             }
         }
 
+        private void CreateRoadWithRandomWeight(Location source, Location destination)
+        {
+            Road r = new Road(source, destination);
+            r.InitialCost = rng.Next(1, 5);
+            Edges.Add(r);
+        }
+
         private void CreateHardCodedEdges()
         {
-            // 1 -> 2, weight: 3
-            Road r = new Road(Locations[0], Locations[1]);
-            Edges.Add(r);
+            // 1 -> 2, random weight
+            CreateRoadWithRandomWeight(Locations[0], Locations[1]);
             // 2 -> 3, weight: 1
-            r = new Road(Locations[1], Locations[2]);
-            Edges.Add(r);
+            CreateRoadWithRandomWeight(Locations[1], Locations[2]);
             // 1 -> 3, weight: 1
-            r = new Road(Locations[0], Locations[2]);
-            Edges.Add(r);
+            CreateRoadWithRandomWeight(Locations[0], Locations[2]);
             // 3 -> 6, weight: 1
-            r = new Road(Locations[2], Locations[5]);
-            Edges.Add(r);
+            CreateRoadWithRandomWeight(Locations[2], Locations[5]);
             // 6 -> 7, weight: 1
-            r = new Road(Locations[5], Locations[6]);
-            Edges.Add(r);
+            CreateRoadWithRandomWeight(Locations[5], Locations[6]);
             // 1 -> 9, weight: 1
-            r = new Road(Locations[0], Locations[8]);
-            Edges.Add(r);
+            CreateRoadWithRandomWeight(Locations[0], Locations[8]);
             // 4 -> 9, weight: 1
-            r = new Road(Locations[3], Locations[8]);
-            Edges.Add(r);
+            CreateRoadWithRandomWeight(Locations[3], Locations[8]);
             // 4 -> 5, weight: 1
-            r = new Road(Locations[3], Locations[4]);
-            Edges.Add(r);
+            CreateRoadWithRandomWeight(Locations[3], Locations[4]);
             // 5 -> 8, weight: 1
-            r = new Road(Locations[4], Locations[7]);
-            Edges.Add(r);
+            CreateRoadWithRandomWeight(Locations[4], Locations[7]);
             // 10 -> 8, weight: 1
-            r = new Road(Locations[9], Locations[7]);
-            Edges.Add(r);
+            CreateRoadWithRandomWeight(Locations[9], Locations[7]);
             // 10 -> 5, weight: 1
-            r = new Road(Locations[9], Locations[4]);
-            Edges.Add(r);
+            CreateRoadWithRandomWeight(Locations[9], Locations[4]);
         }
 
         /// <summary>
