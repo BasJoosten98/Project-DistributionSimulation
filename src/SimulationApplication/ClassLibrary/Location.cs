@@ -44,12 +44,17 @@ namespace ClassLibrary
 
         public Location(int column, int row, int Radius) : base(column, row)
         {
-            LocationID = locationID++;
+            this.LocationID = locationID++;
 
             this.min_cost = int.MaxValue;
             this.permanent = false;
             this.visited = false;
             this.Radius = Radius;
+        }
+
+        public static void ResetLocationId()
+        {
+            locationID = 0;
         }
 
         /// <summary>

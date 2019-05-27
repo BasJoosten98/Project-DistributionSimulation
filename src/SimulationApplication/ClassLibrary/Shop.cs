@@ -9,6 +9,9 @@ namespace ClassLibrary
 {
 	public class Shop : Building
 	{
+        //backup fields
+        private int backupStock;
+
         private int tempSold = 0; //needed for statistics
         private StatisticsShop tempStat = null; //needed for statistics
         private int restockAmount;
@@ -30,6 +33,12 @@ namespace ClassLibrary
             if (StockAmount < 0) { throw new Exception("Stock must be greater than or equal to 0"); }
             stock = StockAmount;
             restockAmount = Restock;
+            backupStock = stock;
+        }
+
+        public void ShopReset()
+        {
+            stock = backupStock;
         }
         /// <summary>
         /// Event that triggers when the stock is low

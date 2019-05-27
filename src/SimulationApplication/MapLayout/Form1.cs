@@ -29,6 +29,8 @@ namespace MapLayout
         {
             InitializeComponent();
 
+            btnReset.Enabled = false;
+
             // This could be set later on, maybe even via the app config file or by the user.
             const int CELLSIZE = 40;
 
@@ -231,19 +233,26 @@ namespace MapLayout
                                 if (selectedLocations.Count == 2)
                                 {
                                     int cost;
-                                    if (int.TryParse(nudRoadCost.Value.ToString(), out cost))
+                                    if (int.TryParse(tbMapEditor.Text, out cost))
                                     {
-                                        bool succes = map.AddNewRoad(selectedLocations[0], selectedLocations[1], cost);
-                                        if (!succes) //There is already a road there
+                                        if (cost > 0)
                                         {
-                                            map.RemoveRoad(selectedLocations[0], selectedLocations[1]);
-                                            Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been removed");
+                                            bool succes = map.AddNewRoad(selectedLocations[0], selectedLocations[1], cost);
+                                            if (!succes) //There is already a road there
+                                            {
+                                                map.RemoveRoad(selectedLocations[0], selectedLocations[1]);
+                                                Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been removed");
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been added");
+                                            }
+                                            selectedLocations.Clear();
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been added");
+                                            MessageBox.Show("Road cost must be greater than 0");
                                         }
-                                        selectedLocations.Clear();
                                     }
                                     else
                                     {
@@ -328,9 +337,18 @@ namespace MapLayout
                     {
                         if (locationModeEnabled)
                         {
+                            int radius;
+                            if(int.TryParse(tbMapEditor.Text, out radius))
+                            {
+                                if(radius < 0) { MessageBox.Show("Radius for location must be greater or equal to 0"); return; }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Radius For Location was in a wrong format"); return;
+                            }
                             if (!(c is Location))
                             {
-                                Location l = map.ChangeCellIntoLocation(c);
+                                Location l = map.ChangeCellIntoLocation(c, radius);
                                 map.Locations.Add(l);
                                 Console.WriteLine("Cell at col: " + c.Index.Column + " row: " + c.Index.Row + " is now location" + l.LocationID);
                             }
@@ -529,52 +547,8 @@ namespace MapLayout
                     }
                 }
                 // Display.
-                shortesRoutesRichTbx.Text += $"Warehouses at #{shortestRoad[0].LocationID + 1} to shop at #{shortestRoad[1].LocationID + 1}, takes {shortestRoad.initialCost} km.\n";
+                //shortesRoutesRichTbx.Text += $"Warehouses at #{shortestRoad[0].LocationID + 1} to shop at #{shortestRoad[1].LocationID + 1}, takes {shortestRoad.initialCost} km.\n";
             }
-        }
-
-        private void btnDrawRoute_Click(object sender, EventArgs e)
-        {
-            int TolocationID = int.Parse(tbToLocationID.Text);
-            Location destination = map.GetLocationByID(TolocationID);
-            int FromlocationID = int.Parse(tbFromLocationID.Text);
-            Location start = map.GetLocationByID(FromlocationID);
-
-            DijkstraRoute myRoute = map.DistManager.DistDijkstra.GetRouteTo(start, destination);
-            List<Road> allRoads = map.Edges;
-            foreach (Road r in allRoads)
-            {
-                r.ResetDrawFields();
-            }
-            foreach (Road r in myRoute.Route)
-            {
-                r.LineColor = Color.Green;
-            }
-            Map.RedrawMap();
-        }
-
-        private void btnGetRoute_Click(object sender, EventArgs e)
-        {
-            int TolocationID = int.Parse(tbToLocationID.Text);
-            Location destination = map.GetLocationByID(TolocationID);
-            int FromlocationID = int.Parse(tbFromLocationID.Text);
-            Location start = map.GetLocationByID(FromlocationID);
-            DijkstraRoute myRoute = map.DistManager.DistDijkstra.GetRouteTo(start, destination);
-
-            string holder = "From " + FromlocationID + " to " + TolocationID + ": \n";
-            foreach (Road r in myRoute.Route)
-            {
-                holder += "Road: " + r.Vertex1.LocationID + " - " + r.Vertex2.LocationID + "\n";
-            }
-            MessageBox.Show(holder);
-        }
-
-        private void btnDrawDijkstra_Click(object sender, EventArgs e)
-        {
-            int FromlocationID = int.Parse(tbFromLocationID.Text);
-            Location start = map.GetLocationByID(FromlocationID);
-
-            map.DistManager.DistDijkstra.PlayDijkstraAnimation(start);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -591,26 +565,13 @@ namespace MapLayout
             {
                 holder += "Cell (" + c.Index.Column + "," + c.Index.Row + ") D: " + c.Demand + " DG: " + c.DemandGrow + "\n";
             }
-            shortesRoutesRichTbx.Clear();
-            shortesRoutesRichTbx.Text += holder;
+           // shortesRoutesRichTbx.Clear();
+           // shortesRoutesRichTbx.Text += holder;
             if (drawHeatMap) { Map.RedrawMap(); }
 
         }
 
-        int timeStampCounter = 0;
-        private void btnStartSimulation_Click(object sender, EventArgs e)
-        {
-            createAllvehicles();
-            map.PrepareForSimulation();
-            Map.RedrawMap();
-            timer1.Enabled = true;
-            btnCursor.Enabled = true;
-            btnWarehouse.Enabled = false;
-            btnShop.Enabled = false;
-            btnRoadMode.Enabled = false;
-            btnLocationMode.Enabled = false;
-            btnCursor_Click(this, new EventArgs());
-        }
+
         private void createAllvehicles()
         {
             foreach (Location l in map.Warehouses)
@@ -626,28 +587,13 @@ namespace MapLayout
             }
         }
 
-        private void btnPause_Click(object sender, EventArgs e)
-        {
-            if (timer1.Enabled)
-            {
-                timer1.Enabled = false;
-            }
-            else
-            {
-                timer1.Enabled = true;
-            }
-        }
         private bool drawHeatMap = false;
         private void btnHeatMap_Click(object sender, EventArgs e)
         {
             drawHeatMap = !drawHeatMap;
+            if (drawHeatMap) { btnHeatMap.Text = "Hide HeatMap"; }
+            else { btnHeatMap.Text = "Display HeatMap"; }
             Map.RedrawMap();
-        }
-
-        private void btnSpeed_Click(object sender, EventArgs e)
-        {
-            int speed = int.Parse(tbFromLocationID.Text);
-            timer1.Interval = speed;
         }
 
         private bool roadModeEnabled = false;
@@ -657,6 +603,7 @@ namespace MapLayout
             isWarehouseBtnClicked = false;
             isShopBtnClicked = false;
             locationModeEnabled = false;
+            lblMapEditor.Text = "Initial Cost For Road";
         }
 
         private bool locationModeEnabled = false;
@@ -666,6 +613,7 @@ namespace MapLayout
             roadModeEnabled = false;
             isWarehouseBtnClicked = false;
             isShopBtnClicked = false;
+            lblMapEditor.Text = "Radius For Location";
         }
 
         private void saveBtn_Click(object sender, EventArgs e)
@@ -679,6 +627,208 @@ namespace MapLayout
             {
                 context.Maps.Add(map.MapEntity);
                 context.SaveChanges();
+            }
+        }
+        
+        private void startSimulation()
+        {
+            createAllvehicles();
+            map.PrepareForSimulation();
+            Map.RedrawMap();
+            btnCursor_Click(this, new EventArgs());
+            panelMapBuilder.Enabled = false;
+            timer1.Enabled = true;
+            btnReset.Enabled = true;
+            Console.WriteLine("Simulation has started");
+        }
+
+        private int timeStampCounter = 0;
+        private bool simulationHasStarted = false;
+        private bool simulationIsPlaying = false;
+        private void btnPlay_Click(object sender, EventArgs e)
+        {
+            if (!simulationIsPlaying)
+            {
+                if (simulationHasStarted) //continue playing simulation
+                {
+                    btnPlay.BackgroundImage = Properties.Resources.Pause;
+                    simulationIsPlaying = true;
+                    timer1.Enabled = true;
+                    Console.WriteLine("Simulation has unpaused");
+                }
+                else //start simulation for first time
+                {
+                    simulationHasStarted = true;
+                    simulationIsPlaying = true;
+                    startSimulation();
+                    btnPlay.BackgroundImage = Properties.Resources.Pause;
+                }
+            }
+            else if (simulationIsPlaying)
+            {
+                if (simulationHasStarted) //pause simulation
+                {
+                    btnPlay.BackgroundImage = Properties.Resources.Play;
+                    simulationIsPlaying = false;
+                    timer1.Enabled = false;
+                    Console.WriteLine("Simulation has paused");
+                }
+            }
+        }
+
+        private double speed = 1;
+        private double maxSpeed = 16;
+        private double minSpeed = 0.25;
+        private void btnSpeedUp_Click(object sender, EventArgs e)
+        {
+            if(speed < maxSpeed)
+            {
+                speed *= 2;
+            }
+            if (!(speed < maxSpeed)) { btnSpeedUp.Enabled = false; }
+            btnSlowDown.Enabled = true;
+            int milliseconds = (int)Math.Floor(1000 / speed);
+            timer1.Interval = milliseconds;
+            lblSpeed.Text = "Speed: " + speed + "x";
+        }
+
+        private void btnSlowDown_Click(object sender, EventArgs e)
+        {
+            if (speed > minSpeed)
+            {
+                speed /= 2;
+            }
+            if (!(speed > minSpeed)) { btnSlowDown.Enabled = false; }
+            btnSpeedUp.Enabled = true;
+            int milliseconds = (int)Math.Floor(1000 / speed);
+            timer1.Interval = milliseconds;
+            lblSpeed.Text = "Speed: " + speed + "x";
+        }
+
+        private Dijkstra dijkstraForDrawing;
+        private void btnAnalyzeMap_Click(object sender, EventArgs e)
+        {
+            if (map != null)
+            {
+                dijkstraForDrawing = new Dijkstra(map.Edges);
+            }
+        }
+        private void btnDrawDijkstra_Click(object sender, EventArgs e)
+        {
+            int locationNumber;
+            if(int.TryParse(tbDrawDijkstraFrom.Text, out locationNumber))
+            {
+                if (map != null)
+                {
+                    Location l = map.GetLocationByID(locationNumber);
+                    if(l != null)
+                    {
+                        if(dijkstraForDrawing != null)
+                        {
+                            dijkstraForDrawing.PlayDijkstraAnimation(l);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Map has not been analyzed yet");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("No location found for the given number");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Location Number is in a wrong format");
+            }
+        }
+        private void btnDrawRoute_Click(object sender, EventArgs e)
+        {
+            int locationNumber1;
+            int locationNumber2;
+
+            if (int.TryParse(tbDrawRouteFrom.Text, out locationNumber1) && int.TryParse(tbDrawRouteTo.Text, out locationNumber2))
+            {
+                if (map != null)
+                {
+                    Location l1 = map.GetLocationByID(locationNumber1);
+                    Location l2 = map.GetLocationByID(locationNumber2);
+                    if (l1 != null && l2 != null)
+                    {
+                        if (dijkstraForDrawing != null)
+                        {
+                            DijkstraRoute myRoute = dijkstraForDrawing.GetRouteTo(l1, l2);
+                            if (myRoute != null)
+                            {
+                                List<Road> allRoads = map.Edges;
+                                foreach (Road r in allRoads)
+                                {
+                                    r.ResetDrawFields();
+                                }
+                                foreach (Road r in myRoute.Route)
+                                {
+                                    r.LineColor = Color.Green;
+                                }
+                                Map.RedrawMap();
+                            }
+                            else
+                            {
+                                MessageBox.Show("No route could be found for these numbers/locations");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Map has not been analyzed yet");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Not all locations could be found for the given numbers");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Location Number is in a wrong format");
+            }
+        }
+
+        private void loadMapBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRandomHeatMap_Click(object sender, EventArgs e)
+        {
+            if(map != null)
+            {
+                map.RandomizeDemand();
+                Map.RedrawMap();
+            }
+        }
+
+        private void btnRandomMap_Click(object sender, EventArgs e)
+        {
+            if (map != null)
+            {
+                map.RandomizeLocationsAndRoads();
+                Map.RedrawMap();
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            if (map != null)
+            {
+                timer1.Enabled = false;
+                map.ResetMap();
+                simulationIsPlaying = false;
+                simulationHasStarted = false;
+                btnPlay.BackgroundImage = Properties.Resources.Play;
+                panelMapBuilder.Enabled = true;
+                Map.RedrawMap();
+                btnReset.Enabled = false;
             }
         }
     }

@@ -33,6 +33,11 @@ namespace ClassLibrary
                 }
             }
         }
+        public void ResetWarehouse()
+        {
+            Vehicle.ResetId();
+            RemoveAllvehicles();
+        }
         public void RemoveAllvehicles()
         {
             foreach(Vehicle v in vehicles)

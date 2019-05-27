@@ -146,5 +146,14 @@ namespace ClassLibrary
              
             return heatColor;
         }
+        public static void Reset()
+        {
+            maxDemand = 0;
+            maxDemandGrow = 0;
+        }
+        public void CellReset()
+        {
+            SetDemandGrow(this.demandGrow);
+        }
     }
 }

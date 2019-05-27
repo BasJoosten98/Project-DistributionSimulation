@@ -25,6 +25,10 @@ namespace ClassLibrary
             picBox = PicBox;
             idCounter++;
         }
+        public static void ResetId()
+        {
+            idCounter = 0;
+        }
 
         /// <summary>
         /// Add given delivery to the deliveries queue

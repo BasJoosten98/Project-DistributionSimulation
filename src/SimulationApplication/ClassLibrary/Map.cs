@@ -72,7 +72,7 @@ namespace ClassLibrary
                 if (!(c is Location))
                 {
                     // and decrement number of locations to be added to the cells/map.
-                    Location newLocation = ChangeCellIntoLocation(c);
+                    Location newLocation = ChangeCellIntoLocation(c, 2);
                     Locations.Add(newLocation);
                     numberOfLocations--;
                 }
@@ -116,14 +116,84 @@ namespace ClassLibrary
             Edges.Add(r);
         }
 
+        public void ResetMap()
+        {
+            statistics.Clear();
+            createDistributionManager();
+            Cell.Reset();
+            foreach(Cell c in cells)
+            {
+                c.CellReset();
+            }
+            foreach(Location l in shops)
+            {
+                Shop s = (Shop)l.Building;
+                s.ShopReset();
+            }
+            foreach(Location l in warehouses)
+            {
+                Warehouse w = (Warehouse)l.Building;
+                w.ResetWarehouse();
+            }
+        }
+        public void RandomizeDemand()
+        {
+            foreach (Cell c in cells)
+            {
+                c.SetDemandGrow(rng2.Next(2, 5));
+            }
+        }
+        public void RandomizeLocationsAndRoads()
+        {
+            Location.ResetLocationId();
+            int numberOfLocations = rng2.Next(1, (int)Math.Floor((double)(NumberOfCells*NumberOfCells)/ 10));
+
+            //remove all locations
+            for(int i = 0; i < locations.Count; i++)
+            {
+                if(locations[i].Building != null)
+                {
+                    RemoveBuilding(locations[i]);
+                }
+                ChangeLocationIntoCell(locations[i]);
+                i = -1;
+            }
+
+            //place new loactions
+            List<Cell> tempCells = new List<Cell>();
+            foreach(Cell c in cells)
+            {
+                tempCells.Add(c);
+            }
+
+            int nextCell;
+            double nextMax = (double)tempCells.Count / numberOfLocations;
+            for(int i = 1; i <= numberOfLocations; i++)
+            {
+                nextCell = rng2.Next((int)Math.Floor((i-1) * nextMax), (int)Math.Floor(i * nextMax));
+                Cell c = tempCells[nextCell];
+                if(!(c is Location))
+                {
+                    Location l = ChangeCellIntoLocation(c, 2);
+                    locations.Add(l);
+                }
+            }
+
+            //connect locations with roads
+            for (int i = 0; i < locations.Count - 1; i++)
+            {
+                AddNewRoad(locations[i], locations[i + 1], rng2.Next(1, 6));
+            }
+            Console.WriteLine("Map has been randomized with " + numberOfLocations + " locations (MAX = " + (int)Math.Floor((double)(NumberOfCells * NumberOfCells) / 10) + ")");
+        }
         /// <summary>
         /// Changes Cell into Location
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        public Location ChangeCellIntoLocation(Cell c)
+        public Location ChangeCellIntoLocation(Cell c, int radius)
         {
-            Location l = new Location(c.Index.Column, c.Index.Row);
+            Location l = new Location(c.Index.Column, c.Index.Row, radius);
             l.SetDemandGrow(c.Demand);
             cells[c.Index.Column, c.Index.Row] = l;
 
@@ -207,7 +277,7 @@ namespace ClassLibrary
 
                 // Road entity
                 temp.RoadEntity.InitialCost = cost;
-                MapEntity.Roads.Add(temp.RoadEntity);
+                //MapEntity.Roads.Add(temp.RoadEntity); //MapEntity == null, caused crash
 
                 Edges.Add(temp);
                 return true;
@@ -314,7 +384,7 @@ namespace ClassLibrary
             }
             l.Building = null;
             // Set the entity's building to null as well.
-            l.LocationEntity.Building = null;
+            //l.LocationEntity.Building = null;
         }
 
         /// <summary>
