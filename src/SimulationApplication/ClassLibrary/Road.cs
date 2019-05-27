@@ -10,9 +10,14 @@ namespace ClassLibrary
 	public class Road
 	{
         // Fields
+        //public Map map { get; set; }
+        public int Id { get; set; }
         public Location Location1 { get; set; }
         public Location Location2 { get; set; }
         public int InitialCost { get; set; }
+        
+        // FKs
+        //public int MapId { get; set; }
 
         //Drawing fields
         [NotMapped]
@@ -77,6 +82,11 @@ namespace ClassLibrary
                 }
                 throw new IndexOutOfRangeException();
             }
+        }
+
+        public override string ToString()
+        {
+            return $"R | l1: {Location1}, l2: {Location2}";
         }
     }
 }

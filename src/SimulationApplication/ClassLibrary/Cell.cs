@@ -11,14 +11,15 @@ namespace ClassLibrary
 {
     public class Cell
     {
+        //public int Id { get; set; }
         public int RowIndex { get; set; }
         public int ColumnIndex { get; set; }
         public int Demand { get; set; }
         public int DemandGrowthPerTick { get; set; }
 
-        // Foreign Key
-        public int MapId { get; set; }
-        public Map Map { get; set; }
+        //// Foreign Key
+        //public int MapId { get; set; }
+        //public Map Map { get; set; }
 
         //Drawing fields
         [NotMapped]
@@ -157,6 +158,11 @@ namespace ClassLibrary
             }
              
             return heatColor;
+        }
+
+        public override string ToString()
+        {
+            return $"(r: {RowIndex}, c: {ColumnIndex})";
         }
     }
 }

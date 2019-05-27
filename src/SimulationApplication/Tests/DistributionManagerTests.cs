@@ -69,7 +69,8 @@ namespace SimulationApplication
                 picBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 if (l == temp && l == temp4 && l == temp7)
                 {
-                    l.Building = new Shop(picBox, 19, 20);
+                    l.Building = new Shop(19, 20);
+                    l.Building.picBox = picBox;
                     shops.Add(l);
 
                     //lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";

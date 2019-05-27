@@ -13,6 +13,7 @@ namespace ClassLibrary
         public int Radius { get; set; }
         public Building Building { get; set; }
 
+
         //drawing fields
         [NotMapped]
         public Color CircleColor = Color.Black;
@@ -36,40 +37,33 @@ namespace ClassLibrary
         public Location()
         { }
 
-        public Location(int column, int row) : this(column, row, 0)
-        {
-            //LocationID = locationID++;
+        public Location(int column, int row) : this(column, row, 3)
+        { }
 
-            //this.min_cost = int.MaxValue;
-            //this.permanent = false;
-            //this.visited = false;
-            //this.Radius = 3;
-        }
-
-        public Location(int column, int row, int Radius) : base(column, row)
+        public Location(int column, int row, int radius) : base(column, row)
         {
             LocationID = locationID++;
 
-            this.min_cost = int.MaxValue;
-            this.permanent = false;
-            this.visited = false;
-            this.Radius = Radius;
+            min_cost = int.MaxValue;
+            permanent = false;
+            visited = false;
+            Radius = radius;
         }
 
         /// <summary>
         /// Returns center point of a Vertex.
         /// </summary>
-        public Point Center { get { return new Point(base.Index.Column * Cell.CellSize + Cell.CellSize/2, base.Index.Row * Cell.CellSize + Cell.CellSize / 2); } }
+        public Point Center { get { return new Point(Index.Column * CellSize + CellSize/2, Index.Row * CellSize + CellSize / 2); } }
 
         /// <summary>
         /// Return location point of a Vertex.
         /// </summary>
-        public Point LocationPoint { get { return new Point(base.Index.Column * Cell.CellSize, base.Index.Row * Cell.CellSize); } }
+        public Point LocationPoint { get { return new Point(Index.Column * CellSize, Index.Row * CellSize); } }
 
         /// <summary>
         /// Returns default size of a Vertex.
         /// </summary>
-        public Size _Size { get { return new Size(Cell.CellSize, Cell.CellSize); } }
+        public Size _Size { get { return new Size(CellSize, CellSize); } }
 
         /// <summary>
         /// Compares the LocationID's of the given location
@@ -92,6 +86,11 @@ namespace ClassLibrary
             CircleColor = Color.Black;
             CircleFillColor = Color.LightYellow;
             StringColor = Color.Black;
+        }
+
+        public override string ToString()
+        {
+            return $"L: {base.ToString()}";
         }
     }
 }

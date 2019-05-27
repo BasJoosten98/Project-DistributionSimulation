@@ -673,6 +673,19 @@ namespace MapLayout
         {
             using (context = new SimulationContext())
             {
+                // Add all cells to the list at the end for storage.
+                map.Cells.Clear();
+                foreach (Cell c in map.GetCells())
+                {
+                    map.Cells.Add(c);
+                }
+
+                // Now try to get the same done for roads.
+                foreach (Road r in map.Edges)
+                {
+                    Console.WriteLine(r);
+                }
+
                 context.Maps.Add(map);
                 context.SaveChanges();
             }

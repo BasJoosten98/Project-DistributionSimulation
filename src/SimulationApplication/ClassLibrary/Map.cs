@@ -64,7 +64,6 @@ namespace ClassLibrary
                 {
                     Cell c = new Cell(columnCount, rowCount);
                     cells[columnCount, rowCount] = c;
-                    Cells.Add(c);
                 }
             }
 
@@ -101,6 +100,7 @@ namespace ClassLibrary
                 {
                     // and decrement number of locations to be added to the cells/map.
                     Location newLocation = ChangeCellIntoLocation(c);
+                    // Add the location into the list of cells.
                     Locations.Add(newLocation);
                     numberOfLocations--;
                 }

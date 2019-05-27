@@ -31,8 +31,10 @@ namespace ClassLibrary
                 .HasKey(cell => new { cell.RowIndex, cell.ColumnIndex });
             #endregion
 
-            modelBuilder.Entity<Road>()
-                .HasKey(road => new { road.Location1, road.Location2 });
+            //#region Road
+            //modelBuilder.Entity<Road>()
+            //    .HasKey(road => new { road.Location1Id, road.Location2Id });
+            //#endregion
         }
     }
 }

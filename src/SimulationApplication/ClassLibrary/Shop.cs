@@ -47,9 +47,10 @@ namespace ClassLibrary
                 }
             }
         }
-        
+
+        [NotMapped]
         private int restockAmount;
-        
+        [NotMapped]
         private int stock;
         [NotMapped]
         private int tempSold = 0; //needed for statistics
