@@ -64,7 +64,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -121,7 +121,7 @@
             // mapPictureBox
             // 
             this.mapPictureBox.Location = new System.Drawing.Point(3, 3);
-            this.mapPictureBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.mapPictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.mapPictureBox.Name = "mapPictureBox";
             this.mapPictureBox.Size = new System.Drawing.Size(602, 538);
             this.mapPictureBox.TabIndex = 1;
@@ -254,7 +254,7 @@
             // shortesRoutesRichTbx
             // 
             this.shortesRoutesRichTbx.Location = new System.Drawing.Point(8, 129);
-            this.shortesRoutesRichTbx.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.shortesRoutesRichTbx.Margin = new System.Windows.Forms.Padding(2);
             this.shortesRoutesRichTbx.Name = "shortesRoutesRichTbx";
             this.shortesRoutesRichTbx.Size = new System.Drawing.Size(182, 358);
             this.shortesRoutesRichTbx.TabIndex = 8;
@@ -272,7 +272,7 @@
             // 
             this.btnCursor.BackgroundImage = global::MapLayout.Properties.Resources.cursorIcon;
             this.btnCursor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCursor.Location = new System.Drawing.Point(128, 4);
+            this.btnCursor.Location = new System.Drawing.Point(157, 4);
             this.btnCursor.Name = "btnCursor";
             this.btnCursor.Size = new System.Drawing.Size(66, 57);
             this.btnCursor.TabIndex = 6;
@@ -284,7 +284,7 @@
             this.btnWarehouse.BackgroundImage = global::MapLayout.Properties.Resources.warehouseIcon1;
             this.btnWarehouse.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnWarehouse.Location = new System.Drawing.Point(66, 4);
-            this.btnWarehouse.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnWarehouse.Margin = new System.Windows.Forms.Padding(2);
             this.btnWarehouse.Name = "btnWarehouse";
             this.btnWarehouse.Size = new System.Drawing.Size(66, 57);
             this.btnWarehouse.TabIndex = 2;
@@ -296,7 +296,7 @@
             this.btnShop.BackgroundImage = global::MapLayout.Properties.Resources.shopIcon;
             this.btnShop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnShop.Location = new System.Drawing.Point(2, 3);
-            this.btnShop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnShop.Margin = new System.Windows.Forms.Padding(2);
             this.btnShop.Name = "btnShop";
             this.btnShop.Size = new System.Drawing.Size(66, 58);
             this.btnShop.TabIndex = 1;
