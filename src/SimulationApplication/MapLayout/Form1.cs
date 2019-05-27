@@ -680,12 +680,6 @@ namespace MapLayout
                     map.Cells.Add(c);
                 }
 
-                // Now try to get the same done for roads.
-                foreach (Road r in map.Edges)
-                {
-                    Console.WriteLine(r);
-                }
-
                 context.Maps.Add(map);
                 context.SaveChanges();
             }

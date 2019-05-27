@@ -10,7 +10,8 @@ namespace ClassLibrary
 	public abstract class Building
     {
         public int Id { get; set; }
-
+        [ForeignKey("MapId, RowIndex, ColumnIndex")]
+        public Location Location { get; set; }
         [NotMapped]
         public PictureBox picBox; //picturebox that contains a picture of Warehouse or Shop
 

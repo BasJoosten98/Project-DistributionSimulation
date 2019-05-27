@@ -28,13 +28,8 @@ namespace ClassLibrary
 
             #region Cell
             modelBuilder.Entity<Cell>()
-                .HasKey(cell => new { cell.RowIndex, cell.ColumnIndex });
+                .HasKey(cell => new { cell.MapId, cell.RowIndex, cell.ColumnIndex });
             #endregion
-
-            //#region Road
-            //modelBuilder.Entity<Road>()
-            //    .HasKey(road => new { road.Location1Id, road.Location2Id });
-            //#endregion
         }
     }
 }

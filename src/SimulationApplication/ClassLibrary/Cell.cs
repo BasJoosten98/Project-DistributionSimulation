@@ -18,7 +18,7 @@ namespace ClassLibrary
         public int DemandGrowthPerTick { get; set; }
 
         //// Foreign Key
-        //public int MapId { get; set; }
+        public int MapId { get; set; }
         //public Map Map { get; set; }
 
         //Drawing fields
