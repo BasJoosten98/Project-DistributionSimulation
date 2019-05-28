@@ -1069,6 +1069,7 @@ namespace MapLayout
 
             bestPlacement = new BestPlacement(map);
             bestPlacement.CheckCombinations();
+            Map b = bestPlacement.bestLocations;
 
         }
     }

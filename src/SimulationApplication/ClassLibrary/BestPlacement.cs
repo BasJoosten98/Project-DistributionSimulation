@@ -12,7 +12,7 @@ namespace ClassLibrary
         private double _maxSold = 0;
         private Location _initialWarehouse;
         private List<Location> _initialShops;
-        private Map _bestLocations;
+        public Map bestLocations;
         int[] allPossibleCombinations;
         
 
@@ -65,32 +65,36 @@ namespace ClassLibrary
                 }
                 
             }
-            currentMap.PrepareForSimulation();
-            for (int i = 0; i <= 50; i++)
+            if(currentMap.Shops.Count > 0 && currentMap.Warehouses.Count > 0)
             {
-                currentMap.NextTick(i);
-            }
-            foreach (Statistics obj in currentMap.Statistics)
-            {
-                if(obj.Time == 50)
+                currentMap.PrepareForSimulation();
+                for (int i = 0; i <= 50; i++)
                 {
-                    if(obj is StatisticsShop)
-                    {
-                        StatisticsShop shopStats = (StatisticsShop)obj;
-                        if (shopStats.AverageSold > _maxSold)
-                        {
-                            _maxSold = shopStats.AverageSold;
-                            _bestLocations = currentMap;
-                        }
-                    }
-                    if(obj is StatisticsWarehouse)
-                    {
-                        
-                    }
-                    
+                    currentMap.NextTick(i);
                 }
+                foreach (Statistics obj in currentMap.Statistics)
+                {
+                    if (obj.Time == 50)
+                    {
+                        if (obj is StatisticsShop)
+                        {
+                            StatisticsShop shopStats = (StatisticsShop)obj;
+                            if (shopStats.AverageSold > _maxSold)
+                            {
+                                _maxSold = shopStats.AverageSold;
+                                bestLocations = currentMap;
+                            }
+                        }
+                        if (obj is StatisticsWarehouse)
+                        {
+
+                        }
+
+                    }
+                }
+                bestLocations = currentMap;
             }
-            _bestLocations = currentMap;
+            
             //STEP 2:
             //for loop, 50, check the best place, reset i. 
             //store stastics 
