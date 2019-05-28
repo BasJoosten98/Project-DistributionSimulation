@@ -11,8 +11,8 @@ namespace ClassLibrary
         //Drawing fields
         private static int idCounter = 0;
         public int id;
-        public Color LineColor = Color.IndianRed;
-        public Color StringColor = Color.White;
+        public Color LineColor = Color.Black;
+        public Color StringColor = Color.Yellow;
         public int LineWidth = 3;
 
         
@@ -34,8 +34,8 @@ namespace ClassLibrary
 
         public void ResetDrawFields()
         {
-            LineColor = Color.IndianRed;
-            StringColor = Color.White;
+            LineColor = Color.Black;
+            StringColor = Color.Yellow;
             LineWidth = 3;
         }
 

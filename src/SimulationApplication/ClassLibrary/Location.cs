@@ -24,6 +24,7 @@ namespace ClassLibrary
         public int min_cost { get; set; } // keeps the minimal cost of this vertex
         public bool permanent { get; set; } // used for deijsktra
         public bool visited { get; set; } // checks if it has been seen 
+        public int Radius { get; set; }
 
         //public int PositionX { get; }
         //public int PositionY { get; }
@@ -38,7 +39,20 @@ namespace ClassLibrary
             this.min_cost = int.MaxValue;
             this.permanent = false;
             this.visited = false;
+            this.Radius = 2;
 
+        }
+        public Location(int column, int row, int Radius)
+            : base(column, row)
+        {
+            LocationID = locationID++;
+            //PositionX = x;
+            //PositionY = y;
+
+            this.min_cost = int.MaxValue;
+            this.permanent = false;
+            this.visited = false;
+            this.Radius = Radius;
         }
 
         /// <summary>
