@@ -39,7 +39,13 @@
             this.btnHeatMap = new System.Windows.Forms.Button();
             this.mapPictureBox = new System.Windows.Forms.PictureBox();
             this.panelMapBuilder = new System.Windows.Forms.Panel();
+            this.btnGetBestPlacement = new System.Windows.Forms.Button();
             this.gbDijkstraTool = new System.Windows.Forms.GroupBox();
+            this.DrawAllClosests = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.tbDrawShop = new System.Windows.Forms.TextBox();
+            this.btnDrawWarehouseRoute = new System.Windows.Forms.Button();
+            this.tbDrawWarehouse = new System.Windows.Forms.TextBox();
             this.btnAnalyzeMap = new System.Windows.Forms.Button();
             this.tbDrawRouteTo = new System.Windows.Forms.TextBox();
             this.tbDrawRouteFrom = new System.Windows.Forms.TextBox();
@@ -62,11 +68,6 @@
             this.lbLocationLog = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnDrawWarehouseRoute = new System.Windows.Forms.Button();
-            this.tbDrawWarehouse = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.tbDrawShop = new System.Windows.Forms.TextBox();
-            this.DrawAllClosests = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -191,6 +192,7 @@
             // 
             // panelMapBuilder
             // 
+            this.panelMapBuilder.Controls.Add(this.btnGetBestPlacement);
             this.panelMapBuilder.Controls.Add(this.gbDijkstraTool);
             this.panelMapBuilder.Controls.Add(this.gbImportExport);
             this.panelMapBuilder.Controls.Add(this.gbMapEditor);
@@ -198,6 +200,16 @@
             this.panelMapBuilder.Name = "panelMapBuilder";
             this.panelMapBuilder.Size = new System.Drawing.Size(238, 596);
             this.panelMapBuilder.TabIndex = 23;
+            // 
+            // btnGetBestPlacement
+            // 
+            this.btnGetBestPlacement.Location = new System.Drawing.Point(50, 543);
+            this.btnGetBestPlacement.Name = "btnGetBestPlacement";
+            this.btnGetBestPlacement.Size = new System.Drawing.Size(137, 23);
+            this.btnGetBestPlacement.TabIndex = 27;
+            this.btnGetBestPlacement.Text = "Best Placement";
+            this.btnGetBestPlacement.UseVisualStyleBackColor = true;
+            this.btnGetBestPlacement.Click += new System.EventHandler(this.btnGetBestPlacement_Click);
             // 
             // gbDijkstraTool
             // 
@@ -219,6 +231,52 @@
             this.gbDijkstraTool.TabIndex = 26;
             this.gbDijkstraTool.TabStop = false;
             this.gbDijkstraTool.Text = "Dijkstra Tool";
+            // 
+            // DrawAllClosests
+            // 
+            this.DrawAllClosests.Location = new System.Drawing.Point(6, 134);
+            this.DrawAllClosests.Name = "DrawAllClosests";
+            this.DrawAllClosests.Size = new System.Drawing.Size(221, 23);
+            this.DrawAllClosests.TabIndex = 22;
+            this.DrawAllClosests.Text = "Draw Closest Warehouse-Shop";
+            this.DrawAllClosests.UseVisualStyleBackColor = true;
+            this.DrawAllClosests.Click += new System.EventHandler(this.DrawAllClosests_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(7, 106);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(135, 23);
+            this.button1.TabIndex = 21;
+            this.button1.Text = "Draw Closest Shop";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // tbDrawShop
+            // 
+            this.tbDrawShop.Location = new System.Drawing.Point(149, 108);
+            this.tbDrawShop.Name = "tbDrawShop";
+            this.tbDrawShop.Size = new System.Drawing.Size(65, 20);
+            this.tbDrawShop.TabIndex = 20;
+            this.tbDrawShop.Text = "0";
+            // 
+            // btnDrawWarehouseRoute
+            // 
+            this.btnDrawWarehouseRoute.Location = new System.Drawing.Point(7, 77);
+            this.btnDrawWarehouseRoute.Name = "btnDrawWarehouseRoute";
+            this.btnDrawWarehouseRoute.Size = new System.Drawing.Size(135, 23);
+            this.btnDrawWarehouseRoute.TabIndex = 19;
+            this.btnDrawWarehouseRoute.Text = "Draw Closest Warehouse";
+            this.btnDrawWarehouseRoute.UseVisualStyleBackColor = true;
+            this.btnDrawWarehouseRoute.Click += new System.EventHandler(this.btnDrawWarehouseRoute_Click);
+            // 
+            // tbDrawWarehouse
+            // 
+            this.tbDrawWarehouse.Location = new System.Drawing.Point(149, 79);
+            this.tbDrawWarehouse.Name = "tbDrawWarehouse";
+            this.tbDrawWarehouse.Size = new System.Drawing.Size(65, 20);
+            this.tbDrawWarehouse.TabIndex = 18;
+            this.tbDrawWarehouse.Text = "0";
             // 
             // btnAnalyzeMap
             // 
@@ -438,52 +496,6 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnDrawWarehouseRoute
-            // 
-            this.btnDrawWarehouseRoute.Location = new System.Drawing.Point(7, 77);
-            this.btnDrawWarehouseRoute.Name = "btnDrawWarehouseRoute";
-            this.btnDrawWarehouseRoute.Size = new System.Drawing.Size(135, 23);
-            this.btnDrawWarehouseRoute.TabIndex = 19;
-            this.btnDrawWarehouseRoute.Text = "Draw Closest Warehouse";
-            this.btnDrawWarehouseRoute.UseVisualStyleBackColor = true;
-            this.btnDrawWarehouseRoute.Click += new System.EventHandler(this.btnDrawWarehouseRoute_Click);
-            // 
-            // tbDrawWarehouse
-            // 
-            this.tbDrawWarehouse.Location = new System.Drawing.Point(149, 79);
-            this.tbDrawWarehouse.Name = "tbDrawWarehouse";
-            this.tbDrawWarehouse.Size = new System.Drawing.Size(65, 20);
-            this.tbDrawWarehouse.TabIndex = 18;
-            this.tbDrawWarehouse.Text = "0";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(7, 106);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(135, 23);
-            this.button1.TabIndex = 21;
-            this.button1.Text = "Draw Closest Shop";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // tbDrawShop
-            // 
-            this.tbDrawShop.Location = new System.Drawing.Point(149, 108);
-            this.tbDrawShop.Name = "tbDrawShop";
-            this.tbDrawShop.Size = new System.Drawing.Size(65, 20);
-            this.tbDrawShop.TabIndex = 20;
-            this.tbDrawShop.Text = "0";
-            // 
-            // DrawAllClosests
-            // 
-            this.DrawAllClosests.Location = new System.Drawing.Point(6, 134);
-            this.DrawAllClosests.Name = "DrawAllClosests";
-            this.DrawAllClosests.Size = new System.Drawing.Size(221, 23);
-            this.DrawAllClosests.TabIndex = 22;
-            this.DrawAllClosests.Text = "Draw Closest Warehouse-Shop";
-            this.DrawAllClosests.UseVisualStyleBackColor = true;
-            this.DrawAllClosests.Click += new System.EventHandler(this.DrawAllClosests_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -550,6 +562,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox tbDrawShop;
         private System.Windows.Forms.Button DrawAllClosests;
+        private System.Windows.Forms.Button btnGetBestPlacement;
     }
 }
 

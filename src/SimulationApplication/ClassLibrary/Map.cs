@@ -17,11 +17,14 @@ namespace ClassLibrary
         private List<Road> edges = new List<Road>();
         private Random rng;
         private Random rng2;
-        private Cell[,] cells;
-        private static PictureBox mapPicBox;
+        public Cell[,] cells;
+        public static PictureBox mapPicBox;
         private DistributionManager distributionManager;
+        
 
         public int NumberOfCells { get; set; }
+        public int NumberOfLocations { get; set; }
+        public int CellSize { get; set; }
         public DistributionManager DistManager { get { return distributionManager; } }
         public List<Location> Warehouses { get { return warehouses; } }
         public List<Statistics> Statistics { get { return statistics; } }
@@ -40,7 +43,7 @@ namespace ClassLibrary
         {
             // Construct the map entity.
             MapEntity = new Entities.Map() { CellSize = cellSize, NumberOfCells = numberOfCells };
-
+            NumberOfLocations = numberOfLocations;
             mapPicBox = MapBox;
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
@@ -115,6 +118,86 @@ namespace ClassLibrary
             r = new Road(Locations[9], Locations[4]);
             Edges.Add(r);
         }
+
+        public Map(int numberOfLocations, int numberOfCells, int cellSize)
+        {
+            // Construct the map entity.
+            MapEntity = new Entities.Map() { CellSize = cellSize, NumberOfCells = numberOfCells };
+            NumberOfLocations = numberOfLocations;
+            NumberOfCells = numberOfCells;
+            Cell.CellSize = cellSize;
+            cells = new Cell[NumberOfCells, NumberOfCells];
+            for (int rowCount = 0; rowCount < NumberOfCells; rowCount++)
+            {
+                for (int columnCount = 0; columnCount < NumberOfCells; columnCount++)
+                {
+                    Cell c = new Cell(columnCount, rowCount);
+                    cells[columnCount, rowCount] = c;
+                }
+            }
+
+            // Seed the random generator to get reproducable results.
+            rng = new Random(0);
+            rng2 = new Random();
+
+            int demand;
+            foreach (Cell c in cells)
+            {
+                demand = rng2.Next(2, 5);
+                c.SetDemandGrow(demand);
+            }
+
+
+            while (numberOfLocations > 0)
+            {
+                Cell c = GenerateRandomLocation();
+                if (!(c is Location))
+                {
+                    // and decrement number of locations to be added to the cells/map.
+                    Location newLocation = ChangeCellIntoLocation(c, 2);
+                    Locations.Add(newLocation);
+                    numberOfLocations--;
+                }
+            }
+            // Prints the count property of the List of location objects.
+            Console.WriteLine(V);
+
+            // Create and add roads to the map entity
+            // 1 -> 2, weight: 3
+            Road r = new Road(Locations[0], Locations[1]);
+            Edges.Add(r);
+            // 2 -> 3, weight: 1
+            r = new Road(Locations[1], Locations[2]);
+            Edges.Add(r);
+            // 1 -> 3, weight: 1
+            r = new Road(Locations[0], Locations[2]);
+            Edges.Add(r);
+            // 3 -> 6, weight: 1
+            r = new Road(Locations[2], Locations[5]);
+            Edges.Add(r);
+            // 6 -> 7, weight: 1
+            r = new Road(Locations[5], Locations[6]);
+            Edges.Add(r);
+            // 1 -> 9, weight: 1
+            r = new Road(Locations[0], Locations[8]);
+            Edges.Add(r);
+            // 4 -> 9, weight: 1
+            r = new Road(Locations[3], Locations[8]);
+            Edges.Add(r);
+            // 4 -> 5, weight: 1
+            r = new Road(Locations[3], Locations[4]);
+            Edges.Add(r);
+            // 5 -> 8, weight: 1
+            r = new Road(Locations[4], Locations[7]);
+            Edges.Add(r);
+            // 10 -> 8, weight: 1
+            r = new Road(Locations[9], Locations[7]);
+            Edges.Add(r);
+            // 10 -> 5, weight: 1
+            r = new Road(Locations[9], Locations[4]);
+            Edges.Add(r);
+        }
+
 
         public void ResetMap()
         {
@@ -221,6 +304,17 @@ namespace ClassLibrary
                 }
             }
             return c;
+        }
+
+        public void RemoveAllBuildings()
+        {
+            for (int i = 0; i < locations.Count; i++)
+            {
+                if (locations[i].Building != null)
+                {
+                    RemoveBuilding(locations[i]);
+                }
+            }
         }
 
         public void NextTick(int timeStamp)
@@ -493,6 +587,23 @@ namespace ClassLibrary
         public List<Building> getShops()
         {
             return Locations.Select(v => v.Building).Where(v => v is Shop).ToList();
+        }
+
+        public List<Building> GetWarehouses()
+        {
+            return Locations.Select(v => v.Building).Where(v => v is Warehouse).ToList();
+        }
+
+        public Location getBuildingLocation(Building b)
+        {
+            foreach (Location l in locations)
+            {
+                if (l.Building == b)
+                {
+                    return l;
+                }
+            }
+            return null;
         }
 
         /// <summary>

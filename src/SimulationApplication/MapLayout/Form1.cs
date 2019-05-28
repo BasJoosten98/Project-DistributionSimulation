@@ -16,6 +16,7 @@ namespace MapLayout
 
         private List<Location> selectedLocations = new List<Location>();
         private Map map;
+        private BestPlacement bestPlacement;
         //TODO : private Optimization
 
         //Quick dirty way of checking if the shop or warehouse button is clicked
@@ -41,7 +42,6 @@ namespace MapLayout
             if (mapPictureBox.Width <= mapPictureBox.Height) { numberOfCells = mapPictureBox.Width / CELLSIZE; }
             else { numberOfCells = mapPictureBox.Height / CELLSIZE; }
             map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE, MapBox: mapPictureBox);
-
             // This loop is for debugging purposes such that we can check which cells have a location added to them.
             foreach (Cell cell in map.GetCells())
             {
@@ -1064,6 +1064,14 @@ namespace MapLayout
                     MessageBox.Show("Map has not been analyzed yet");
                 }
             }
+        }
+
+        private void btnGetBestPlacement_Click(object sender, EventArgs e)
+        {
+            bestPlacement = new BestPlacement(map);
+            Console.WriteLine(map.getShops().ToString());
+            bestPlacement.CheckBestPlacement();
+            Console.WriteLine(map.getShops().ToString());
         }
     }
 }
