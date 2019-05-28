@@ -6,17 +6,20 @@ using System.Windows.Forms;
 
 namespace ClassLibrary
 {
-	public class Vehicle
-	{
+    public class Vehicle
+    {
         public static int capacity = 500;
         private static int idCounter = 0;
-		private int id;
+        private int id;
         public PictureBox picBox;
         private List<Delivery> deliveryQueue; //list of deliveries that this vehicle needs to do
         private List<Delivery> finishedDeliveries; //list of deliveries that this vehicle has finished
 
         public PictureBox PicBox { get { return picBox; } }
 
+
+
+ 
         public Vehicle(PictureBox PicBox)
         {
             deliveryQueue = new List<Delivery>();
@@ -46,7 +49,7 @@ namespace ClassLibrary
         public int lastDeliveryFinishDeltaTime()
         {
             int sum = 0;
-            foreach(Delivery d in deliveryQueue)
+            foreach (Delivery d in deliveryQueue)
             {
                 sum += 2 * d.Route.RouteLenght - d.TotalTravelTime;
             }
@@ -55,7 +58,7 @@ namespace ClassLibrary
 
         public void NextTick(int timeStamp)
         {
-            if(deliveryQueue.Count != 0) //Check if this vehicle has any delivery
+            if (deliveryQueue.Count != 0) //Check if this vehicle has any delivery
             {
                 deliveryQueue[0].NextTick(timeStamp); //Update delivery
                 calculateAndSetPosition(); //Set vehicle position
@@ -65,7 +68,7 @@ namespace ClassLibrary
                     temp.Stock += capacity;
                     //Console.WriteLine("Shop" + temp.ID + " has been restocked by vehicle" + id + ", new stock = " + temp.Stock);                    
                 }
-                if (2*deliveryQueue[0].Route.RouteLenght == deliveryQueue[0].TotalTravelTime) //Returned to warehouse
+                if (2 * deliveryQueue[0].Route.RouteLenght == deliveryQueue[0].TotalTravelTime) //Returned to warehouse
                 {
                     finishedDeliveries.Add(deliveryQueue[0]);
                     deliveryQueue.RemoveAt(0);
@@ -78,7 +81,7 @@ namespace ClassLibrary
         /// </summary>
         private void calculateAndSetPosition()
         {
-            if(deliveryQueue.Count != 0)
+            if (deliveryQueue.Count != 0)
             {
                 Point position = deliveryQueue[0].CurrentRoad.onRoadLocation(deliveryQueue[0].DeltaTravelTime, deliveryQueue[0].NextLocation);
                 picBox.Location = position;
@@ -95,7 +98,7 @@ namespace ClassLibrary
                 }
             }
             int totalDriven = 0;
-            foreach(Delivery d in deliveryQueue)
+            foreach (Delivery d in deliveryQueue)
             {
                 totalDriven += d.TotalTravelTime;
             }

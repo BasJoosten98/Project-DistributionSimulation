@@ -151,6 +151,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BestPlacement.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Delivery.cs" />
@@ -171,10 +172,9 @@
     <Compile Include="Location.cs" />
     <Compile Include="Map.cs" />
 <<<<<<< HEAD
-    <Compile Include="MapLocation.cs" />
+    <Compile Include="BestPlacement.cs" />
 =======
-    <Compile Include="MapTests.cs" />
->>>>>>> master
+>>>>>>> 2fd595e34b9ab6aae6904392e0f228ed9df935a5
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Road.cs" />
     <Compile Include="Shop.cs" />

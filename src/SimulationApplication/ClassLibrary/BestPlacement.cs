@@ -112,6 +112,25 @@ namespace ClassLibrary
             //Reset the
         }
 
+        public void yeet()
+        {
+            int shopPositionInArray = 0;
+            int wareHousePositionInArray = 0;
+            foreach (Location l in _map.Locations)
+            {
+                if(l.LocationID == 1 || l.LocationID == 2) {
+                    l.Building = _shops[shopPositionInArray].Building;
+                    _map.AddNewBuilding(l);
+                    shopPositionInArray++;
+                } else if (l.LocationID == 3)
+                {
+                    l.Building = _wareHouses[wareHousePositionInArray].Building;
+                    _map.AddNewBuilding(l);
+                    wareHousePositionInArray++;
+                }
+            }
+        }
+
 
     }
 }
