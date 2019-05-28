@@ -34,6 +34,10 @@ namespace MapLayout
             lbCol.Text = cell.Index.Column.ToString();
             lbDemand.Text = cell.Demand.ToString();
             tbGrowth.Text = cell.DemandGrow.ToString();
+            if (location != null)
+            {
+                tbRaduis.Text = location.Radius.ToString();
+            }
 
             checkCell();
         }
@@ -42,7 +46,7 @@ namespace MapLayout
         //if so, detect whether it is a shop or warehouse and update gui accordingly.
         //if not, then cell has no location. apply minor gui changes.
         private void checkCell()
-        { 
+        {
             if (location != null)
             {
                 if (location.Building != null)
@@ -61,6 +65,7 @@ namespace MapLayout
                         Warehouse w = (Warehouse)location.Building;
                         lbBuilding.Text = "Warehouse";
                         tbVehicles.Text = w.TotalVehiclesAtStart.ToString();
+                        tbCapacity.Text = Vehicle.capacity.ToString();
                         gbWarehouse.Show();
                     }
                 }
@@ -77,15 +82,21 @@ namespace MapLayout
                 gbBInfo.Show();
                 gbBInfo.Enabled = false;
                 lbLocation.Text = "Position";
+                tbRaduis.Enabled = false;
             }
         }
 
         private void bSave_Click(object sender, EventArgs e)
         {
             int growth = Convert.ToInt32(tbGrowth.Text);
-            if (growth >= 0)
+            int radius = Convert.ToInt32(tbRaduis.Text);
+            if (growth >= 0 && radius >= 0)
             {
                 cell.SetDemandGrow(growth);
+                if (location != null)
+                {
+                    location.Radius = radius;
+                }
             }
             else
             {
@@ -109,25 +120,26 @@ namespace MapLayout
                     }
                     break;
                 case "Warehouse":
-                    setVehicles(Convert.ToInt32(tbVehicles.Text));
+                    setVehicles(Convert.ToInt32(tbVehicles.Text), Convert.ToInt32(tbCapacity.Text));
                     break;
             }
         }
 
         //Some logic that add or remove a certain amount of vehicles in the list based on what is in the textbox 
         //and how many vehicles are in the list.
-        private void setVehicles(int amount)
+        private void setVehicles(int amount, int capacity)
         {
             Warehouse w = (Warehouse)location.Building;
             //Point ImagePosition = new Point((location.Index.Column * Cell.CellSize) + 4, (location.Index.Row * Cell.CellSize) + 4);
             //int listSize = w.Vehicles.Count;
-            if (amount > 0)
+            if (amount > 0  && capacity >= 0)
             {
                 w.TotalVehiclesAtStart = amount;
+                Vehicle.capacity = capacity;
             }
             else
             {
-                MessageBox.Show("Total Vehicles must be greater than 0");
+                MessageBox.Show("Total Vehicles & Capacity must be greater than 0");
             }
 
 
@@ -139,6 +151,7 @@ namespace MapLayout
             gbWarehouse.Enabled = false;
             tbGrowth.Enabled = false;
         }
+
 
         //Copied vehicle picturebox creation code from form1 createNewVehicle Method. Simple to add a picturebox to vehicle constructor.
         //private Vehicle genNewVehicle(Point ImagePosition)

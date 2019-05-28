@@ -388,10 +388,8 @@ namespace MapLayout
                                     }
                                 }
 
-                                bool isTimerOn = timer1.Enabled ? true : false;
-
                                 CellForm cForm = new CellForm(location, c);
-                                if(isTimerOn)
+                                if(simulationHasStarted)
                                     cForm.disableFields();
                                 cForm.Show();
                             }

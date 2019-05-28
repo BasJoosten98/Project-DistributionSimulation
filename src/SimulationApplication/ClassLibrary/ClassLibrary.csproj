@@ -151,6 +151,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BestPlacement.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Delivery.cs" />
@@ -170,7 +171,6 @@
     <Compile Include="Index.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Map.cs" />
-    <Compile Include="Optimization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Road.cs" />
     <Compile Include="Shop.cs" />

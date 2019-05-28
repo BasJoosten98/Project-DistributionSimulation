@@ -43,6 +43,7 @@
             this.lbLocation = new System.Windows.Forms.Label();
             this.bSave = new System.Windows.Forms.Button();
             this.gbBInfo = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.tbStock = new System.Windows.Forms.TextBox();
             this.lbIDnum = new System.Windows.Forms.Label();
             this.lbID = new System.Windows.Forms.Label();
@@ -51,7 +52,10 @@
             this.gbWarehouse = new System.Windows.Forms.GroupBox();
             this.tbVehicles = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.tbRaduis = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.tbCapacity = new System.Windows.Forms.TextBox();
             this.gbInfo.SuspendLayout();
             this.gbBInfo.SuspendLayout();
             this.gbWarehouse.SuspendLayout();
@@ -59,6 +63,8 @@
             // 
             // gbInfo
             // 
+            this.gbInfo.Controls.Add(this.label8);
+            this.gbInfo.Controls.Add(this.tbRaduis);
             this.gbInfo.Controls.Add(this.lbBuilding);
             this.gbInfo.Controls.Add(this.label6);
             this.gbInfo.Controls.Add(this.tbGrowth);
@@ -73,7 +79,7 @@
             this.gbInfo.Controls.Add(this.lbLocation);
             this.gbInfo.Location = new System.Drawing.Point(13, 13);
             this.gbInfo.Name = "gbInfo";
-            this.gbInfo.Size = new System.Drawing.Size(125, 148);
+            this.gbInfo.Size = new System.Drawing.Size(125, 154);
             this.gbInfo.TabIndex = 0;
             this.gbInfo.TabStop = false;
             this.gbInfo.Text = "Cell";
@@ -81,7 +87,7 @@
             // lbBuilding
             // 
             this.lbBuilding.AutoSize = true;
-            this.lbBuilding.Location = new System.Drawing.Point(10, 121);
+            this.lbBuilding.Location = new System.Drawing.Point(52, 133);
             this.lbBuilding.Name = "lbBuilding";
             this.lbBuilding.Size = new System.Drawing.Size(33, 13);
             this.lbBuilding.TabIndex = 2;
@@ -90,12 +96,12 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(6, 99);
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(9, 133);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(52, 13);
+            this.label6.Size = new System.Drawing.Size(47, 13);
             this.label6.TabIndex = 1;
-            this.label6.Text = "Building";
+            this.label6.Text = "Building:";
             // 
             // tbGrowth
             // 
@@ -188,7 +194,7 @@
             // 
             // bSave
             // 
-            this.bSave.Location = new System.Drawing.Point(144, 113);
+            this.bSave.Location = new System.Drawing.Point(144, 119);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(126, 48);
             this.bSave.TabIndex = 2;
@@ -206,10 +212,19 @@
             this.gbBInfo.Controls.Add(this.tbReStock);
             this.gbBInfo.Location = new System.Drawing.Point(144, 13);
             this.gbBInfo.Name = "gbBInfo";
-            this.gbBInfo.Size = new System.Drawing.Size(124, 96);
+            this.gbBInfo.Size = new System.Drawing.Size(124, 100);
             this.gbBInfo.TabIndex = 3;
             this.gbBInfo.TabStop = false;
             this.gbBInfo.Text = "Shop Info";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 70);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(47, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Restock";
             // 
             // tbStock
             // 
@@ -255,6 +270,8 @@
             // 
             // gbWarehouse
             // 
+            this.gbWarehouse.Controls.Add(this.tbCapacity);
+            this.gbWarehouse.Controls.Add(this.label10);
             this.gbWarehouse.Controls.Add(this.tbVehicles);
             this.gbWarehouse.Controls.Add(this.label9);
             this.gbWarehouse.Location = new System.Drawing.Point(144, 13);
@@ -266,39 +283,62 @@
             // 
             // tbVehicles
             // 
-            this.tbVehicles.Location = new System.Drawing.Point(16, 53);
+            this.tbVehicles.Location = new System.Drawing.Point(60, 28);
             this.tbVehicles.Name = "tbVehicles";
-            this.tbVehicles.Size = new System.Drawing.Size(73, 20);
+            this.tbVehicles.Size = new System.Drawing.Size(58, 20);
             this.tbVehicles.TabIndex = 2;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(13, 33);
+            this.label9.Location = new System.Drawing.Point(7, 31);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(47, 13);
+            this.label9.Size = new System.Drawing.Size(50, 13);
             this.label9.TabIndex = 1;
-            this.label9.Text = "Vehicles";
+            this.label9.Text = "Vehicles:";
             // 
-            // label1
+            // tbRaduis
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 70);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Restock";
+            this.tbRaduis.Location = new System.Drawing.Point(55, 103);
+            this.tbRaduis.Name = "tbRaduis";
+            this.tbRaduis.Size = new System.Drawing.Size(60, 20);
+            this.tbRaduis.TabIndex = 10;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(9, 106);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(43, 13);
+            this.label8.TabIndex = 11;
+            this.label8.Text = "Radius:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(7, 63);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(51, 13);
+            this.label10.TabIndex = 3;
+            this.label10.Text = "Capacity:";
+            // 
+            // tbCapacity
+            // 
+            this.tbCapacity.Location = new System.Drawing.Point(60, 60);
+            this.tbCapacity.Name = "tbCapacity";
+            this.tbCapacity.Size = new System.Drawing.Size(58, 20);
+            this.tbCapacity.TabIndex = 4;
             // 
             // CellForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(276, 166);
+            this.ClientSize = new System.Drawing.Size(276, 172);
             this.Controls.Add(this.bSave);
             this.Controls.Add(this.gbInfo);
-            this.Controls.Add(this.gbBInfo);
             this.Controls.Add(this.gbWarehouse);
+            this.Controls.Add(this.gbBInfo);
             this.Name = "CellForm";
             this.Text = "CellForm";
             this.gbInfo.ResumeLayout(false);
@@ -337,5 +377,9 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox tbVehicles;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox tbRaduis;
+        private System.Windows.Forms.TextBox tbCapacity;
+        private System.Windows.Forms.Label label10;
     }
 }
