@@ -10,16 +10,24 @@ namespace ClassLibrary
     {
         private Map _map;
         private int timeStamp = 0;
-        private double maxStored = 0;
+        private double _maxSold = 0;
+        private List<Location> _wareHouses;
+        private List<Location> _shops;
+        private List<Location> _allPossibleLocations;
+        private List<Location> _bestLocations;
 
         public BestPlacement(Map m)
         {
             _map = m;
+            _wareHouses = new List<Location>();
+            _shops = new List<Location>();
+            _allPossibleLocations = new List<Location>();
         }
 
         public void MakeBackups()
         {
-            //Back up the exisiting buildings
+            _map.Warehouses.ForEach(x => _wareHouses.Add(x));
+            _map.Shops.ForEach(x => _shops.Add(x));
 
         }
 
@@ -36,7 +44,27 @@ namespace ClassLibrary
 
         public void CheckBestPlacement()
         {
-            //foreach
+            Map map = _map;
+
+            foreach (Location item in _allPossibleLocations)
+            {
+                for (int i = 0; i < 50; i++)
+                {
+                    map.NextTick(i);
+                }
+                foreach (StatisticsShop stats in map.Statistics)
+                {
+                    if (stats.Time == 50)
+                    {
+                        if (stats.AverageSold > _maxSold)
+                        {
+                            _maxSold = stats.AverageSold;
+                            _bestLocations = map.Locations;
+                    }
+                    }
+                }
+            }
+            
             //for loop, 50, check the best place, reset i. 
             //store stastics 
 
