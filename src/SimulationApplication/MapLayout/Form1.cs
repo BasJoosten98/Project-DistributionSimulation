@@ -232,32 +232,37 @@ namespace MapLayout
                                 selectedLocations.Add(l);
                                 if (selectedLocations.Count == 2)
                                 {
+                                    bool succes = map.RemoveRoad(selectedLocations[0], selectedLocations[1]); //try removing road
                                     int cost;
-                                    if (int.TryParse(tbMapEditor.Text, out cost))
+                                    if (!succes) //road needs to be added
                                     {
-                                        if (cost > 0)
+                                        if (int.TryParse(tbMapEditor.Text, out cost))
                                         {
-                                            bool succes = map.AddNewRoad(selectedLocations[0], selectedLocations[1], cost);
-                                            if (!succes) //There is already a road there
+                                            if (cost > 0)
                                             {
-                                                map.RemoveRoad(selectedLocations[0], selectedLocations[1]);
-                                                Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been removed");
+                                                bool succes2 = map.AddNewRoad(selectedLocations[0], selectedLocations[1], cost);
+                                                if (succes2) //There is already a road there
+                                                {
+                                                    Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been added");
+                                                    selectedLocations.Clear();
+                                                } 
                                             }
                                             else
                                             {
-                                                Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been added");
+                                                selectedLocations.Remove(l);
+                                                MessageBox.Show("Road cost must be greater than 0");
                                             }
-                                            selectedLocations.Clear();
                                         }
                                         else
                                         {
-                                            MessageBox.Show("Road cost must be greater than 0");
+                                            selectedLocations.Remove(l);
+                                            MessageBox.Show("Road cost is in wrong format, only integers allowed");
                                         }
                                     }
                                     else
                                     {
-                                        selectedLocations.Remove(l);
-                                        MessageBox.Show("Road cost is in wrong format, only integers allowed");
+                                        Console.WriteLine("Road from location" + selectedLocations[0].LocationID + " to location" + selectedLocations[1].LocationID + " has been removed");
+                                        selectedLocations.Clear();
                                     }
 
                                 }
@@ -632,8 +637,8 @@ namespace MapLayout
         
         private void startSimulation()
         {
-            createAllvehicles();
             map.PrepareForSimulation();
+            createAllvehicles();           
             Map.RedrawMap();
             btnCursor_Click(this, new EventArgs());
             panelMapBuilder.Enabled = false;
@@ -658,9 +663,13 @@ namespace MapLayout
                 }
                 else //start simulation for first time
                 {
+                    try
+                    {
+                        startSimulation();
+                    }
+                    catch (Exception ex) { MessageBox.Show("Starting simulation failed: " + ex.Message); return; }
                     simulationHasStarted = true;
-                    simulationIsPlaying = true;
-                    startSimulation();
+                    simulationIsPlaying = true;                    
                     btnPlay.BackgroundImage = Properties.Resources.Pause;
                 }
             }
@@ -711,6 +720,7 @@ namespace MapLayout
             if (map != null)
             {
                 dijkstraForDrawing = new Dijkstra(map.Edges);
+                MessageBox.Show("Map has been analyzed");
             }
         }
         private void btnDrawDijkstra_Click(object sender, EventArgs e)
@@ -829,6 +839,228 @@ namespace MapLayout
                 panelMapBuilder.Enabled = true;
                 Map.RedrawMap();
                 btnReset.Enabled = false;
+            }
+        }
+
+        private void btnDrawWarehouseRoute_Click(object sender, EventArgs e)
+        {
+            int locationNumber1;
+
+            if (int.TryParse(tbDrawWarehouse.Text, out locationNumber1))
+            {
+                if (map != null)
+                {
+                    if (map.Warehouses.Count > 0)
+                    {
+                        Location l1 = map.GetLocationByID(locationNumber1);
+                        if (l1 != null)
+                        {
+                            if (dijkstraForDrawing != null)
+                            {
+                                //find best route
+                                DijkstraRoute temp = null;
+                                DijkstraRoute bestRoute = null;
+                                foreach (Location w in map.Warehouses)
+                                {
+                                    temp = dijkstraForDrawing.GetRouteTo(l1, w);
+                                    if(temp != null)
+                                    {
+                                        if(bestRoute == null)
+                                        {
+                                            bestRoute = temp;
+                                        }
+                                        else if(temp.RouteLenght < bestRoute.RouteLenght)
+                                        {
+                                            bestRoute = temp;
+                                        }
+                                    }
+                                }
+                                
+                                //display best route
+                                if (bestRoute != null)
+                                {
+                                    List<Road> allRoads = map.Edges;
+                                    foreach (Road r in allRoads)
+                                    {
+                                        r.ResetDrawFields();
+                                    }
+                                    foreach (Road r in bestRoute.Route)
+                                    {
+                                        r.LineColor = Color.Green;
+                                    }
+                                    Map.RedrawMap();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("No route could be found from warehouse to given location");
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Map has not been analyzed yet");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("No location could be found for the given number");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("At least 1 warehouse should be placed in order to make use of this functionality");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Location Number is in a wrong format");
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int locationNumber1;
+
+            if (int.TryParse(tbDrawShop.Text, out locationNumber1))
+            {
+                if (map != null)
+                {
+                    if (map.Shops.Count > 0)
+                    {
+                        Location l1 = map.GetLocationByID(locationNumber1);
+                        if (l1 != null)
+                        {
+                            if (dijkstraForDrawing != null)
+                            {
+                                //find best route
+                                DijkstraRoute temp = null;
+                                DijkstraRoute bestRoute = null;
+                                foreach (Location s in map.Shops)
+                                {
+                                    temp = dijkstraForDrawing.GetRouteTo(l1, s);
+                                    if (temp != null)
+                                    {
+                                        if (bestRoute == null)
+                                        {
+                                            bestRoute = temp;
+                                        }
+                                        else if (temp.RouteLenght < bestRoute.RouteLenght)
+                                        {
+                                            bestRoute = temp;
+                                        }
+                                    }
+                                }
+
+                                //display best route
+                                if (bestRoute != null)
+                                {
+                                    List<Road> allRoads = map.Edges;
+                                    foreach (Road r in allRoads)
+                                    {
+                                        r.ResetDrawFields();
+                                    }
+                                    foreach (Road r in bestRoute.Route)
+                                    {
+                                        r.LineColor = Color.Green;
+                                    }
+                                    Map.RedrawMap();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("No route could be found from shop to given location");
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Map has not been analyzed yet");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("No location could be found for the given number");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("At least 1 shop should be placed in order to make use of this functionality");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Location Number is in a wrong format");
+            }
+        }
+
+        private void DrawAllClosests_Click(object sender, EventArgs e)
+        {
+            if(map != null)
+            {
+                if(dijkstraForDrawing != null)
+                {
+                    if(map.Shops.Count > 0 && map.Warehouses.Count > 0)
+                    {
+                        List<DijkstraRoute> bestRoutes = new List<DijkstraRoute>();
+                        bool allShopsAreConnectedToWarehouse = true;
+                        //find best route
+                        foreach (Location s in map.Shops)
+                        {
+                            DijkstraRoute temp = null;
+                            DijkstraRoute bestRoute = null;
+                            foreach (Location w in map.Warehouses)
+                            {
+                                temp = dijkstraForDrawing.GetRouteTo(w, s);
+                                if (temp != null)
+                                {
+                                    if (bestRoute == null)
+                                    {
+                                        bestRoute = temp;
+                                    }
+                                    else if (temp.RouteLenght < bestRoute.RouteLenght)
+                                    {
+                                        bestRoute = temp;
+                                    }
+                                }
+                            }
+                            if(bestRoute != null) { bestRoutes.Add(bestRoute); }
+                            else { allShopsAreConnectedToWarehouse = false; }
+                        }
+
+                        //display best routes
+                        if (bestRoutes.Count > 0)
+                        {
+                            List<Road> allRoads = map.Edges;
+                            foreach (Road r in allRoads)
+                            {
+                                r.ResetDrawFields();
+                            }
+                            foreach (DijkstraRoute dr in bestRoutes)
+                            {
+                                foreach (Road r in dr.Route)
+                                {
+                                    r.LineColor = Color.Green;
+                                }
+                            }
+                            if (!allShopsAreConnectedToWarehouse)
+                            {
+                                MessageBox.Show("Not all shops have a connection to some warehouse");
+                            }
+                            Map.RedrawMap();
+                        }
+                        else
+                        {
+                            MessageBox.Show("No route could be found from any shop to any warehouse");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("At least 1 shop and warehouse should be placed in order to make use of this functionality");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Map has not been analyzed yet");
+                }
             }
         }
     }

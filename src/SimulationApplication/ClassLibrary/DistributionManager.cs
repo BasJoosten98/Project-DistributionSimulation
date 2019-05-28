@@ -32,8 +32,8 @@ namespace ClassLibrary
             createdDeliveries = new List<Delivery>();
             finishedCreatedDeliveries = new List<Delivery>();
             shops = Shops;
-            if (shops.Count == 0) { throw new NullReferenceException(); }
-            if (warehouses.Count == 0) { throw new NullReferenceException(); }
+            if (shops.Count == 0) { throw new Exception("At least 1 shop should be placed"); }
+            if (warehouses.Count == 0) { throw new Exception("At least 1 warehouse should be placed"); }
         }
 
         /// <summary>

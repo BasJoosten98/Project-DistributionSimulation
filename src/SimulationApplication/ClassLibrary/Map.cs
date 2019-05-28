@@ -277,7 +277,7 @@ namespace ClassLibrary
 
                 // Road entity
                 temp.RoadEntity.InitialCost = cost;
-                //MapEntity.Roads.Add(temp.RoadEntity); //MapEntity == null, caused crash
+ //              MapEntity.Roads.Add(temp.RoadEntity); //------------------------------------------------------------------------------
 
                 Edges.Add(temp);
                 return true;
@@ -384,7 +384,7 @@ namespace ClassLibrary
             }
             l.Building = null;
             // Set the entity's building to null as well.
-            //l.LocationEntity.Building = null;
+//            l.LocationEntity.Building = null; //------------------------------------------------------------------------------
         }
 
         /// <summary>

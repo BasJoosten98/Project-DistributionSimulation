@@ -50,6 +50,7 @@
             this.loadMapBtn = new System.Windows.Forms.Button();
             this.saveBtn = new System.Windows.Forms.Button();
             this.gbMapEditor = new System.Windows.Forms.GroupBox();
+            this.tbMapEditor = new System.Windows.Forms.TextBox();
             this.btnRandomMap = new System.Windows.Forms.Button();
             this.btnRandomHeatMap = new System.Windows.Forms.Button();
             this.btnShop = new System.Windows.Forms.Button();
@@ -61,7 +62,11 @@
             this.lbLocationLog = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.tbMapEditor = new System.Windows.Forms.TextBox();
+            this.btnDrawWarehouseRoute = new System.Windows.Forms.Button();
+            this.tbDrawWarehouse = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.tbDrawShop = new System.Windows.Forms.TextBox();
+            this.DrawAllClosests = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -197,6 +202,11 @@
             // gbDijkstraTool
             // 
             this.gbDijkstraTool.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.gbDijkstraTool.Controls.Add(this.DrawAllClosests);
+            this.gbDijkstraTool.Controls.Add(this.button1);
+            this.gbDijkstraTool.Controls.Add(this.tbDrawShop);
+            this.gbDijkstraTool.Controls.Add(this.btnDrawWarehouseRoute);
+            this.gbDijkstraTool.Controls.Add(this.tbDrawWarehouse);
             this.gbDijkstraTool.Controls.Add(this.btnAnalyzeMap);
             this.gbDijkstraTool.Controls.Add(this.tbDrawRouteTo);
             this.gbDijkstraTool.Controls.Add(this.tbDrawRouteFrom);
@@ -205,14 +215,14 @@
             this.gbDijkstraTool.Controls.Add(this.btnDrawRoute);
             this.gbDijkstraTool.Location = new System.Drawing.Point(1, 315);
             this.gbDijkstraTool.Name = "gbDijkstraTool";
-            this.gbDijkstraTool.Size = new System.Drawing.Size(233, 109);
+            this.gbDijkstraTool.Size = new System.Drawing.Size(233, 190);
             this.gbDijkstraTool.TabIndex = 26;
             this.gbDijkstraTool.TabStop = false;
             this.gbDijkstraTool.Text = "Dijkstra Tool";
             // 
             // btnAnalyzeMap
             // 
-            this.btnAnalyzeMap.Location = new System.Drawing.Point(7, 78);
+            this.btnAnalyzeMap.Location = new System.Drawing.Point(6, 163);
             this.btnAnalyzeMap.Name = "btnAnalyzeMap";
             this.btnAnalyzeMap.Size = new System.Drawing.Size(221, 23);
             this.btnAnalyzeMap.TabIndex = 17;
@@ -242,7 +252,7 @@
             this.btnDrawDijkstra.Name = "btnDrawDijkstra";
             this.btnDrawDijkstra.Size = new System.Drawing.Size(136, 23);
             this.btnDrawDijkstra.TabIndex = 14;
-            this.btnDrawDijkstra.Text = "Draw Dijkstra";
+            this.btnDrawDijkstra.Text = "Draw Dijkstra Creation";
             this.btnDrawDijkstra.UseVisualStyleBackColor = true;
             this.btnDrawDijkstra.Click += new System.EventHandler(this.btnDrawDijkstra_Click);
             // 
@@ -260,7 +270,7 @@
             this.btnDrawRoute.Name = "btnDrawRoute";
             this.btnDrawRoute.Size = new System.Drawing.Size(135, 23);
             this.btnDrawRoute.TabIndex = 11;
-            this.btnDrawRoute.Text = "Draw Route";
+            this.btnDrawRoute.Text = "Draw Shortest Route";
             this.btnDrawRoute.UseVisualStyleBackColor = true;
             this.btnDrawRoute.Click += new System.EventHandler(this.btnDrawRoute_Click);
             // 
@@ -314,6 +324,14 @@
             this.gbMapEditor.TabIndex = 24;
             this.gbMapEditor.TabStop = false;
             this.gbMapEditor.Text = "Map Editor";
+            // 
+            // tbMapEditor
+            // 
+            this.tbMapEditor.Location = new System.Drawing.Point(115, 142);
+            this.tbMapEditor.Name = "tbMapEditor";
+            this.tbMapEditor.Size = new System.Drawing.Size(100, 20);
+            this.tbMapEditor.TabIndex = 26;
+            this.tbMapEditor.Text = "0";
             // 
             // btnRandomMap
             // 
@@ -420,13 +438,51 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // tbMapEditor
+            // btnDrawWarehouseRoute
             // 
-            this.tbMapEditor.Location = new System.Drawing.Point(115, 142);
-            this.tbMapEditor.Name = "tbMapEditor";
-            this.tbMapEditor.Size = new System.Drawing.Size(100, 20);
-            this.tbMapEditor.TabIndex = 26;
-            this.tbMapEditor.Text = "0";
+            this.btnDrawWarehouseRoute.Location = new System.Drawing.Point(7, 77);
+            this.btnDrawWarehouseRoute.Name = "btnDrawWarehouseRoute";
+            this.btnDrawWarehouseRoute.Size = new System.Drawing.Size(135, 23);
+            this.btnDrawWarehouseRoute.TabIndex = 19;
+            this.btnDrawWarehouseRoute.Text = "Draw Closest Warehouse";
+            this.btnDrawWarehouseRoute.UseVisualStyleBackColor = true;
+            this.btnDrawWarehouseRoute.Click += new System.EventHandler(this.btnDrawWarehouseRoute_Click);
+            // 
+            // tbDrawWarehouse
+            // 
+            this.tbDrawWarehouse.Location = new System.Drawing.Point(149, 79);
+            this.tbDrawWarehouse.Name = "tbDrawWarehouse";
+            this.tbDrawWarehouse.Size = new System.Drawing.Size(65, 20);
+            this.tbDrawWarehouse.TabIndex = 18;
+            this.tbDrawWarehouse.Text = "0";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(7, 106);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(135, 23);
+            this.button1.TabIndex = 21;
+            this.button1.Text = "Draw Closest Shop";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // tbDrawShop
+            // 
+            this.tbDrawShop.Location = new System.Drawing.Point(149, 108);
+            this.tbDrawShop.Name = "tbDrawShop";
+            this.tbDrawShop.Size = new System.Drawing.Size(65, 20);
+            this.tbDrawShop.TabIndex = 20;
+            this.tbDrawShop.Text = "0";
+            // 
+            // DrawAllClosests
+            // 
+            this.DrawAllClosests.Location = new System.Drawing.Point(6, 134);
+            this.DrawAllClosests.Name = "DrawAllClosests";
+            this.DrawAllClosests.Size = new System.Drawing.Size(221, 23);
+            this.DrawAllClosests.TabIndex = 22;
+            this.DrawAllClosests.Text = "Draw Closest Warehouse-Shop";
+            this.DrawAllClosests.UseVisualStyleBackColor = true;
+            this.DrawAllClosests.Click += new System.EventHandler(this.DrawAllClosests_Click);
             // 
             // Form1
             // 
@@ -489,6 +545,11 @@
         private System.Windows.Forms.Button btnSlowDown;
         private System.Windows.Forms.Button btnSpeedUp;
         private System.Windows.Forms.TextBox tbMapEditor;
+        private System.Windows.Forms.Button btnDrawWarehouseRoute;
+        private System.Windows.Forms.TextBox tbDrawWarehouse;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox tbDrawShop;
+        private System.Windows.Forms.Button DrawAllClosests;
     }
 }
 

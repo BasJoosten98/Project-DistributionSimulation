@@ -149,7 +149,7 @@ namespace ClassLibrary
                     }
                     Map.RedrawMapNow();
                     // makes the system wait 2 seconds
-                    System.Threading.Thread.Sleep(2000);
+                    System.Threading.Thread.Sleep(1000);
                     // after it colors all potential yellow it colors the best green.
                     currentRoad.LineColor = Color.Green;
                 }
