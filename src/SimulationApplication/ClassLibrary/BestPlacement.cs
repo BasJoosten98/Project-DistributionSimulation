@@ -45,6 +45,7 @@ namespace ClassLibrary
         public void CheckBestPlacement()
         {
             Map map = _map;
+            //TODO: Regenerate the different possible locations in a map
 
             foreach (Location item in _allPossibleLocations)
             {
@@ -60,7 +61,7 @@ namespace ClassLibrary
                         {
                             _maxSold = stats.AverageSold;
                             _bestLocations = map.Locations;
-                    }
+                        }
                     }
                 }
             }
