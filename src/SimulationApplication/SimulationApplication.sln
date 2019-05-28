@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapLayout", "MapLayout\MapLayout.csproj", "{9FD02E11-9065-4853-B2B8-AEA4ED5815C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Statistics", "Statistics\Statistics.csproj", "{FF5AA080-D1F0-4715-8CA6-8CCBB4EF63F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{9FD02E11-9065-4853-B2B8-AEA4ED5815C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FD02E11-9065-4853-B2B8-AEA4ED5815C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FD02E11-9065-4853-B2B8-AEA4ED5815C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF5AA080-D1F0-4715-8CA6-8CCBB4EF63F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF5AA080-D1F0-4715-8CA6-8CCBB4EF63F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF5AA080-D1F0-4715-8CA6-8CCBB4EF63F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF5AA080-D1F0-4715-8CA6-8CCBB4EF63F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
