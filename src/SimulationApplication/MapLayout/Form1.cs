@@ -1068,28 +1068,7 @@ namespace MapLayout
         {
 
             bestPlacement = new BestPlacement(map);
-            bestPlacement.AddBuildings();
-            map = bestPlacement.map;
-            for (int i = 0; i < bestPlacement.map.Locations.Count; i++)
-            {
-                Location location = bestPlacement.map.Locations[i];
-                if(location.Building != null)
-                {
-                    if(location.Building is Shop)
-                    {
-                        PictureBox pictureBox = new PictureBox();
-                        Point imagePosition = new Point
-                            ((location.Index.Column * Cell.CellSize) + 4, 
-                            (location.Index.Row * Cell.CellSize + 4));
-                        pictureBox.Location = imagePosition;
-                        pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                        pictureBox.Image = Properties.Resources.shopIcon;
-                        pictureBox.BringToFront();
-                    }
-                }
-                
-            }
-            
+            bestPlacement.CheckCombinations();
 
         }
     }

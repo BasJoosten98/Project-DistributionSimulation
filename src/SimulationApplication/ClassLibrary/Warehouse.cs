@@ -61,6 +61,11 @@ namespace ClassLibrary
             this.totalvehiclesAtStart = totalVehicles;
             vehicles = new List<Vehicle>();
         }
+        public Warehouse(int totalVehicles)
+        {
+            this.totalvehiclesAtStart = totalVehicles;
+            vehicles = new List<Vehicle>();
+        }
 
         public void AddVehicle(Vehicle v)
         {
@@ -75,7 +80,6 @@ namespace ClassLibrary
         private void Item_LowStockReached(object sender, LowStockReachedEventArgs e)
         {
             // Logic to get a vehicle to simulate traveling to the shop
-            Console.WriteLine("Time in need of restocking: " + e.TimeReached);
             Shop s = (Shop)sender;
             s.Stock = s.Capacity;
         }

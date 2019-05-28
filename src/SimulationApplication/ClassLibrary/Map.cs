@@ -81,7 +81,6 @@ namespace ClassLibrary
                 }
             }
             // Prints the count property of the List of location objects.
-            Console.WriteLine(V);
 
             // Create and add roads to the map entity
             // 1 -> 2, weight: 3
@@ -160,7 +159,6 @@ namespace ClassLibrary
                 }
             }
             // Prints the count property of the List of location objects.
-            Console.WriteLine(V);
 
             // Create and add roads to the map entity
             // 1 -> 2, weight: 3

@@ -9,23 +9,19 @@ namespace ClassLibrary
     public class BestPlacement
     {
         private Map _initialMap;
-        public Map map;
         private double _maxSold = 0;
-        private List<Location> _initialWarehouses;
+        private Location _initialWarehouse;
         private List<Location> _initialShops;
-        private List<Location> _allPossibleLocations;
-        private List<Location> _bestLocations;
+        private Map _bestLocations;
+        int[] allPossibleCombinations;
         
 
         public BestPlacement(Map m)
         {
-            _initialMap = m;
             //Takes a copy of the map, to run with the same configuration
-            map = new Map(m.NumberOfLocations, m.NumberOfCells, m.CellSize);
-            _initialWarehouses = new List<Location>();
+            _initialMap = m;
             _initialShops = new List<Location>();
-            _allPossibleLocations = new List<Location>();
-            _bestLocations = new List<Location>();
+            allPossibleCombinations = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; //This should be the count of the list
             MakeBackups();
 
         }
@@ -34,9 +30,9 @@ namespace ClassLibrary
         {
             foreach (Location warehouse in _initialMap.Warehouses)
             {
-                Location l = new Location(warehouse.LocationID,warehouse.Index.Column, warehouse.Index.Row);
-                l.Building = warehouse.Building;
-                _initialWarehouses.Add(l);
+                _initialWarehouse = _initialMap.Warehouses[0];
+                _initialWarehouse.Building = warehouse.Building;
+                
             }
             foreach (Location shop in _initialMap.Shops)
             {
@@ -47,81 +43,114 @@ namespace ClassLibrary
 
         }
 
-        public void RearrangeBuildings()
+        public void CheckBestPlacement(int[] array)
         {
-            //map.addbuilding
-        }
-
-        public void CheckBestPlacement()
-        {
-           
+            //STEP 1:
             //TODO: Regenerate the different possible locations in a map
-
-            foreach (Location item in _allPossibleLocations)
+            Map currentMap = new Map(_initialMap.NumberOfLocations, _initialMap.NumberOfCells, _initialMap.CellSize);
+            //Intend to change to location with by getting the first int in the array, representing warehouses.
+            for (int i = 0; i < array.Length; i++)
             {
-                for (int i = 0; i < 50; i++)
+                if(i == 0)
                 {
-                    map.NextTick(i);
+                    Location warehouseLocation = _initialMap.GetLocationByID(array[i]);
+                    warehouseLocation.Building = _initialWarehouse.Building;
+                    currentMap.AddNewBuilding(warehouseLocation);
                 }
-                foreach (StatisticsShop stats in map.Statistics)
+                else
                 {
-                    if (stats.Time == 50)
+                    Location shopLocation = _initialMap.GetLocationByID(array[i]);
+                    shopLocation.Building = _initialShops[i - 1].Building;
+                    currentMap.AddNewBuilding(shopLocation);
+                }
+                
+            }
+            currentMap.PrepareForSimulation();
+            for (int i = 0; i <= 50; i++)
+            {
+                currentMap.NextTick(i);
+            }
+            foreach (Statistics obj in currentMap.Statistics)
+            {
+                if(obj.Time == 50)
+                {
+                    if(obj is StatisticsShop)
                     {
-                        if (stats.AverageSold > _maxSold)
+                        StatisticsShop shopStats = (StatisticsShop)obj;
+                        if (shopStats.AverageSold > _maxSold)
                         {
-                            _maxSold = stats.AverageSold;
-                            _bestLocations = _initialMap.Shops.Concat(_initialMap.Warehouses).ToList();
-                            
+                            _maxSold = shopStats.AverageSold;
+                            _bestLocations = currentMap;
                         }
                     }
+                    if(obj is StatisticsWarehouse)
+                    {
+                        
+                    }
+                    
                 }
             }
-            map.ResetMap();
-            map.RemoveAllBuildings();
-            AddBuildings();
-            
-            
+            _bestLocations = currentMap;
+            //STEP 2:
             //for loop, 50, check the best place, reset i. 
             //store stastics 
-
             //_map.Statistics,
             //_map.Locations,
             //_map.NextTick(i)
             
+            //STEP 3: 
             //loop finished
             //check the statistics list
             //_map.Statistics
             //get all the statistics objects with timestamp == 50
             //get the MAX average sold, if bigger then previous, store it.
             //save the placements of the buildings
-            //
             
         }
 
-        public void AddBuildings()
+        public void CheckCombinations()
         {
-            int shopPositionInArray = 0;
-            int wareHousePositionInArray = 0;
-            foreach (Location l in map.Locations)
+            int[] data = new int[3];
+            int[] arr = allPossibleCombinations;
+            int nodes = 3;
+            CombinationUtil(arr, data, 0, arr.Length - 1, 0, nodes);
+        }
+
+        private void CombinationUtil(int[] arr, int[] data, int start, int end, int index, int nodes)
+        {
+            int[] combination = new int[3];
+            //Current combination is ready to be checked when the index == 3
+            //check the best placement when a combination is generated
+            if(index == nodes)
             {
-                if (l.LocationID == 1 || l.LocationID == 2)
+                for (int i = 0; i < nodes; i++)
                 {
-                    l.Building = _initialShops[shopPositionInArray].Building;
-                    map.AddNewBuilding(l);
-                    shopPositionInArray++;
+                    combination[i] = data[i];
+                    Console.Write(data[i] + " ");
                 }
-                else if (l.LocationID == 3)
-                {
-                    l.Building = _initialWarehouses[wareHousePositionInArray].Building;
-                    map.AddNewBuilding(l);
-                    wareHousePositionInArray++;
-                }
+                Console.WriteLine("");
+                CheckBestPlacement(combination);
+                return;
+            }
+
+            for (int i = start; i <= end &&
+                      end - i + 1 >= nodes - index; i++)
+            {
+                data[index] = arr[i];
+                CombinationUtil(arr, data, i + 1,
+                                end, index + 1, nodes);
             }
         }
+
 
         public void Reset()
         {
             //Reset the
+        }
+
+        public void GetAllCombinations(List<int> list)
+        {
+
         }
 
 
