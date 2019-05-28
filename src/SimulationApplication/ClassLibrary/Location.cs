@@ -18,9 +18,6 @@ namespace ClassLibrary
         public Color CircleColor = Color.Black;
         public Color CircleFillColor = Color.LightYellow;
         public Color StringColor = Color.Black;
-
-        private static int locationID;
-
         public int LocationID { get; set; }
         public Building Building { get; set; }
         public int source_id { get; set; }
@@ -32,7 +29,7 @@ namespace ClassLibrary
         public Location()
         { }
 
-        public Location(int column, int row) : this(column, row, 0)
+        public Location(int id, int column, int row) : this(id, column, row, 0)
         {
             //LocationID = locationID++;
 
@@ -42,19 +39,19 @@ namespace ClassLibrary
             //this.Radius = 3;
         }
 
-        public Location(int column, int row, int Radius) : base(column, row)
+        public Location(int id, int column, int row, int Radius) : base(column, row)
         {
-            this.LocationID = locationID++;
 
+            LocationID = id;
             this.min_cost = int.MaxValue;
             this.permanent = false;
             this.visited = false;
             this.Radius = Radius;
         }
 
-        public static void ResetLocationId()
+        public  void ResetLocationId()
         {
-            locationID = 0;
+            LocationID = 0;
         }
 
         /// <summary>

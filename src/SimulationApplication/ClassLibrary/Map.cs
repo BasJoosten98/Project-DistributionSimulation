@@ -20,8 +20,8 @@ namespace ClassLibrary
         public Cell[,] cells;
         public static PictureBox mapPicBox;
         private DistributionManager distributionManager;
-        
 
+        public int mapLocationID = 0;
         public int NumberOfCells { get; set; }
         public int NumberOfLocations { get; set; }
         public int CellSize { get; set; }
@@ -228,7 +228,7 @@ namespace ClassLibrary
         }
         public void RandomizeLocationsAndRoads()
         {
-            Location.ResetLocationId();
+            
             int numberOfLocations = rng2.Next(1, (int)Math.Floor((double)(NumberOfCells*NumberOfCells)/ 10));
 
             //remove all locations
@@ -276,7 +276,8 @@ namespace ClassLibrary
         /// <returns></returns>
         public Location ChangeCellIntoLocation(Cell c, int radius)
         {
-            Location l = new Location(c.Index.Column, c.Index.Row, radius);
+            mapLocationID++;
+            Location l = new Location(mapLocationID, c.Index.Column, c.Index.Row, radius);
             l.SetDemandGrow(c.Demand);
             cells[c.Index.Column, c.Index.Row] = l;
 

@@ -9,7 +9,7 @@ namespace ClassLibrary
     public class BestPlacement
     {
         private Map _initialMap;
-        private Map _map;
+        public Map map;
         private double _maxSold = 0;
         private List<Location> _initialWarehouses;
         private List<Location> _initialShops;
@@ -20,18 +20,30 @@ namespace ClassLibrary
         public BestPlacement(Map m)
         {
             _initialMap = m;
-            _map = new Map(m.NumberOfLocations, m.NumberOfCells, m.CellSize);
+            //Takes a copy of the map, to run with the same configuration
+            map = new Map(m.NumberOfLocations, m.NumberOfCells, m.CellSize);
             _initialWarehouses = new List<Location>();
             _initialShops = new List<Location>();
             _allPossibleLocations = new List<Location>();
             _bestLocations = new List<Location>();
             MakeBackups();
+
         }
 
         public void MakeBackups()
         {
-            _initialMap.Warehouses.ForEach(x => _initialWarehouses.Add(x));
-            _initialMap.Shops.ForEach(x => _initialShops.Add(x));
+            foreach (Location warehouse in _initialMap.Warehouses)
+            {
+                Location l = new Location(warehouse.LocationID,warehouse.Index.Column, warehouse.Index.Row);
+                l.Building = warehouse.Building;
+                _initialWarehouses.Add(l);
+            }
+            foreach (Location shop in _initialMap.Shops)
+            {
+                Location l = new Location(shop.LocationID,shop.Index.Column, shop.Index.Row);
+                l.Building = shop.Building;
+                _initialShops.Add(l);
+            }
 
         }
 
@@ -49,9 +61,9 @@ namespace ClassLibrary
             {
                 for (int i = 0; i < 50; i++)
                 {
-                    _initialMap.NextTick(i);
+                    map.NextTick(i);
                 }
-                foreach (StatisticsShop stats in _initialMap.Statistics)
+                foreach (StatisticsShop stats in map.Statistics)
                 {
                     if (stats.Time == 50)
                     {
@@ -64,8 +76,8 @@ namespace ClassLibrary
                     }
                 }
             }
-            _initialMap.ResetMap();
-            _initialMap.RemoveAllBuildings();
+            map.ResetMap();
+            map.RemoveAllBuildings();
             AddBuildings();
             
             
@@ -86,22 +98,22 @@ namespace ClassLibrary
             
         }
 
-        private void AddBuildings()
+        public void AddBuildings()
         {
             int shopPositionInArray = 0;
             int wareHousePositionInArray = 0;
-            foreach (Location l in _initialMap.Locations)
+            foreach (Location l in map.Locations)
             {
                 if (l.LocationID == 1 || l.LocationID == 2)
                 {
                     l.Building = _initialShops[shopPositionInArray].Building;
-                    _initialMap.AddNewBuilding(l);
+                    map.AddNewBuilding(l);
                     shopPositionInArray++;
                 }
                 else if (l.LocationID == 3)
                 {
                     l.Building = _initialWarehouses[wareHousePositionInArray].Building;
-                    _initialMap.AddNewBuilding(l);
+                    map.AddNewBuilding(l);
                     wareHousePositionInArray++;
                 }
             }
@@ -110,25 +122,6 @@ namespace ClassLibrary
         public void Reset()
         {
             //Reset the
-        }
-
-        public void yeet()
-        {
-            int shopPositionInArray = 0;
-            int wareHousePositionInArray = 0;
-            foreach (Location l in _map.Locations)
-            {
-                if(l.LocationID == 1 || l.LocationID == 2) {
-                    l.Building = _shops[shopPositionInArray].Building;
-                    _map.AddNewBuilding(l);
-                    shopPositionInArray++;
-                } else if (l.LocationID == 3)
-                {
-                    l.Building = _wareHouses[wareHousePositionInArray].Building;
-                    _map.AddNewBuilding(l);
-                    wareHousePositionInArray++;
-                }
-            }
         }
 
 
