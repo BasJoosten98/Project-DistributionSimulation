@@ -16,6 +16,8 @@ namespace MapLayout
 
         private List<Location> selectedLocations = new List<Location>();
         private Map map;
+        //TODO : private Optimization
+
         //Quick dirty way of checking if the shop or warehouse button is clicked
         private bool isShopBtnClicked;
         private bool isWarehouseBtnClicked;
