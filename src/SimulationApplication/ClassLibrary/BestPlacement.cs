@@ -23,13 +23,15 @@ namespace ClassLibrary
             _initialShops = new List<Location>();
             allPossibleCombinations = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; //This should be the count of the list
             MakeBackups();
-
+            createAllDifferentMaps(5, 5);
         }
 
         public void MakeBackups()
         {
+            //Je moet backups maken van de buildings, NIET van de locaties EN DIT ZIJN REFERENCIES!!!
             foreach (Location warehouse in _initialMap.Warehouses)
             {
+                //Dit werkt niet!! Geen copy van de locatie, maar een reference
                 _initialWarehouse = _initialMap.Warehouses[0];
                 _initialWarehouse.Building = warehouse.Building;
                 
@@ -49,15 +51,16 @@ namespace ClassLibrary
             //TODO: Regenerate the different possible locations in a map
             Map currentMap = new Map(_initialMap.NumberOfLocations, _initialMap.NumberOfCells, _initialMap.CellSize);
             //Intend to change to location with by getting the first int in the array, representing warehouses.
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < array.Length; i++) //place buildings on map
             {
-                if(i == 0)
+                if(i == 0)//warehouse location number
                 {
                     Location warehouseLocation = _initialMap.GetLocationByID(array[i]);
-                    warehouseLocation.Building = _initialWarehouse.Building;
+                    warehouseLocation.Building = _initialWarehouse.Building; //2 locaties bezitten dezelfde warehouse nu!!
+
                     currentMap.AddNewBuilding(warehouseLocation);
                 }
-                else
+                else //shop location number
                 {
                     Location shopLocation = _initialMap.GetLocationByID(array[i]);
                     shopLocation.Building = _initialShops[i - 1].Building;
@@ -65,7 +68,7 @@ namespace ClassLibrary
                 }
                 
             }
-            if(currentMap.Shops.Count > 0 && currentMap.Warehouses.Count > 0)
+            if(currentMap.Shops.Count > 0 && currentMap.Warehouses.Count > 0) //why do you check this???
             {
                 currentMap.PrepareForSimulation();
                 for (int i = 0; i <= 50; i++)
@@ -82,7 +85,7 @@ namespace ClassLibrary
                             if (shopStats.AverageSold > _maxSold)
                             {
                                 _maxSold = shopStats.AverageSold;
-                                bestLocations = currentMap;
+                                bestLocations = currentMap; //current map is geen copy, maar een referentie!! Het slaat dus niet op!!
                             }
                         }
                         if (obj is StatisticsWarehouse)
@@ -157,6 +160,74 @@ namespace ClassLibrary
 
         }
 
+        private List<List<int>> createAllDifferentMaps(int totalBuidings, int totalLocations)
+        {
+            Console.WriteLine("Start of difmaps");
+            if (totalBuidings > totalLocations) { throw new Exception("Not possible"); }
+            List<int> temp = new List<int>();
+            for (int i = 1; i <= totalLocations; i++)
+            {
+                temp.Add(-1);
+            }
+            List<List<int>> result = createAllDifferentMapsRec(totalBuidings - 1, 0, temp);
+            if (false)
+            {
+                for (int i = 0; i < result.Count; i++)
+                {
+                    string holder = "";
+                    for (int j = 0; j < result[i].Count; j++)
+                    {
+                        holder += " " + result[i][j];
+                    }
+                    Console.WriteLine(holder);
+                }
+            }
+            Console.WriteLine("End of difmaps");
+            return result;
+        }
+        private List<List<int>> createAllDifferentMapsRec(int lastBuiding, int currentBuilding, List<int> currentMap)
+        {
+            List<List<int>> endResults = new List<List<int>>();
+            if (currentBuilding > lastBuiding)
+            {
+                endResults.Add(currentMap);
+                return endResults;
+            }
+           
+            int skippedPos = 0;
+            bool emptyLocationFound = false;
+            for (int skipPos = 0; skipPos >= 0; skipPos++)
+            {
+                emptyLocationFound = false;
+                skippedPos = 0;
+                for (int i = 0; i < currentMap.Count; i++)
+                {
+                    if (currentMap[i] == -1 && skippedPos == skipPos) //empty location
+                    {
+                        List<int> temp = new List<int>();
+                        foreach (int k in currentMap) { temp.Add(k); }
+                        temp[i] = currentBuilding;
 
+                        List<List<int>> results = createAllDifferentMapsRec(lastBuiding, currentBuilding + 1, temp);
+                        for (int j = 0; j < results.Count; j++)
+                        {
+                            endResults.Add(results[j]);
+                        }
+                        skippedPos++;
+                        emptyLocationFound = true;
+                        break;
+                    }
+                    else if(currentMap[i] == -1 && skippedPos < skipPos)
+                    {
+                        skippedPos++;
+                    }
+                }
+                if (!emptyLocationFound)
+                {
+                    break;
+                }
+            }
+            return endResults;
+        }
     }
 }
