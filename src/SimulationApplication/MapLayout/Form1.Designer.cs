@@ -510,9 +510,9 @@
             // 
             // progressBestPlacement
             // 
-            this.progressBestPlacement.Location = new System.Drawing.Point(0, 494);
+            this.progressBestPlacement.Location = new System.Drawing.Point(3, 511);
             this.progressBestPlacement.Name = "progressBestPlacement";
-            this.progressBestPlacement.Size = new System.Drawing.Size(605, 29);
+            this.progressBestPlacement.Size = new System.Drawing.Size(602, 29);
             this.progressBestPlacement.TabIndex = 3;
             this.progressBestPlacement.Visible = false;
             // 
