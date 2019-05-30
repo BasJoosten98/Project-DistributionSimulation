@@ -68,6 +68,8 @@
             this.lbLocationLog = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.AmTicks = new System.Windows.Forms.TextBox();
+            this.progressBestPlacement = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -90,6 +92,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.splitContainer1.Panel1.Controls.Add(this.progressBestPlacement);
             this.splitContainer1.Panel1.Controls.Add(this.panelPlayer);
             this.splitContainer1.Panel1.Controls.Add(this.mapPictureBox);
             // 
@@ -192,6 +195,7 @@
             // 
             // panelMapBuilder
             // 
+            this.panelMapBuilder.Controls.Add(this.AmTicks);
             this.panelMapBuilder.Controls.Add(this.btnGetBestPlacement);
             this.panelMapBuilder.Controls.Add(this.gbDijkstraTool);
             this.panelMapBuilder.Controls.Add(this.gbImportExport);
@@ -203,9 +207,9 @@
             // 
             // btnGetBestPlacement
             // 
-            this.btnGetBestPlacement.Location = new System.Drawing.Point(50, 543);
+            this.btnGetBestPlacement.Location = new System.Drawing.Point(7, 536);
             this.btnGetBestPlacement.Name = "btnGetBestPlacement";
-            this.btnGetBestPlacement.Size = new System.Drawing.Size(137, 23);
+            this.btnGetBestPlacement.Size = new System.Drawing.Size(94, 23);
             this.btnGetBestPlacement.TabIndex = 27;
             this.btnGetBestPlacement.Text = "Best Placement";
             this.btnGetBestPlacement.UseVisualStyleBackColor = true;
@@ -496,6 +500,22 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // AmTicks
+            // 
+            this.AmTicks.Location = new System.Drawing.Point(114, 539);
+            this.AmTicks.Name = "AmTicks";
+            this.AmTicks.Size = new System.Drawing.Size(100, 20);
+            this.AmTicks.TabIndex = 28;
+            this.AmTicks.Text = "50";
+            // 
+            // progressBestPlacement
+            // 
+            this.progressBestPlacement.Location = new System.Drawing.Point(0, 494);
+            this.progressBestPlacement.Name = "progressBestPlacement";
+            this.progressBestPlacement.Size = new System.Drawing.Size(605, 29);
+            this.progressBestPlacement.TabIndex = 3;
+            this.progressBestPlacement.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -513,6 +533,7 @@
             this.panelPlayer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).EndInit();
             this.panelMapBuilder.ResumeLayout(false);
+            this.panelMapBuilder.PerformLayout();
             this.gbDijkstraTool.ResumeLayout(false);
             this.gbDijkstraTool.PerformLayout();
             this.gbImportExport.ResumeLayout(false);
@@ -563,6 +584,8 @@
         private System.Windows.Forms.TextBox tbDrawShop;
         private System.Windows.Forms.Button DrawAllClosests;
         private System.Windows.Forms.Button btnGetBestPlacement;
+        private System.Windows.Forms.TextBox AmTicks;
+        private System.Windows.Forms.ProgressBar progressBestPlacement;
     }
 }
 

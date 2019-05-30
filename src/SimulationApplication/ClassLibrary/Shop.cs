@@ -47,6 +47,8 @@ namespace ClassLibrary
 
         public void ShopReset()
         {
+            tempSold = 0;
+            tempStat = null;
             stock = backupStock;
         }
         /// <summary>

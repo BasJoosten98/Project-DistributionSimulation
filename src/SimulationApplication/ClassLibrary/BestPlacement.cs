@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ClassLibrary
 {
@@ -10,156 +11,99 @@ namespace ClassLibrary
     {
         private Map _initialMap;
         private double _maxSold = 0;
-        private Location _initialWarehouse;
-        private List<Location> _initialShops;
-        public Map bestLocations;
-        int[] allPossibleCombinations;
-        
+        private List<Building> _buildings;
+        public List<int> bestMap;
+        private ProgressBar _bar;
+        private int _ticks;
 
-        public BestPlacement(Map m)
+
+
+        public BestPlacement(Map m, int ticks, ProgressBar bar)
         {
             //Takes a copy of the map, to run with the same configuration
             _initialMap = m;
-            _initialShops = new List<Location>();
-            allPossibleCombinations = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; //This should be the count of the list
+            _ticks = ticks;
+            _bar = bar;
             MakeBackups();
-            createAllDifferentMaps(5, 5);
         }
 
         public void MakeBackups()
         {
-            //Je moet backups maken van de buildings, NIET van de locaties EN DIT ZIJN REFERENCIES!!!
-            foreach (Location warehouse in _initialMap.Warehouses)
+
+            _buildings = new List<Building>();
+            foreach (Location item in _initialMap.Shops)
             {
-                //Dit werkt niet!! Geen copy van de locatie, maar een reference
-                _initialWarehouse = _initialMap.Warehouses[0];
-                _initialWarehouse.Building = warehouse.Building;
-                
+                _buildings.Add(item.Building);
             }
-            foreach (Location shop in _initialMap.Shops)
+            foreach (Location item2 in _initialMap.Warehouses)
             {
-                Location l = new Location(shop.LocationID,shop.Index.Column, shop.Index.Row);
-                l.Building = shop.Building;
-                _initialShops.Add(l);
+                _buildings.Add(item2.Building);
             }
 
         }
 
-        public void CheckBestPlacement(int[] array)
+        public void CheckBestPlacement(List<int> mapBuild)
         {
-            //STEP 1:
-            //TODO: Regenerate the different possible locations in a map
-            Map currentMap = new Map(_initialMap.NumberOfLocations, _initialMap.NumberOfCells, _initialMap.CellSize);
-            //Intend to change to location with by getting the first int in the array, representing warehouses.
-            for (int i = 0; i < array.Length; i++) //place buildings on map
+            _initialMap.RemoveAllBuildings();
+            for (int i = 0; i < mapBuild.Count; i++)
             {
-                if(i == 0)//warehouse location number
+                if(mapBuild[i] != -1)
                 {
-                    Location warehouseLocation = _initialMap.GetLocationByID(array[i]);
-                    warehouseLocation.Building = _initialWarehouse.Building; //2 locaties bezitten dezelfde warehouse nu!!
-
-                    currentMap.AddNewBuilding(warehouseLocation);
+                    _initialMap.Locations[i].Building = _buildings[mapBuild[i]];
+                    _initialMap.AddNewBuilding(_initialMap.Locations[i]);
                 }
-                else //shop location number
-                {
-                    Location shopLocation = _initialMap.GetLocationByID(array[i]);
-                    shopLocation.Building = _initialShops[i - 1].Building;
-                    currentMap.AddNewBuilding(shopLocation);
-                }
-                
             }
-            if(currentMap.Shops.Count > 0 && currentMap.Warehouses.Count > 0) //why do you check this???
+            _initialMap.PrepareForSimulation();
+            foreach (Location l in _initialMap.Warehouses)
             {
-                currentMap.PrepareForSimulation();
-                for (int i = 0; i <= 50; i++)
+                Warehouse w = (Warehouse)l.Building;
+
+                for (int i = 1; i <= w.TotalVehiclesAtStart; i++)
                 {
-                    currentMap.NextTick(i);
+                    Vehicle temp = new Vehicle(new System.Windows.Forms.PictureBox());
+                    w.AddVehicle(temp);
                 }
-                foreach (Statistics obj in currentMap.Statistics)
+            }
+            for (int i = 0; i <= _ticks; i++)
+            {
+                _initialMap.NextTick(i);
+            }
+            double sum = 0;
+            foreach (Statistics item in _initialMap.Statistics)
+            {
+                if(item.Time == _ticks)
                 {
-                    if (obj.Time == 50)
+                    if(item is StatisticsShop)
                     {
-                        if (obj is StatisticsShop)
-                        {
-                            StatisticsShop shopStats = (StatisticsShop)obj;
-                            if (shopStats.AverageSold > _maxSold)
-                            {
-                                _maxSold = shopStats.AverageSold;
-                                bestLocations = currentMap; //current map is geen copy, maar een referentie!! Het slaat dus niet op!!
-                            }
-                        }
-                        if (obj is StatisticsWarehouse)
-                        {
-
-                        }
-
+                        StatisticsShop obj = (StatisticsShop)item;
+                        sum += obj.AverageSold;
                     }
                 }
-                bestLocations = currentMap;
             }
-            
-            //STEP 2:
-            //for loop, 50, check the best place, reset i. 
-            //store stastics 
-            //_map.Statistics,
-            //_map.Locations,
-            //_map.NextTick(i)
-            
-            //STEP 3: 
-            //loop finished
-            //check the statistics list
-            //_map.Statistics
-            //get all the statistics objects with timestamp == 50
-            //get the MAX average sold, if bigger then previous, store it.
-            //save the placements of the buildings
+            if(sum > _maxSold)
+            {
+                _maxSold = sum;
+                bestMap = mapBuild;
+            }
+            _initialMap.ResetMap();
             
         }
-
+        
         public void CheckCombinations()
         {
-            int[] data = new int[3];
-            int[] arr = allPossibleCombinations;
-            int nodes = 3;
-            CombinationUtil(arr, data, 0, arr.Length - 1, 0, nodes);
-        }
-
-        private void CombinationUtil(int[] arr, int[] data, int start, int end, int index, int nodes)
-        {
-            int[] combination = new int[3];
-            //Current combination is ready to be checked when the index == 3
-            //check the best placement when a combination is generated
-            if(index == nodes)
+            _bar.Visible = true;
+            List<List<int>> combinations = createAllDifferentMaps(_initialMap.Shops.Count + _initialMap.Warehouses.Count, _initialMap.Locations.Count);
+            _bar.Maximum = combinations.Count - 1;
+            for (int i = 0; i < combinations.Count; i++)
             {
-                for (int i = 0; i < nodes; i++)
-                {
-                    combination[i] = data[i];
-                    Console.Write(data[i] + " ");
-                }
-                Console.WriteLine("");
-                CheckBestPlacement(combination);
-                return;
+                CheckBestPlacement(combinations[i]);
+                _bar.Value = i;
+                _bar.Refresh();
             }
-
-            for (int i = start; i <= end &&
-                      end - i + 1 >= nodes - index; i++)
-            {
-                data[index] = arr[i];
-                CombinationUtil(arr, data, i + 1,
-                                end, index + 1, nodes);
-            }
+            _initialMap.RemoveAllBuildings();
+            _bar.Visible = false;
         }
-
-
-        public void Reset()
-        {
-            //Reset the
-        }
-
-        public void GetAllCombinations(List<int> list)
-        {
-
-        }
-
+        
         private List<List<int>> createAllDifferentMaps(int totalBuidings, int totalLocations)
         {
             Console.WriteLine("Start of difmaps");
@@ -170,7 +114,7 @@ namespace ClassLibrary
                 temp.Add(-1);
             }
             List<List<int>> result = createAllDifferentMapsRec(totalBuidings - 1, 0, temp);
-            if (false)
+            if (true)
             {
                 for (int i = 0; i < result.Count; i++)
                 {
@@ -229,5 +173,17 @@ namespace ClassLibrary
             }
             return endResults;
         }
+
+        public List<int> GetBestBuild()
+        {
+            return bestMap;
+        }
+
+        public List<Building> GetBuildings()
+        {
+            return _buildings;
+        }
     }
+
+    
 }
