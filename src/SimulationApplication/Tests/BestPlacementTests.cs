@@ -10,6 +10,9 @@ namespace ClassLibrary.Tests
 {
     public class BestPlacementTests
     {
+        private Map map = new Map(10, 10, 10);
+        
+
         [Fact()]
         public void BestPlacementTest()
         {
@@ -19,7 +22,24 @@ namespace ClassLibrary.Tests
         [Fact()]
         public void MakeBackupsTest()
         {
-            Assert.True(false, "This test needs an implementation");
+            Location location1 = new Location(1, 1, 1);
+            location1.Building = new Shop(10, 10);
+            Location location2 = new Location(2, 2, 2);
+            location2.Building = new Warehouse(20);
+            map.AddNewBuilding(location1);
+            map.AddNewBuilding(location2);
+            List<Location> Buildings = new List<Location>();
+
+            foreach (Location item in map.Shops)
+            {
+                Buildings.Add(item);
+            }
+            foreach (Location item2 in map.Warehouses)
+            {
+                Buildings.Add(item2);
+            }
+
+            Assert.Equal(Buildings, map.Shops.Concat(map.Warehouses));
         }
 
         [Fact()]
