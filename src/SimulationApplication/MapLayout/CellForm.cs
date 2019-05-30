@@ -112,7 +112,7 @@ namespace MapLayout
                     int reStock = Convert.ToInt32(tbReStock.Text);
                     if (stock >= 0 && reStock >= 0)
                     {
-                        s.Stock = stock;
+                        s.SetStockAndBackup( stock);
                         s.RestockAmount = reStock;
                     } else
                     {

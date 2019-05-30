@@ -1097,13 +1097,16 @@ namespace MapLayout
                     picBox.MouseEnter += mapPictureBox_MouseEnter;
                     if(buildings[bestBuild[i]] is Warehouse)
                     {
+                        Warehouse w = (Warehouse)buildings[bestBuild[i]];
                         picBox.Image = Properties.Resources.warehouseIcon;
                         map.Locations[i].Building = new Warehouse(picBox);
+                        ((Warehouse)map.Locations[i].Building).TotalVehiclesAtStart = w.TotalVehiclesAtStart;
                     }
                     else if(buildings[bestBuild[i]] is Shop)
                     {
+                        Shop s = (Shop)buildings[bestBuild[i]];
                         picBox.Image = Properties.Resources.shopIcon;
-                        map.Locations[i].Building = new Shop(picBox, 500, 450);
+                        map.Locations[i].Building = new Shop(picBox, s.Stock, s.RestockAmount);
                     }
                     map.AddNewBuilding(map.Locations[i]);
                     splitContainer1.Panel1.Controls.Add(picBox); //What does this do??

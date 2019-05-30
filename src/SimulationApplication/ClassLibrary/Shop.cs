@@ -26,23 +26,33 @@ namespace ClassLibrary
 
         public event EventHandler<LowStockReachedEventArgs> LowStockReached;
 
+        public void SetStockAndBackup(int amount)
+        {
+            if(amount >= 0)
+            {
+                this.stock = amount;
+                this.backupStock = amount;
+            }
+            else
+            {
+                throw new Exception("Stock must be greater than or equal to 0");
+            }
+        }
         public Shop(PictureBox PicBox, int StockAmount, int Restock)
             :base(PicBox)
         {
             if (Restock < 0) { throw new Exception("Restock must be greater than or equal to 0"); }
             if (StockAmount < 0) { throw new Exception("Stock must be greater than or equal to 0"); }
-            stock = StockAmount;
             restockAmount = Restock;
-            backupStock = stock;
+            SetStockAndBackup(StockAmount);
         }
 
         public Shop(int StockAmount, int Restock)
         {
             if (Restock < 0) { throw new Exception("Restock must be greater than or equal to 0"); }
             if (StockAmount < 0) { throw new Exception("Stock must be greater than or equal to 0"); }
-            stock = StockAmount;
+            SetStockAndBackup(StockAmount);
             restockAmount = Restock;
-            backupStock = stock;
         }
 
         public void ShopReset()
@@ -67,7 +77,7 @@ namespace ClassLibrary
             {
                 demand = Stock;
             }
-            Stock -= demand;
+            this.stock -= demand;
             tempSold += demand;
             if (Stock <= RestockAmount)
             {
