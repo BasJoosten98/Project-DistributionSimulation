@@ -73,5 +73,14 @@ namespace ClassLibrary
                 throw new IndexOutOfRangeException();
             }
         }
+
+        public void Save(int mapId)
+        {
+            Location source = Vertex1;
+            Location destination = Vertex2;
+            string sql = "INSERT INTO ROADS (Location1MapId, Location1RowIndex, Location1ColumnIndex, Location2MapId, Location2RowIndex, Location2ColumnIndex, InitialCost)" +
+                         $"VALUES ('{mapId}', '{source.Index.Row}', '{source.Index.Column}', '{mapId}', '{destination.Index.Row}', '{destination.Index.Column}', '{InitialCost}');";
+            DataBase.ExecuteNonQuery(sql);
+        }
     }
 }

@@ -743,8 +743,7 @@ namespace ClassLibrary
             // Assign the returned int (id) to the map.
             Id = id; // This way we can do a check to either insert or update in the form ourselves.
 
-            // Save all child entities.
-            // Cells
+            // Save Cells
             foreach (Cell c in cells)
             {
                 if (c is Location)
@@ -753,7 +752,12 @@ namespace ClassLibrary
                 }
                 c.Save(Id);
             }
-            // Roads
+
+            // Save Roads
+            foreach (Road road in Edges)
+            {
+                road.Save(Id);
+            }
         }
     }
 }
