@@ -15,14 +15,19 @@ namespace MapLayout
 {
     public partial class MapLoadForm : Form
     {
+        private List<LoadMapRecord> records;
+
+        public Map SelectedMap { get; private set; }
         public MapLoadForm()
         {
             InitializeComponent();
+            records = new List<LoadMapRecord>();
             DisplayAvailableMaps();
         }
 
         private void DisplayAvailableMaps()
         {
+            availableMapsListBox.Items.Clear();
             // Call a static method that will show all maps from db.
             string sql = "SELECT * FROM MAPS;";
             MySqlDataReader reader = DataBase.ExecuteReader(sql);
@@ -31,14 +36,21 @@ namespace MapLayout
                 while (reader.Read())
                 {
                     LoadMapRecord record = new LoadMapRecord(Convert.ToInt32(reader[0]), Convert.ToInt32(reader[1]), Convert.ToInt32(reader[2]));
-                    availableMapsListBox.Items.Add(record);
+                    records.Add(record);
                 }
             }
             catch (Exception ex)
             {
                 DataBase.CloseConnection();
                 Console.WriteLine(ex.Message);
-            } 
+            }
+
+            // Sort descending
+            records.Sort((r, r2) => r2.Id.CompareTo(r.Id));
+            foreach (LoadMapRecord record in records)
+            {
+                availableMapsListBox.Items.Add(record);
+            }
         }
     }
 }
