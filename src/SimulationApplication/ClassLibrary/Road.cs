@@ -94,7 +94,6 @@ namespace ClassLibrary
                         $" AND Location2MapId = '{mapId}'" +
                         $" AND Location2RowIndex = '{destination.Index.Row}'" +
                         $" AND Location2ColumnIndex = '{destination.Index.Column}';";
-            Console.WriteLine($"Deleting a Road {mapId} from: {source} to : {destination}");
             DataBase.ExecuteNonQuery(sql);
         }
     }

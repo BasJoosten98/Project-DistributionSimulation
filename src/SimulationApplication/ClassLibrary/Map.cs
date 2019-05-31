@@ -782,13 +782,10 @@ namespace ClassLibrary
                      $"VALUES ('{Id}', '{NumberOfCells}', '{CellSize}');";
                 DataBase.ExecuteScalar(sql);
             }
+            Console.WriteLine(Id);
             // Save Cells
             foreach (Cell c in cells)
             {
-                if (c is Location)
-                {
-                    Console.WriteLine($"{c} is a Location object.");
-                }
                 c.Save(Id);
             }
             // Save Roads

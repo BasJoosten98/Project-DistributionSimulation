@@ -625,6 +625,7 @@ namespace MapLayout
             {
                 // Delete the old map from the db.
                 map.Delete();
+                map.Save();
             }
             // Save the new map.
             else
