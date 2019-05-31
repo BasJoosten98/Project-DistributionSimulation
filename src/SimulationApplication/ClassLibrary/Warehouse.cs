@@ -46,6 +46,10 @@ namespace ClassLibrary
             }
             vehicles.Clear();
         }
+
+        public Warehouse() : base()
+        { }
+
         public Warehouse(PictureBox PicBox)
             :base(PicBox)
         {
@@ -124,6 +128,13 @@ namespace ClassLibrary
             }
             StatisticsWarehouse temp = new StatisticsWarehouse(timeStamp, this, vehiclesStat);
             return temp;
+        }
+
+        public override void Save(int mapId, int rowIndex, int columnIndex)
+        {
+            string sql = "INSERT INTO BUILDINGS (MapId, RowIndex, ColumnIndex)" +
+                        $"VALUES ('{mapId}', '{rowIndex}', '{columnIndex}');";
+            DataBase.ExecuteNonQuery(sql);
         }
     }
 }

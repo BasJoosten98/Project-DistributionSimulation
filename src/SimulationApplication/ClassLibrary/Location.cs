@@ -92,7 +92,11 @@ namespace ClassLibrary
             string sql = "INSERT INTO CELLS (MapId, RowIndex, ColumnIndex, Demand, DemandGrowthPerTick, Discriminator, Radius)" +
             $"VALUES ('{mapId}', '{Index.Row}', '{Index.Column}', '{Demand}', '{DemandGrow}', 'Location', '{Radius}');";
             DataBase.ExecuteNonQuery(sql);
-            Console.WriteLine("Updated a location");
+            // Store the building if there is one in this location.
+            if (Building != null)
+            {
+                Building.Save(mapId, Index.Row, Index.Column);
+            }
         }
     }
 }

@@ -17,5 +17,7 @@ namespace ClassLibrary
         {
             
         }
+
+        public abstract void Save(int mapId, int rowIndex, int columnIndex);
 	}
 }

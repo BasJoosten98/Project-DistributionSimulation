@@ -96,6 +96,13 @@ namespace ClassLibrary
             tempStat = temp;
             return temp;
         }
-        
-	}
+
+        public override void Save(int mapId, int rowIndex, int columnIndex)
+        {
+            string sql = "INSERT INTO BUILDINGS (MapId, RowIndex, ColumnIndex, Discriminator, Stock, RestockAmount)" +
+                        $"VALUES ('{mapId}', '{rowIndex}', '{columnIndex}', 'Shop', '{Stock}', '{RestockAmount}');";
+            DataBase.ExecuteNonQuery(sql);
+        }
+
+    }
 }
