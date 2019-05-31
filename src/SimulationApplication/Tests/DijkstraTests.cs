@@ -24,12 +24,12 @@ namespace SimulationApplicationTests
             {
                 totalLocations = rgn.Next(2, 11);
             }
-            
+            //I put IDs in the new lcoations. it was giving an error saying it takes 3 arguements instead of 2.
             List<Location> locations = new List<Location>();
             List<Road> roads = new List<Road>();
             for (int i = 0; i < totalLocations; i++)
             {
-                Location temp = new Location(rgn.Next(0, 100), rgn.Next(0, 100));
+                Location temp = new Location(4,rgn.Next(0, 100), rgn.Next(0, 100));
                 locations.Add(temp);
             }
             foreach (Location l1 in locations)
@@ -65,7 +65,7 @@ namespace SimulationApplicationTests
             List<Road> roads = new List<Road>();
             for (int i = 0; i < totalLocations; i++)
             {
-                Location temp = new Location(rgn.Next(0, 100), rgn.Next(0, 100));
+                Location temp = new Location(1,rgn.Next(0, 100), rgn.Next(0, 100));
                 locations.Add(temp);
             }
             foreach (Location l1 in locations)
@@ -101,7 +101,7 @@ namespace SimulationApplicationTests
             List<Road> roads = new List<Road>();
             for (int i = 0; i < totalLocations; i++)
             {
-                Location temp = new Location(rgn.Next(0, 100), rgn.Next(0, 100));
+                Location temp = new Location(2,rgn.Next(0, 100), rgn.Next(0, 100));
                 locations.Add(temp);
             }
             for (int i = 0; i < locations.Count - 1; i++)
@@ -140,7 +140,7 @@ namespace SimulationApplicationTests
             List<Road> roads = new List<Road>();
             for (int i = 0; i < totalLocations; i++)
             {
-                Location temp = new Location(rgn.Next(0, 100), rgn.Next(0, 100));
+                Location temp = new Location(3,rgn.Next(0, 100), rgn.Next(0, 100));
                 locations.Add(temp);
             }
             Road r = new Road(locations[0], locations[1]);
