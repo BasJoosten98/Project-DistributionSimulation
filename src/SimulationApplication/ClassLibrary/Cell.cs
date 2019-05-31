@@ -10,8 +10,6 @@ namespace ClassLibrary
 {
     public class Cell
     {
-        public Entities.Cell CellEntity { get; set; }
-
         //Drawing fields
         public Color CellColor = Color.Black;
         public int CellLineWidth = 1;

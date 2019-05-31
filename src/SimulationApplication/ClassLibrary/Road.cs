@@ -8,7 +8,6 @@ namespace ClassLibrary
 {
 	public class Road
 	{
-        public Entities.Road RoadEntity { get; }
         //Drawing fields
         private static int idCounter = 0;
         public int id;

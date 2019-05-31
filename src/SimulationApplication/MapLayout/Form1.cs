@@ -12,8 +12,6 @@ namespace MapLayout
 {
     public partial class Form1 : Form
     {
-        private SimulationContext context;
-
         private List<Location> selectedLocations = new List<Location>();
         private Map map;
         private BestPlacement bestPlacement;
@@ -623,16 +621,7 @@ namespace MapLayout
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            // Only have a map entity being held by a real map object.
 
-            // First add all the right entities to the collections of the map.
-
-            // Store the map entity.
-            using (context = new SimulationContext())
-            {
-                context.Maps.Add(map.MapEntity);
-                context.SaveChanges();
-            }
         }
         
         private void startSimulation()

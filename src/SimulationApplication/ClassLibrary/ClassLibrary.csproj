@@ -160,13 +160,6 @@
     <Compile Include="DijkstraRoute.cs" />
     <Compile Include="DijkstraStart.cs" />
     <Compile Include="DistributionManager.cs" />
-    <Compile Include="Entities\Building.cs" />
-    <Compile Include="Entities\Cell.cs" />
-    <Compile Include="Entities\Location.cs" />
-    <Compile Include="Entities\Map.cs" />
-    <Compile Include="Entities\Road.cs" />
-    <Compile Include="Entities\Shop.cs" />
-    <Compile Include="Entities\Warehouse.cs" />
     <Compile Include="Events\LowStockReachedEventArgs.cs" />
     <Compile Include="Index.cs" />
     <Compile Include="Location.cs" />
@@ -176,7 +169,6 @@
     <Compile Include="Shop.cs" />
     <Compile Include="ShopRadius.cs" />
     <Compile Include="Simulation.cs" />
-    <Compile Include="SimulationContext.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="StatisticsShop.cs" />
     <Compile Include="StatisticsVehicle.cs" />

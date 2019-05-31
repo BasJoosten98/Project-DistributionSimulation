@@ -9,7 +9,6 @@ namespace ClassLibrary
 {
     public class Map : IEnumerable
     {
-        public Entities.Map MapEntity { get; }
         private List<Location> warehouses = new List<Location>();
         private List<Statistics> statistics = new List<Statistics>();
         private List<Location> shops = new List<Location>();
@@ -41,8 +40,6 @@ namespace ClassLibrary
         /// <param name="MapBox"></param>
         public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
         {
-            // Construct the map entity.
-            MapEntity = new Entities.Map() { CellSize = cellSize, NumberOfCells = numberOfCells };
             NumberOfLocations = numberOfLocations;
             mapPicBox = MapBox;
             NumberOfCells = numberOfCells;
@@ -117,7 +114,6 @@ namespace ClassLibrary
         public Map(int numberOfLocations, int numberOfCells, int cellSize)
         {
             // Construct the map entity.
-            MapEntity = new Entities.Map() { CellSize = cellSize, NumberOfCells = numberOfCells };
             NumberOfLocations = numberOfLocations;
             NumberOfCells = numberOfCells;
             Cell.CellSize = cellSize;
@@ -363,11 +359,6 @@ namespace ClassLibrary
             {
                 Road temp = new Road(l1, l2);
                 temp.InitialCost = cost;
-
-                // Road entity
-                temp.RoadEntity.InitialCost = cost;
- //              MapEntity.Roads.Add(temp.RoadEntity); //------------------------------------------------------------------------------
-
                 Edges.Add(temp);
                 return true;
             }

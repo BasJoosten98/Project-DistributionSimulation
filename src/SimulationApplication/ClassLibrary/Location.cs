@@ -9,11 +9,6 @@ namespace ClassLibrary
 {
     public class Location : Cell, IComparable
     {
-        public Entities.Location LocationEntity { get; }
-        // Test for one to many relationship.
-        // In this case a location belongs to a map, and multiple locations may belong to the same map.
-        public int MapId { get; set; }
-        public Map Map { get; set; }
         //drawing fields
         public Color CircleColor = Color.Black;
         public Color CircleFillColor = Color.LightYellow;
