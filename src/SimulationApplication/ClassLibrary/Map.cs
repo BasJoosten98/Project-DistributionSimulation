@@ -9,6 +9,10 @@ namespace ClassLibrary
 {
     public class Map : IEnumerable
     {
+        // Always call save on the map first, then assign that returned ID
+        // to the map and save all the dependent entities.
+        public int Id { get; set; }
+
         private List<Location> warehouses = new List<Location>();
         private List<Statistics> statistics = new List<Statistics>();
         private List<Location> shops = new List<Location>();
@@ -116,6 +120,7 @@ namespace ClassLibrary
             // Construct the map entity.
             NumberOfLocations = numberOfLocations;
             NumberOfCells = numberOfCells;
+            CellSize = cellSize;
             Cell.CellSize = cellSize;
             cells = new Cell[NumberOfCells, NumberOfCells];
             for (int rowCount = 0; rowCount < NumberOfCells; rowCount++)
@@ -726,6 +731,29 @@ namespace ClassLibrary
                 _Graph[index].permanent = true;
                 initial = _Graph[index];
             }
+        }
+
+        public void Save()
+        {
+            // Insert the object itself with its current state into the DB.
+            string sql = "INSERT INTO MAPS (NumberOfCells, CellSize)" +
+                        $"VALUES ('{NumberOfCells}', '{CellSize}'); SELECT last_insert_id();";
+            int id = DataBase.ExecuteScalar(sql);
+            Console.WriteLine(id);
+            // Assign the returned int (id) to the map.
+            Id = id; // This way we can do a check to either insert or update in the form ourselves.
+
+            // Save all child entities.
+            // Cells
+            foreach (Cell c in cells)
+            {
+                if (c is Location)
+                {
+                    Console.WriteLine($"{c} is a Location object.");
+                }
+                c.Save(Id);
+            }
+            // Roads
         }
     }
 }

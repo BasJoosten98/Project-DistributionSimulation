@@ -14,7 +14,6 @@ namespace ClassLibrary
         public Color CellColor = Color.Black;
         public int CellLineWidth = 1;
 
-
         //Cell fields
         private static int maxDemand = 0; 
         private static int maxDemandGrow = 0;
@@ -152,6 +151,18 @@ namespace ClassLibrary
         public void CellReset()
         {
             SetDemandGrow(this.demandGrow);
+        }
+
+        public virtual void Save(int mapId)
+        {
+            string sql = "INSERT INTO CELLS (MapId, RowIndex, ColumnIndex, Demand, DemandGrowthPerTick)" +
+                        $"VALUES ('{mapId}', '{Index.Row}', '{Index.Column}', '{Demand}', '{DemandGrow}');";
+            DataBase.ExecuteNonQuery(sql);
+        }
+
+        public override string ToString()
+        {
+            return $"C: ({Index.Row}, {Index.Column})";
         }
     }
 }

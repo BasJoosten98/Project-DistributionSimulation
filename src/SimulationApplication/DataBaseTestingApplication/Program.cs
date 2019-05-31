@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data; // IMPORTANT TO USE LAMBDAS AS WHERE ETC.
 using ClassLibrary;
 
 namespace DataBaseTestingApplication
@@ -11,7 +7,12 @@ namespace DataBaseTestingApplication
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(DataBase.ConnectionInfo);
+            // Create a map and test if the returned value is the right id.
+            Map m = new Map(10, 13, 40);
+            Console.WriteLine(m.NumberOfCells);
+            Console.WriteLine(m.CellSize);
+            m.Save();
+            Console.WriteLine(m.Id);
             Console.ReadKey();
         }
     }

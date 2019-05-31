@@ -86,5 +86,13 @@ namespace ClassLibrary
             CircleFillColor = Color.LightYellow;
             StringColor = Color.Black;
         }
+
+        public override void Save(int mapId)
+        {
+            string sql = "INSERT INTO CELLS (MapId, RowIndex, ColumnIndex, Demand, DemandGrowthPerTick, Discriminator, Radius)" +
+            $"VALUES ('{mapId}', '{Index.Row}', '{Index.Column}', '{Demand}', '{DemandGrow}', 'Location', '{Radius}');";
+            DataBase.ExecuteNonQuery(sql);
+            Console.WriteLine("Updated a location");
+        }
     }
 }

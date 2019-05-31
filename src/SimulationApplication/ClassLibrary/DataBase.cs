@@ -100,7 +100,6 @@ namespace ClassLibrary
         public static int ExecuteScalar(string sql)
         {
             int returnValue = 0;
-
             if (OpenConnection() == true)
             {
                 MySqlCommand cmd = new MySqlCommand(sql, connection);
@@ -172,7 +171,9 @@ namespace ClassLibrary
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception)
-                { }
+                {
+                    Console.WriteLine("Error");
+                }
                 finally
                 {
                     CloseConnection();
