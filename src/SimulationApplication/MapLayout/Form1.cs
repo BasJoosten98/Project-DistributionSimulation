@@ -12,6 +12,8 @@ namespace MapLayout
 {
     public partial class Form1 : Form
     {
+        private MapLoadForm loadMapForm;
+
         private List<Location> selectedLocations = new List<Location>();
         private Map map;
         private BestPlacement bestPlacement;
@@ -805,7 +807,11 @@ namespace MapLayout
 
         private void loadMapBtn_Click(object sender, EventArgs e)
         {
-
+            if (loadMapForm == null || loadMapForm.IsDisposed)
+            {
+                loadMapForm = new MapLoadForm();
+            }
+            loadMapForm.Show();
         }
 
         private void btnRandomHeatMap_Click(object sender, EventArgs e)
