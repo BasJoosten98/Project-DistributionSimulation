@@ -810,8 +810,14 @@ namespace MapLayout
             if (loadMapForm == null || loadMapForm.IsDisposed)
             {
                 loadMapForm = new MapLoadForm();
+                loadMapForm.LoadMapEvent += LoadMap;
             }
             loadMapForm.Show();
+        }
+
+        private void LoadMap(int mapId)
+        {
+            Console.WriteLine($"Map to be loaded: {mapId}");
         }
 
         private void btnRandomHeatMap_Click(object sender, EventArgs e)
