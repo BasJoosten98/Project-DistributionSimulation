@@ -96,5 +96,13 @@ namespace ClassLibrary
                         $" AND Location2ColumnIndex = '{destination.Index.Column}';";
             DataBase.ExecuteNonQuery(sql);
         }
+
+        public static void DeleteAll(int mapId)
+        {
+                string sql = "DELETE FROM ROADS" +
+                            $" WHERE Location1MapId = '{mapId}'" +
+                            $" AND Location2MapId = '{mapId}';";
+                DataBase.ExecuteNonQuery(sql);
+        }
     }
 }

@@ -29,5 +29,12 @@ namespace ClassLibrary
             Console.WriteLine("Deleting a Building");
             DataBase.ExecuteNonQuery(sql);
         }
+
+        public static void DeleteAll(int mapId)
+        {
+            string sql = "DELETE FROM BUILDINGS" +
+                        $" WHERE MapId = '{mapId}';";
+            DataBase.ExecuteNonQuery(sql);
+        }
 	}
 }

@@ -169,6 +169,13 @@ namespace ClassLibrary
             DataBase.ExecuteNonQuery(sql);
         }
 
+        public static void DeleteAll(int mapId)
+        {
+            string sql = "DELETE FROM CELLS" +
+                        $" WHERE MapId = '{mapId}';";
+            DataBase.ExecuteNonQuery(sql);
+        }
+
         public override string ToString()
         {
             return $"C: ({Index.Row}, {Index.Column})";

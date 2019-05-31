@@ -735,30 +735,11 @@ namespace ClassLibrary
 
         public void Delete()
         {
-            // Bottom up, first delete all buildings
-            foreach (Cell cell in cells)
-            {
-                if (cell is Location)
-                {
-                    Location location = (Location)cell;
-                    Building locationBuilding = location.Building;
-                    if (locationBuilding != null)
-                    {
-                        locationBuilding.Delete(Id, location.Index.Row, location.Index.Column);
-                    }
-                }
-            }
-            // Then delete all roads
-            foreach (Road road in Edges)
-            {
-                road.Delete(Id);
-            }
-            // Then Cells
-            foreach (Cell cell in cells)
-            {
-                cell.Delete(Id);
-            }
-            // Finally the map
+            // Bottom up approach
+            Building.DeleteAll(Id);
+            Road.DeleteAll(Id);
+            Cell.DeleteAll(Id);
+            // Finally delete the map
             string sql = "DELETE FROM MAPS" +
                         $" WHERE MapId = '{Id}'";
             DataBase.ExecuteNonQuery(sql);
