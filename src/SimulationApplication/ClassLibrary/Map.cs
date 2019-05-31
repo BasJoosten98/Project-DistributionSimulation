@@ -733,16 +733,55 @@ namespace ClassLibrary
             }
         }
 
+        public void Delete()
+        {
+            // Bottom up, first delete all buildings
+            foreach (Cell cell in cells)
+            {
+                if (cell is Location)
+                {
+                    Location location = (Location)cell;
+                    Building locationBuilding = location.Building;
+                    if (locationBuilding != null)
+                    {
+                        locationBuilding.Delete(Id, location.Index.Row, location.Index.Column);
+                    }
+                }
+            }
+            // Then delete all roads
+            foreach (Road road in Edges)
+            {
+                road.Delete(Id);
+            }
+            // Then Cells
+            foreach (Cell cell in cells)
+            {
+                cell.Delete(Id);
+            }
+            // Finally the map
+            string sql = "DELETE FROM MAPS" +
+                        $" WHERE MapId = '{Id}'";
+            DataBase.ExecuteNonQuery(sql);
+        }
+
         public void Save()
         {
             // Insert the object itself with its current state into the DB.
-            string sql = "INSERT INTO MAPS (NumberOfCells, CellSize)" +
-                        $"VALUES ('{NumberOfCells}', '{CellSize}'); SELECT last_insert_id();";
-            int id = DataBase.ExecuteScalar(sql);
-            Console.WriteLine(id);
-            // Assign the returned int (id) to the map.
-            Id = id; // This way we can do a check to either insert or update in the form ourselves.
-
+            string sql;
+            if (Id <= 0)
+            {
+                sql = "INSERT INTO MAPS (NumberOfCells, CellSize)" +
+                  $"VALUES ('{NumberOfCells}', '{CellSize}'); SELECT last_insert_id();";
+                int id = DataBase.ExecuteScalar(sql);
+                // Assign the returned int (id) to the map.
+                Id = id; // This way we can do a check to either insert or update in the form ourselves.
+            }
+            else
+            {
+                sql = "INSERT INTO MAPS (MapId, NumberOfCells, CellSize)" +
+                     $"VALUES ('{Id}', '{NumberOfCells}', '{CellSize}');";
+                DataBase.ExecuteScalar(sql);
+            }
             // Save Cells
             foreach (Cell c in cells)
             {
@@ -752,7 +791,6 @@ namespace ClassLibrary
                 }
                 c.Save(Id);
             }
-
             // Save Roads
             foreach (Road road in Edges)
             {

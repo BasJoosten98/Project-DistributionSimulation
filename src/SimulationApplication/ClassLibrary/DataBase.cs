@@ -170,9 +170,9 @@ namespace ClassLibrary
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Error");
+                    Console.WriteLine(ex.Message);
                 }
                 finally
                 {

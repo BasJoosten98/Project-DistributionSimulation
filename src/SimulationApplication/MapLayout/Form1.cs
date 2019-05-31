@@ -623,11 +623,12 @@ namespace MapLayout
         {
             if (map.Id > 0)
             {
-                // Update the map.
+                // Delete the old map from the db.
+                map.Delete();
             }
+            // Save the new map.
             else
             {
-                // Save the new map.
                 map.Save();
             }
         }

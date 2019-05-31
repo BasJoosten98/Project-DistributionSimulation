@@ -82,5 +82,20 @@ namespace ClassLibrary
                          $"VALUES ('{mapId}', '{source.Index.Row}', '{source.Index.Column}', '{mapId}', '{destination.Index.Row}', '{destination.Index.Column}', '{InitialCost}');";
             DataBase.ExecuteNonQuery(sql);
         }
+
+        public void Delete(int mapId)
+        {
+            Location source = Vertex1;
+            Location destination = Vertex2;
+            string sql = "DELETE FROM ROADS" +
+                        $" WHERE Location1MapId = '{mapId}'" +
+                        $" AND Location1RowIndex = '{source.Index.Row}'" +
+                        $" AND Location1ColumnIndex = '{source.Index.Column}'" +
+                        $" AND Location2MapId = '{mapId}'" +
+                        $" AND Location2RowIndex = '{destination.Index.Row}'" +
+                        $" AND Location2ColumnIndex = '{destination.Index.Column}';";
+            Console.WriteLine($"Deleting a Road {mapId} from: {source} to : {destination}");
+            DataBase.ExecuteNonQuery(sql);
+        }
     }
 }
