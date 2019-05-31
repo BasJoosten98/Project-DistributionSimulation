@@ -621,7 +621,15 @@ namespace MapLayout
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
-
+            if (map.Id > 0)
+            {
+                // Update the map.
+            }
+            else
+            {
+                // Save the new map.
+                map.Save();
+            }
         }
         
         private void startSimulation()
