@@ -154,6 +154,7 @@
     <Compile Include="BestPlacement.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="Cell.cs" />
+    <Compile Include="DataBase.cs" />
     <Compile Include="Delivery.cs" />
     <Compile Include="DeliveryStatus.cs" />
     <Compile Include="Dijkstra.cs" />
