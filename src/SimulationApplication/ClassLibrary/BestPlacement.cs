@@ -129,7 +129,7 @@ namespace ClassLibrary
             Console.WriteLine("End of difmaps");
             return result;
         }
-        private List<List<int>> createAllDifferentMapsRec(int lastBuiding, int currentBuilding, List<int> currentMap)
+        public List<List<int>> createAllDifferentMapsRec(int lastBuiding, int currentBuilding, List<int> currentMap)
         {
             List<List<int>> endResults = new List<List<int>>();
             if (currentBuilding > lastBuiding)

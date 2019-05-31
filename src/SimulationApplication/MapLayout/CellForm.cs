@@ -150,6 +150,7 @@ namespace MapLayout
             gbBInfo.Enabled = false;
             gbWarehouse.Enabled = false;
             tbGrowth.Enabled = false;
+            tbRaduis.Enabled = false;
         }
 
 
