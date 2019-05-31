@@ -27,7 +27,7 @@ namespace ClassLibrary
                 int sum = 0;
                 foreach (Road r in route)
                 {
-                    sum += r.initialCost;
+                    sum += r.InitialCost;
                 }
                 return sum;
             }

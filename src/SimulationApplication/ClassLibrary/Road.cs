@@ -20,17 +20,15 @@ namespace ClassLibrary
         public Location Vertex1 { get; set; }
         public Location Vertex2 { get; set; }
 
-        public int initialCost { get; set; }
+        public int InitialCost { get; set; }
 
-        public Road(Location Vertex1, Location Vertex2)
+        public Road(Location Vertex1, Location Vertex2, int initialCost = 1)
         {
             this.Vertex1 = Vertex1;
             this.Vertex2 = Vertex2;
             id = idCounter;
             idCounter++;
-            this.initialCost = 1;
-
-            RoadEntity = new Entities.Road() { Location1 = Vertex1.LocationEntity, Location2 = Vertex2.LocationEntity, InitialCost = initialCost };
+            InitialCost = initialCost;
         }
 
         /// <summary>
@@ -57,7 +55,7 @@ namespace ClassLibrary
             //    return to.Center;
             //}
             //return new Point((from.Center.X + to.Center.X) / 2, (from.Center.Y + to.Center.Y) / 2);
-            return new Point(from.Center.X + deltaTime * (to.Center.X - from.Center.X) / initialCost, from.Center.Y + deltaTime * (to.Center.Y - from.Center.Y)/initialCost);
+            return new Point(from.Center.X + deltaTime * (to.Center.X - from.Center.X) / InitialCost, from.Center.Y + deltaTime * (to.Center.Y - from.Center.Y)/InitialCost);
         }
 
         public Location this[int index]

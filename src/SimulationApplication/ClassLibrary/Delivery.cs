@@ -60,7 +60,7 @@ namespace ClassLibrary
 
                 for (int i = 0; i < route.Route.Count; i++)
                 {
-                    sum += route.Route[i].initialCost;
+                    sum += route.Route[i].InitialCost;
                     if (sum >= totalTravelTime) //new next location
                     {
                         if (currentRoad != route.Route[i] && i != 0)
@@ -73,7 +73,7 @@ namespace ClassLibrary
                     }
                 }
                 if (currentRoad.Vertex1 != nextLocation && currentRoad.Vertex2 != nextLocation) { throw new Exception("currentroad mismatches nextLocation"); }
-                deltaTravelTime = currentRoad.initialCost - (sum - totalTravelTime);
+                deltaTravelTime = currentRoad.InitialCost - (sum - totalTravelTime);
                 if (totalTravelTime == route.RouteLenght)
                 {
                     status = DeliveryStatus.COMINGBACK;
@@ -86,7 +86,7 @@ namespace ClassLibrary
                 sum = route.RouteLenght;
                 for (int i = route.Route.Count - 1; i >= 0; i--)
                 {
-                    sum += route.Route[i].initialCost;
+                    sum += route.Route[i].InitialCost;
                     if (sum >= totalTravelTime) //new next location
                     {
                         if (currentRoad != route.Route[i])
@@ -99,7 +99,7 @@ namespace ClassLibrary
                     }
                 }
                 if (currentRoad.Vertex1 != nextLocation && currentRoad.Vertex2 != nextLocation) { throw new Exception("currentroad mismatches nextLocation"); }
-                deltaTravelTime = currentRoad.initialCost - (sum - totalTravelTime);
+                deltaTravelTime = currentRoad.InitialCost - (sum - totalTravelTime);
                 if (totalTravelTime == 2 * route.RouteLenght)
                 {
                     status = DeliveryStatus.FINISHED;

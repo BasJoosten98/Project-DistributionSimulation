@@ -84,37 +84,33 @@ namespace ClassLibrary
 
             // Create and add roads to the map entity
             // 1 -> 2, weight: 3
-            Road r = new Road(Locations[0], Locations[1]);
-            Edges.Add(r);
+            AddRoadWithRandomWeight(Locations[0], Locations[1]);
             // 2 -> 3, weight: 1
-            r = new Road(Locations[1], Locations[2]);
-            Edges.Add(r);
+            AddRoadWithRandomWeight(Locations[1], Locations[2]);
             // 1 -> 3, weight: 1
-            r = new Road(Locations[0], Locations[2]);
-            Edges.Add(r);
+            AddRoadWithRandomWeight(Locations[0], Locations[2]);
             // 3 -> 6, weight: 1
-            r = new Road(Locations[2], Locations[5]);
-            Edges.Add(r);
+            AddRoadWithRandomWeight(Locations[2], Locations[5]);
             // 6 -> 7, weight: 1
-            r = new Road(Locations[5], Locations[6]);
-            Edges.Add(r);
+            AddRoadWithRandomWeight(Locations[5], Locations[6]);
             // 1 -> 9, weight: 1
-            r = new Road(Locations[0], Locations[8]);
-            Edges.Add(r);
+            AddRoadWithRandomWeight(Locations[0], Locations[8]);
             // 4 -> 9, weight: 1
-            r = new Road(Locations[3], Locations[8]);
-            Edges.Add(r);
+            AddRoadWithRandomWeight(Locations[3], Locations[8]);
             // 4 -> 5, weight: 1
-            r = new Road(Locations[3], Locations[4]);
-            Edges.Add(r);
+            AddRoadWithRandomWeight(Locations[3], Locations[4]);
             // 5 -> 8, weight: 1
-            r = new Road(Locations[4], Locations[7]);
-            Edges.Add(r);
+            AddRoadWithRandomWeight(Locations[4], Locations[7]);
             // 10 -> 8, weight: 1
-            r = new Road(Locations[9], Locations[7]);
-            Edges.Add(r);
+            AddRoadWithRandomWeight(Locations[9], Locations[7]);
             // 10 -> 5, weight: 1
-            r = new Road(Locations[9], Locations[4]);
+            AddRoadWithRandomWeight(Locations[9], Locations[4]);
+        }
+
+        private void AddRoadWithRandomWeight(Location l1, Location l2)
+        {
+            Road r = new Road(l1, l2);
+            r.InitialCost = rng2.Next(2, 5);
             Edges.Add(r);
         }
 
@@ -366,7 +362,7 @@ namespace ClassLibrary
             if (r == null)
             {
                 Road temp = new Road(l1, l2);
-                temp.initialCost = cost;
+                temp.InitialCost = cost;
 
                 // Road entity
                 temp.RoadEntity.InitialCost = cost;
@@ -668,7 +664,7 @@ namespace ClassLibrary
                 if ((e[0] == V1 && e[1] == V2) || (e[0] == V2 && e[1] == V1))
                 {
 
-                    e.initialCost += 1;
+                    e.InitialCost += 1;
 
                     return;
                 }

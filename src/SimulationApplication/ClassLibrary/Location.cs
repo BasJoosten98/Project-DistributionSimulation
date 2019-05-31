@@ -81,7 +81,7 @@ namespace ClassLibrary
 
         public static int operator +(Location location, Road road)
         {
-            return location.min_cost + road.initialCost;
+            return location.min_cost + road.InitialCost;
         }
 
         public override void ResetDrawFields()

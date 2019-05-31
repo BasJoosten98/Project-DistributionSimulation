@@ -113,7 +113,7 @@ namespace ClassLibrary
             currentRoads = getRoadsConnectedToLocation(startLocation);
             foreach (Road r in currentRoads)
             {
-                currentRoadsLenghts.Add(r.initialCost);
+                currentRoadsLenghts.Add(r.InitialCost);
             }
 
             int lowestIndex;
@@ -203,7 +203,7 @@ namespace ClassLibrary
                 //Adding new roads and calculating new roads lenghts
                 foreach(Road r in newAddingRoads)
                 {
-                    int roadLenght = r.initialCost + currentRoadLenght;
+                    int roadLenght = r.InitialCost + currentRoadLenght;
                     currentRoads.Add(r);
                     currentRoadsLenghts.Add(roadLenght);
                 }
