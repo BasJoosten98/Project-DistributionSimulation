@@ -32,8 +32,6 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.simulateBtn = new System.Windows.Forms.Button();
             this.mapPictureBox = new System.Windows.Forms.PictureBox();
-            this.nudRoadCost = new System.Windows.Forms.NumericUpDown();
-            this.btnLocationMode = new System.Windows.Forms.Button();
             this.btnRoadMode = new System.Windows.Forms.Button();
             this.btnSpeed = new System.Windows.Forms.Button();
             this.btnHeatMap = new System.Windows.Forms.Button();
@@ -51,6 +49,8 @@
             this.btnShop = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnLocationMode = new System.Windows.Forms.Button();
+            this.nudRoadCost = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -63,7 +63,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -92,16 +92,17 @@
             this.splitContainer1.Panel2.Controls.Add(this.btnCursor);
             this.splitContainer1.Panel2.Controls.Add(this.btnWarehouse);
             this.splitContainer1.Panel2.Controls.Add(this.btnShop);
-            this.splitContainer1.Size = new System.Drawing.Size(1151, 702);
-            this.splitContainer1.SplitterDistance = 845;
+            this.splitContainer1.Size = new System.Drawing.Size(863, 570);
+            this.splitContainer1.SplitterDistance = 634;
+            this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 0;
             // 
             // simulateBtn
             // 
-            this.simulateBtn.Location = new System.Drawing.Point(4, 763);
-            this.simulateBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.simulateBtn.Location = new System.Drawing.Point(3, 620);
+            this.simulateBtn.Margin = new System.Windows.Forms.Padding(2);
             this.simulateBtn.Name = "simulateBtn";
-            this.simulateBtn.Size = new System.Drawing.Size(837, 47);
+            this.simulateBtn.Size = new System.Drawing.Size(628, 38);
             this.simulateBtn.TabIndex = 0;
             this.simulateBtn.Text = "Simulate";
             this.simulateBtn.UseVisualStyleBackColor = true;
@@ -109,51 +110,21 @@
             // 
             // mapPictureBox
             // 
-            this.mapPictureBox.Location = new System.Drawing.Point(4, 4);
-            this.mapPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.mapPictureBox.Location = new System.Drawing.Point(3, 3);
+            this.mapPictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.mapPictureBox.Name = "mapPictureBox";
-            this.mapPictureBox.Size = new System.Drawing.Size(803, 662);
+            this.mapPictureBox.Size = new System.Drawing.Size(602, 538);
             this.mapPictureBox.TabIndex = 1;
             this.mapPictureBox.TabStop = false;
             this.mapPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint_1);
             this.mapPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mapPictureBox_MouseClick);
             this.mapPictureBox.MouseEnter += new System.EventHandler(this.mapPictureBox_MouseEnter);
             // 
-            // nudRoadCost
-            // 
-            this.nudRoadCost.Location = new System.Drawing.Point(120, 82);
-            this.nudRoadCost.Margin = new System.Windows.Forms.Padding(4);
-            this.nudRoadCost.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudRoadCost.Name = "nudRoadCost";
-            this.nudRoadCost.Size = new System.Drawing.Size(56, 22);
-            this.nudRoadCost.TabIndex = 22;
-            this.nudRoadCost.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // btnLocationMode
-            // 
-            this.btnLocationMode.Location = new System.Drawing.Point(11, 117);
-            this.btnLocationMode.Margin = new System.Windows.Forms.Padding(4);
-            this.btnLocationMode.Name = "btnLocationMode";
-            this.btnLocationMode.Size = new System.Drawing.Size(124, 28);
-            this.btnLocationMode.TabIndex = 21;
-            this.btnLocationMode.Text = "Location Mode";
-            this.btnLocationMode.UseVisualStyleBackColor = true;
-            this.btnLocationMode.Click += new System.EventHandler(this.btnLocationMode_Click);
-            // 
             // btnRoadMode
             // 
-            this.btnRoadMode.Location = new System.Drawing.Point(11, 81);
-            this.btnRoadMode.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRoadMode.Location = new System.Drawing.Point(8, 66);
             this.btnRoadMode.Name = "btnRoadMode";
-            this.btnRoadMode.Size = new System.Drawing.Size(100, 28);
+            this.btnRoadMode.Size = new System.Drawing.Size(75, 23);
             this.btnRoadMode.TabIndex = 20;
             this.btnRoadMode.Text = "Road Mode";
             this.btnRoadMode.UseVisualStyleBackColor = true;
@@ -161,10 +132,9 @@
             // 
             // btnSpeed
             // 
-            this.btnSpeed.Location = new System.Drawing.Point(156, 634);
-            this.btnSpeed.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSpeed.Location = new System.Drawing.Point(117, 515);
             this.btnSpeed.Name = "btnSpeed";
-            this.btnSpeed.Size = new System.Drawing.Size(63, 28);
+            this.btnSpeed.Size = new System.Drawing.Size(47, 23);
             this.btnSpeed.TabIndex = 19;
             this.btnSpeed.Text = "Speed";
             this.btnSpeed.UseVisualStyleBackColor = true;
@@ -172,10 +142,9 @@
             // 
             // btnHeatMap
             // 
-            this.btnHeatMap.Location = new System.Drawing.Point(211, 601);
-            this.btnHeatMap.Margin = new System.Windows.Forms.Padding(4);
+            this.btnHeatMap.Location = new System.Drawing.Point(158, 488);
             this.btnHeatMap.Name = "btnHeatMap";
-            this.btnHeatMap.Size = new System.Drawing.Size(87, 28);
+            this.btnHeatMap.Size = new System.Drawing.Size(65, 23);
             this.btnHeatMap.TabIndex = 18;
             this.btnHeatMap.Text = "HeatMap";
             this.btnHeatMap.UseVisualStyleBackColor = true;
@@ -183,10 +152,9 @@
             // 
             // btnPause
             // 
-            this.btnPause.Location = new System.Drawing.Point(239, 635);
-            this.btnPause.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPause.Location = new System.Drawing.Point(179, 516);
             this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(63, 28);
+            this.btnPause.Size = new System.Drawing.Size(47, 23);
             this.btnPause.TabIndex = 17;
             this.btnPause.Text = "Pause";
             this.btnPause.UseVisualStyleBackColor = true;
@@ -194,10 +162,9 @@
             // 
             // btnStartSimulation
             // 
-            this.btnStartSimulation.Location = new System.Drawing.Point(135, 670);
-            this.btnStartSimulation.Margin = new System.Windows.Forms.Padding(4);
+            this.btnStartSimulation.Location = new System.Drawing.Point(101, 544);
             this.btnStartSimulation.Name = "btnStartSimulation";
-            this.btnStartSimulation.Size = new System.Drawing.Size(119, 28);
+            this.btnStartSimulation.Size = new System.Drawing.Size(89, 23);
             this.btnStartSimulation.TabIndex = 16;
             this.btnStartSimulation.Text = "Start Sim";
             this.btnStartSimulation.UseVisualStyleBackColor = true;
@@ -205,10 +172,9 @@
             // 
             // btnDrawDijkstra
             // 
-            this.btnDrawDijkstra.Location = new System.Drawing.Point(3, 599);
-            this.btnDrawDijkstra.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDrawDijkstra.Location = new System.Drawing.Point(2, 487);
             this.btnDrawDijkstra.Name = "btnDrawDijkstra";
-            this.btnDrawDijkstra.Size = new System.Drawing.Size(120, 28);
+            this.btnDrawDijkstra.Size = new System.Drawing.Size(90, 23);
             this.btnDrawDijkstra.TabIndex = 14;
             this.btnDrawDijkstra.Text = "Draw Dijkstra";
             this.btnDrawDijkstra.UseVisualStyleBackColor = true;
@@ -216,10 +182,9 @@
             // 
             // btnGetRoute
             // 
-            this.btnGetRoute.Location = new System.Drawing.Point(3, 635);
-            this.btnGetRoute.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGetRoute.Location = new System.Drawing.Point(2, 516);
             this.btnGetRoute.Name = "btnGetRoute";
-            this.btnGetRoute.Size = new System.Drawing.Size(120, 28);
+            this.btnGetRoute.Size = new System.Drawing.Size(90, 23);
             this.btnGetRoute.TabIndex = 13;
             this.btnGetRoute.Text = "Get Route";
             this.btnGetRoute.UseVisualStyleBackColor = true;
@@ -227,18 +192,16 @@
             // 
             // tbToLocationID
             // 
-            this.tbToLocationID.Location = new System.Drawing.Point(171, 603);
-            this.tbToLocationID.Margin = new System.Windows.Forms.Padding(4);
+            this.tbToLocationID.Location = new System.Drawing.Point(128, 490);
             this.tbToLocationID.Name = "tbToLocationID";
-            this.tbToLocationID.Size = new System.Drawing.Size(35, 22);
+            this.tbToLocationID.Size = new System.Drawing.Size(27, 20);
             this.tbToLocationID.TabIndex = 12;
             // 
             // btnDrawRoute
             // 
-            this.btnDrawRoute.Location = new System.Drawing.Point(4, 670);
-            this.btnDrawRoute.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDrawRoute.Location = new System.Drawing.Point(3, 544);
             this.btnDrawRoute.Name = "btnDrawRoute";
-            this.btnDrawRoute.Size = new System.Drawing.Size(119, 28);
+            this.btnDrawRoute.Size = new System.Drawing.Size(89, 23);
             this.btnDrawRoute.TabIndex = 11;
             this.btnDrawRoute.Text = "Draw Route";
             this.btnDrawRoute.UseVisualStyleBackColor = true;
@@ -246,38 +209,35 @@
             // 
             // tbFromLocationID
             // 
-            this.tbFromLocationID.Location = new System.Drawing.Point(131, 603);
-            this.tbFromLocationID.Margin = new System.Windows.Forms.Padding(4);
+            this.tbFromLocationID.Location = new System.Drawing.Point(98, 490);
             this.tbFromLocationID.Name = "tbFromLocationID";
-            this.tbFromLocationID.Size = new System.Drawing.Size(35, 22);
+            this.tbFromLocationID.Size = new System.Drawing.Size(27, 20);
             this.tbFromLocationID.TabIndex = 10;
             // 
             // shortesRoutesRichTbx
             // 
-            this.shortesRoutesRichTbx.Location = new System.Drawing.Point(11, 159);
-            this.shortesRoutesRichTbx.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.shortesRoutesRichTbx.Location = new System.Drawing.Point(8, 129);
+            this.shortesRoutesRichTbx.Margin = new System.Windows.Forms.Padding(2);
             this.shortesRoutesRichTbx.Name = "shortesRoutesRichTbx";
-            this.shortesRoutesRichTbx.Size = new System.Drawing.Size(241, 440);
+            this.shortesRoutesRichTbx.Size = new System.Drawing.Size(182, 358);
             this.shortesRoutesRichTbx.TabIndex = 8;
             this.shortesRoutesRichTbx.Text = "";
             // 
             // lbLocationLog
             // 
             this.lbLocationLog.AutoSize = true;
-            this.lbLocationLog.Location = new System.Drawing.Point(12, 779);
-            this.lbLocationLog.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbLocationLog.Location = new System.Drawing.Point(9, 633);
             this.lbLocationLog.Name = "lbLocationLog";
-            this.lbLocationLog.Size = new System.Drawing.Size(0, 17);
+            this.lbLocationLog.Size = new System.Drawing.Size(0, 13);
             this.lbLocationLog.TabIndex = 7;
             // 
             // btnCursor
             // 
             this.btnCursor.BackgroundImage = global::MapLayout.Properties.Resources.cursorIcon;
             this.btnCursor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCursor.Location = new System.Drawing.Point(171, 5);
-            this.btnCursor.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCursor.Location = new System.Drawing.Point(128, 4);
             this.btnCursor.Name = "btnCursor";
-            this.btnCursor.Size = new System.Drawing.Size(88, 70);
+            this.btnCursor.Size = new System.Drawing.Size(66, 57);
             this.btnCursor.TabIndex = 6;
             this.btnCursor.UseVisualStyleBackColor = true;
             this.btnCursor.Click += new System.EventHandler(this.btnCursor_Click);
@@ -286,10 +246,10 @@
             // 
             this.btnWarehouse.BackgroundImage = global::MapLayout.Properties.Resources.warehouseIcon1;
             this.btnWarehouse.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnWarehouse.Location = new System.Drawing.Point(88, 5);
-            this.btnWarehouse.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnWarehouse.Location = new System.Drawing.Point(66, 4);
+            this.btnWarehouse.Margin = new System.Windows.Forms.Padding(2);
             this.btnWarehouse.Name = "btnWarehouse";
-            this.btnWarehouse.Size = new System.Drawing.Size(88, 70);
+            this.btnWarehouse.Size = new System.Drawing.Size(66, 57);
             this.btnWarehouse.TabIndex = 2;
             this.btnWarehouse.UseVisualStyleBackColor = true;
             this.btnWarehouse.Click += new System.EventHandler(this.btnWarehouse_Click);
@@ -298,10 +258,10 @@
             // 
             this.btnShop.BackgroundImage = global::MapLayout.Properties.Resources.shopIcon;
             this.btnShop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnShop.Location = new System.Drawing.Point(3, 4);
-            this.btnShop.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnShop.Location = new System.Drawing.Point(2, 3);
+            this.btnShop.Margin = new System.Windows.Forms.Padding(2);
             this.btnShop.Name = "btnShop";
-            this.btnShop.Size = new System.Drawing.Size(88, 71);
+            this.btnShop.Size = new System.Drawing.Size(66, 58);
             this.btnShop.TabIndex = 1;
             this.btnShop.UseVisualStyleBackColor = true;
             this.btnShop.Click += new System.EventHandler(this.btnShop_Click);
@@ -317,13 +277,39 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btnLocationMode
+            // 
+            this.btnLocationMode.Location = new System.Drawing.Point(8, 95);
+            this.btnLocationMode.Name = "btnLocationMode";
+            this.btnLocationMode.Size = new System.Drawing.Size(93, 23);
+            this.btnLocationMode.TabIndex = 21;
+            this.btnLocationMode.Text = "Location Mode";
+            this.btnLocationMode.UseVisualStyleBackColor = true;
+            this.btnLocationMode.Click += new System.EventHandler(this.btnLocationMode_Click);
+            // 
+            // nudRoadCost
+            // 
+            this.nudRoadCost.Location = new System.Drawing.Point(90, 67);
+            this.nudRoadCost.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudRoadCost.Name = "nudRoadCost";
+            this.nudRoadCost.Size = new System.Drawing.Size(42, 20);
+            this.nudRoadCost.TabIndex = 22;
+            this.nudRoadCost.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1151, 702);
+            this.ClientSize = new System.Drawing.Size(863, 570);
             this.Controls.Add(this.splitContainer1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.splitContainer1.Panel1.ResumeLayout(false);
