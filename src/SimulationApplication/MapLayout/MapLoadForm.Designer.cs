@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.availableMapListBox = new System.Windows.Forms.ListBox();
+            this.availableMapsListBox = new System.Windows.Forms.ListBox();
             this.availableMapsGroupBox = new System.Windows.Forms.GroupBox();
             this.loadSelectMapBtn = new System.Windows.Forms.Button();
             this.availableMapsGroupBox.SuspendLayout();
@@ -36,17 +36,17 @@
             // 
             // availableMapListBox
             // 
-            this.availableMapListBox.FormattingEnabled = true;
-            this.availableMapListBox.Location = new System.Drawing.Point(6, 19);
-            this.availableMapListBox.Name = "availableMapListBox";
-            this.availableMapListBox.Size = new System.Drawing.Size(444, 186);
-            this.availableMapListBox.TabIndex = 0;
+            this.availableMapsListBox.FormattingEnabled = true;
+            this.availableMapsListBox.Location = new System.Drawing.Point(6, 19);
+            this.availableMapsListBox.Name = "availableMapListBox";
+            this.availableMapsListBox.Size = new System.Drawing.Size(444, 186);
+            this.availableMapsListBox.TabIndex = 0;
             // 
             // availableMapsGroupBox
             // 
             this.availableMapsGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.availableMapsGroupBox.Controls.Add(this.loadSelectMapBtn);
-            this.availableMapsGroupBox.Controls.Add(this.availableMapListBox);
+            this.availableMapsGroupBox.Controls.Add(this.availableMapsListBox);
             this.availableMapsGroupBox.Location = new System.Drawing.Point(12, 12);
             this.availableMapsGroupBox.Name = "availableMapsGroupBox";
             this.availableMapsGroupBox.Size = new System.Drawing.Size(462, 237);
@@ -79,7 +79,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox availableMapListBox;
+        private System.Windows.Forms.ListBox availableMapsListBox;
         private System.Windows.Forms.GroupBox availableMapsGroupBox;
         private System.Windows.Forms.Button loadSelectMapBtn;
     }

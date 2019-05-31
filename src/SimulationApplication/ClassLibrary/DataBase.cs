@@ -141,7 +141,6 @@ namespace ClassLibrary
         public static MySqlDataReader ExecuteReader(string sql)
         {
             MySqlDataReader reader = null;
-            
             if (OpenConnection() == true)
             {
                 MySqlCommand cmd = new MySqlCommand(sql, connection);
