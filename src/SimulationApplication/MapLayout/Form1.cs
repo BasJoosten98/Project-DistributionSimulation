@@ -50,6 +50,9 @@ namespace MapLayout
                     Console.WriteLine($"Row: {cell.Index.Row}, Col: {cell.Index.Column}");
                 }
             }
+
+            //disable the statistics at the begining to avoid errors of missing statistics.
+            btnStatistics.Enabled = false;
         }
 
 
@@ -653,6 +656,8 @@ namespace MapLayout
         private bool simulationIsPlaying = false;
         private void btnPlay_Click(object sender, EventArgs e)
         {
+            // enables the button only after choosing all the shops and warehouses.
+            btnStatistics.Enabled = true;
             if (!simulationIsPlaying)
             {
                 if (simulationHasStarted) //continue playing simulation
@@ -1123,6 +1128,12 @@ namespace MapLayout
             panelMapBuilder.Enabled = true;
             panelPlayer.Enabled = true;
 
+        }
+
+        private void btnStatistics_Click(object sender, EventArgs e)
+        {
+            StatisticsForm myStats = new StatisticsForm();
+            myStats.Show();
         }
     }
 }
