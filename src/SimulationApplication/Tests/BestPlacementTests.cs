@@ -134,7 +134,17 @@ namespace ClassLibrary.Tests
         [Fact()]
         public void GetBestBuildTest()
         {
-            Assert.True(false, "This test needs an implementation");
+            Location location1 = new Location(1, 1, 1);
+            location1.Building = new Shop(10, 10);
+            Location location2 = new Location(2, 2, 2);
+            location2.Building = new Warehouse(20);
+            map.AddNewBuilding(location1);
+            map.AddNewBuilding(location2);
+            BestPlacement b = new BestPlacement(map,50,null);
+            b.MakeBackups();
+            b.CheckBestPlacement(new List<int>() { 0, 1});
+            List<int> best = b.GetBestBuild(); 
+            Assert.NotNull(best);
         }
 
         [Fact()]
