@@ -819,10 +819,13 @@ namespace MapLayout
         {
             Console.WriteLine($"Map to be loaded: {mapId}");
             Map map = Map.Load(mapId);
+            this.map = map;
+            Map.RedrawMap();
             Console.WriteLine(map.Cells.GetLength(0) * map.Cells.GetLength(1));
-            foreach(Cell c in map.Cells)
+            Console.WriteLine(map.Edges.Count);
+            foreach (Road r in map.Edges)
             {
-                Console.WriteLine(c);
+                Console.WriteLine(r);
             }
         }
 

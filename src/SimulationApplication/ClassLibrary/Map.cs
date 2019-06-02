@@ -42,6 +42,10 @@ namespace ClassLibrary
             Cell.CellSize = cellSize;
             CellSize = cellSize;
             Cells = new Cell[NumberOfCells, NumberOfCells];
+
+            // Seed the random generator to get reproducable results.
+            rng = new Random(0);
+            rng2 = new Random();
         }
 
         /// <summary>
@@ -64,17 +68,12 @@ namespace ClassLibrary
                 }
             }
 
-            // Seed the random generator to get reproducable results.
-            rng = new Random(0);
-            rng2 = new Random();
-
             int demand;
             foreach (Cell c in Cells)
             {
                 demand = rng2.Next(2, 5);
                 c.SetDemandGrow(demand);
             }
-
 
             while (numberOfLocations > 0)
             {
@@ -121,7 +120,7 @@ namespace ClassLibrary
             Edges.Add(r);
         }
 
-        public Map(int numberOfLocations, int numberOfCells, int cellSize)
+        public Map(int numberOfCells, int cellSize, int numberOfLocations = 10)
         {
             // Construct the map entity.
             NumberOfLocations = numberOfLocations;
@@ -858,7 +857,7 @@ namespace ClassLibrary
 
 
             #region Roads
-            sql = $"SELECT * FROM ROADS WHERE MapId = {mapId}";
+            sql = $"SELECT * FROM ROADS WHERE Location1MapId = {mapId} AND Location2MapId = {mapId}";
             try
             {
                 reader = DataBase.ExecuteReader(sql);
