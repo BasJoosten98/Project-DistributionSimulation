@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.progressBestPlacement = new System.Windows.Forms.ProgressBar();
             this.panelPlayer = new System.Windows.Forms.Panel();
             this.lblSpeed = new System.Windows.Forms.Label();
             this.btnSlowDown = new System.Windows.Forms.Button();
@@ -39,6 +40,7 @@
             this.btnHeatMap = new System.Windows.Forms.Button();
             this.mapPictureBox = new System.Windows.Forms.PictureBox();
             this.panelMapBuilder = new System.Windows.Forms.Panel();
+            this.AmTicks = new System.Windows.Forms.TextBox();
             this.btnGetBestPlacement = new System.Windows.Forms.Button();
             this.gbDijkstraTool = new System.Windows.Forms.GroupBox();
             this.DrawAllClosests = new System.Windows.Forms.Button();
@@ -68,8 +70,9 @@
             this.lbLocationLog = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.AmTicks = new System.Windows.Forms.TextBox();
-            this.progressBestPlacement = new System.Windows.Forms.ProgressBar();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button5 = new System.Windows.Forms.Button();
+            this.lblTime = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -80,6 +83,7 @@
             this.gbDijkstraTool.SuspendLayout();
             this.gbImportExport.SuspendLayout();
             this.gbMapEditor.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -105,6 +109,14 @@
             this.splitContainer1.SplitterDistance = 617;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // progressBestPlacement
+            // 
+            this.progressBestPlacement.Location = new System.Drawing.Point(3, 511);
+            this.progressBestPlacement.Name = "progressBestPlacement";
+            this.progressBestPlacement.Size = new System.Drawing.Size(602, 29);
+            this.progressBestPlacement.TabIndex = 3;
+            this.progressBestPlacement.Visible = false;
             // 
             // panelPlayer
             // 
@@ -195,8 +207,7 @@
             // 
             // panelMapBuilder
             // 
-            this.panelMapBuilder.Controls.Add(this.AmTicks);
-            this.panelMapBuilder.Controls.Add(this.btnGetBestPlacement);
+            this.panelMapBuilder.Controls.Add(this.groupBox1);
             this.panelMapBuilder.Controls.Add(this.gbDijkstraTool);
             this.panelMapBuilder.Controls.Add(this.gbImportExport);
             this.panelMapBuilder.Controls.Add(this.gbMapEditor);
@@ -205,11 +216,19 @@
             this.panelMapBuilder.Size = new System.Drawing.Size(238, 596);
             this.panelMapBuilder.TabIndex = 23;
             // 
+            // AmTicks
+            // 
+            this.AmTicks.Location = new System.Drawing.Point(107, 24);
+            this.AmTicks.Name = "AmTicks";
+            this.AmTicks.Size = new System.Drawing.Size(100, 20);
+            this.AmTicks.TabIndex = 28;
+            this.AmTicks.Text = "50";
+            // 
             // btnGetBestPlacement
             // 
-            this.btnGetBestPlacement.Location = new System.Drawing.Point(7, 536);
+            this.btnGetBestPlacement.Location = new System.Drawing.Point(6, 53);
             this.btnGetBestPlacement.Name = "btnGetBestPlacement";
-            this.btnGetBestPlacement.Size = new System.Drawing.Size(94, 23);
+            this.btnGetBestPlacement.Size = new System.Drawing.Size(215, 23);
             this.btnGetBestPlacement.TabIndex = 27;
             this.btnGetBestPlacement.Text = "Best Placement";
             this.btnGetBestPlacement.UseVisualStyleBackColor = true;
@@ -500,21 +519,37 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // AmTicks
+            // groupBox1
             // 
-            this.AmTicks.Location = new System.Drawing.Point(114, 539);
-            this.AmTicks.Name = "AmTicks";
-            this.AmTicks.Size = new System.Drawing.Size(100, 20);
-            this.AmTicks.TabIndex = 28;
-            this.AmTicks.Text = "50";
+            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.groupBox1.Controls.Add(this.lblTime);
+            this.groupBox1.Controls.Add(this.button5);
+            this.groupBox1.Controls.Add(this.AmTicks);
+            this.groupBox1.Controls.Add(this.btnGetBestPlacement);
+            this.groupBox1.Location = new System.Drawing.Point(1, 510);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(233, 90);
+            this.groupBox1.TabIndex = 29;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Optimizations";
             // 
-            // progressBestPlacement
+            // button5
             // 
-            this.progressBestPlacement.Location = new System.Drawing.Point(3, 511);
-            this.progressBestPlacement.Name = "progressBestPlacement";
-            this.progressBestPlacement.Size = new System.Drawing.Size(602, 29);
-            this.progressBestPlacement.TabIndex = 3;
-            this.progressBestPlacement.Visible = false;
+            this.button5.Location = new System.Drawing.Point(6, 163);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(221, 23);
+            this.button5.TabIndex = 17;
+            this.button5.Text = "(Re)Analyze Map";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Location = new System.Drawing.Point(21, 27);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(55, 13);
+            this.lblTime.TabIndex = 29;
+            this.lblTime.Text = "Time units";
             // 
             // Form1
             // 
@@ -533,12 +568,13 @@
             this.panelPlayer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).EndInit();
             this.panelMapBuilder.ResumeLayout(false);
-            this.panelMapBuilder.PerformLayout();
             this.gbDijkstraTool.ResumeLayout(false);
             this.gbDijkstraTool.PerformLayout();
             this.gbImportExport.ResumeLayout(false);
             this.gbMapEditor.ResumeLayout(false);
             this.gbMapEditor.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -586,6 +622,9 @@
         private System.Windows.Forms.Button btnGetBestPlacement;
         private System.Windows.Forms.TextBox AmTicks;
         private System.Windows.Forms.ProgressBar progressBestPlacement;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label lblTime;
+        private System.Windows.Forms.Button button5;
     }
 }
 
