@@ -41,7 +41,7 @@ namespace MapLayout
             int numberOfCells;
             if (mapPictureBox.Width <= mapPictureBox.Height) { numberOfCells = mapPictureBox.Width / CELLSIZE; }
             else { numberOfCells = mapPictureBox.Height / CELLSIZE; }
-            map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE, MapBox: mapPictureBox);
+            map = new Map(numberOfCells: numberOfCells, cellSize: CELLSIZE, MapBox: mapPictureBox);
             // This loop is for debugging purposes such that we can check which cells have a location added to them.
             foreach (Cell cell in map.GetCells())
             {
@@ -818,6 +818,12 @@ namespace MapLayout
         private void LoadMap(int mapId)
         {
             Console.WriteLine($"Map to be loaded: {mapId}");
+            Map map = Map.Load(mapId);
+            Console.WriteLine(map.Cells.GetLength(0) * map.Cells.GetLength(1));
+            foreach(Cell c in map.Cells)
+            {
+                Console.WriteLine(c);
+            }
         }
 
         private void btnRandomHeatMap_Click(object sender, EventArgs e)

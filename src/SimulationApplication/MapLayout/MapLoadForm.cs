@@ -31,9 +31,9 @@ namespace MapLayout
             availableMapsListBox.Items.Clear();
             // Call a static method that will show all maps from db.
             string sql = "SELECT * FROM MAPS;";
-            MySqlDataReader reader = DataBase.ExecuteReader(sql);
             try
             {
+                MySqlDataReader reader = DataBase.ExecuteReader(sql);
                 while (reader.Read())
                 {
                     LoadMapRecord record = new LoadMapRecord(Convert.ToInt32(reader[0]), Convert.ToInt32(reader[1]), Convert.ToInt32(reader[2]));
@@ -72,8 +72,7 @@ namespace MapLayout
             else
             {
                 MessageBox.Show("Please select a map.");
-            }
-            
+            }   
         }
     }
 }
