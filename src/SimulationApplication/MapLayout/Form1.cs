@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClassLibrary;
+
 namespace MapLayout
 {
     public partial class Form1 : Form
@@ -26,14 +27,14 @@ namespace MapLayout
         //List<Rectangle> ListofRectangles;
         //redraw image method
         //Bitmap bmp;
-
+        StatisticsForm myStats;
 
         public Form1()
         {
             InitializeComponent();
 
             btnReset.Enabled = false;
-
+           
             // This could be set later on, maybe even via the app config file or by the user.
             const int CELLSIZE = 40;
 
@@ -51,8 +52,6 @@ namespace MapLayout
                 }
             }
 
-            //disable the statistics at the begining to avoid errors of missing statistics.
-         //   btnStatistics.Enabled = false;
         }
 
 
@@ -402,74 +401,7 @@ namespace MapLayout
                 }
             }
 
-            //---------------------------------------OLD WAY BELOW---------------------------------------
-            //if (isShopBtnClicked)
-            //{
-            //    foreach (Rectangle r in ListofRectangles)
-            //    {
-            //        if (r.Contains(mousePt))
-            //        {
-            //            Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
-            //            int id = clickedLocation.LocationID;
-            //            clickedLocation.Building = new Shop(100, 10);
-            //            PictureBox p = new PictureBox();
-            //            Point pPoint = new Point((clickedLocation.Index.Column * CDIAMETER) + 4, (clickedLocation.Index.Row * CDIAMETER) + 4);
-            //            p.Location = pPoint;
-            //            p.Size = new Size(49, 49);
-            //            p.Image = Properties.Resources.shopIcon;
-            //            p.SizeMode = PictureBoxSizeMode.StretchImage;
-            //            splitContainer1.Panel1.Controls.Add(p);
-            //            p.BringToFront();
-            //            lbLocationLog.Text = "Location #: " + id + " has been set to a Shop";
-            //        }
-            //    }
-            //} else if(isWarehouseBtnClicked)
-            //{
-            //    foreach (Rectangle r in ListofRectangles)
-            //    {
-            //        if (r.Contains(mousePt))
-            //        {
-            //            Location clickedLocation = map.Get(r.X / CDIAMETER, r.Y / CDIAMETER);
-            //            int id = clickedLocation.LocationID;
-            //            clickedLocation.Building = new Warehouse(); 
-
-            //            //warehouse expects a list of shops.. each location has a building..
-            //            //i can only make a list of buildings
-            //            //no clue what to do for now
-            //            //check map.GetShops() for the method
-
-            //            /*
-            //             * So far i've only found 2 ways to do this. Create a picture box at the location clicked
-            //             * with the warehouse image on it.
-            //             * OR Redraw the image everytime with the new warehouse/shop
-            //             * im including both sets of code and you guys tell me what u think
-            //             * (picutrebox way still needs a small positioning fix)
-            //             * (redraw method is still kinda broken)
-            //             * Picturebox method admitted isnt the most efficient but i couldnt get the draw to work so i opted
-            //             * for something else temporarily
-            //             */
-            //            PictureBox p = new PictureBox();
-            //            Point pPoint = new Point((clickedLocation.Index.Column * CDIAMETER)+4, (clickedLocation.Index.Row * CDIAMETER)+4);
-            //            p.Location = pPoint;
-            //            p.Size = new Size(49,49);
-            //            p.Image = Properties.Resources.warehouseIcon;
-            //            p.SizeMode = PictureBoxSizeMode.StretchImage;
-            //            splitContainer1.Panel1.Controls.Add(p);
-            //            p.BringToFront();
-            //            lbLocationLog.Text = "Location #: " + id + " has been set to a Warehouse";
-
-            //            /* Redraw method
-            //            using (Graphics g = Graphics.FromImage(bmp))
-            //            {
-            //                g.DrawRectangle(new Pen(Color.Black), new Rectangle(clickedLocation.LocationPoint, clickedLocation._Size));
-            //                g.DrawImage(new Bitmap(Properties.Resources.warehouseIcon, clickedLocation._Size), clickedLocation.LocationPoint);
-            //            }
-            //            mapPictureBox.Image = bmp;
-            //            */
-            //        }
-            //    }
-            //}
-            //------------------------------------------------------------------------------
+         
         }
 
         private void btnWarehouse_Click(object sender, EventArgs e)
@@ -576,6 +508,7 @@ namespace MapLayout
            // shortesRoutesRichTbx.Clear();
            // shortesRoutesRichTbx.Text += holder;
             if (drawHeatMap) { Map.RedrawMap(); }
+            btnStatistics.Enabled = true;
 
         }
 
@@ -649,6 +582,7 @@ namespace MapLayout
             timer1.Enabled = true;
             btnReset.Enabled = true;
             Console.WriteLine("Simulation has started");
+            btnStatistics.Enabled = true;
         }
 
         private int timeStampCounter = 0;
@@ -656,8 +590,12 @@ namespace MapLayout
         private bool simulationIsPlaying = false;
         private void btnPlay_Click(object sender, EventArgs e)
         {
+
             // enables the button only after choosing all the shops and warehouses.
             btnStatistics.Enabled = true;
+            //initializes a statistics form to which we can add shops and warehouses as we add them to the form.
+            myStats = new StatisticsForm(map.Shops);
+
             if (!simulationIsPlaying)
             {
                 if (simulationHasStarted) //continue playing simulation
@@ -1087,8 +1025,9 @@ namespace MapLayout
             {
                 MessageBox.Show("This field should be greater than 0");
             }
-            panelMapBuilder.Enabled = false;
-            panelPlayer.Enabled = false;
+           panelMapBuilder.Enabled = false;
+           panelPlayer.Enabled = false;
+            
 
             bestPlacement = new BestPlacement(map, tick, progressBestPlacement);
             bestPlacement.CheckCombinations();
@@ -1132,8 +1071,14 @@ namespace MapLayout
 
         private void btnStatistics_Click(object sender, EventArgs e)
         {
-            StatisticsForm myStats = new StatisticsForm();
+            //StatisticsForm myStats = new StatisticsForm();
             myStats.Show();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //disable the statistics at the begining to avoid errors of missing statistics.
+           // btnStatistics.Enabled = false;
         }
     }
 }

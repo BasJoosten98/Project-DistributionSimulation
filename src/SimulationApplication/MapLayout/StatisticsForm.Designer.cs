@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.basicColumn2 = new Wpf.CartesianChart.Basic_Bars.BasicColumn();
             this.elementHost2 = new System.Windows.Forms.Integration.ElementHost();
             this.cartesianChart1 = new LiveCharts.Wpf.CartesianChart();
+            this.ResetChartTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // elementHost1
@@ -45,12 +47,17 @@
             // 
             // elementHost2
             // 
-            this.elementHost2.Location = new System.Drawing.Point(12, 300);
+            this.elementHost2.Location = new System.Drawing.Point(12, 259);
             this.elementHost2.Name = "elementHost2";
             this.elementHost2.Size = new System.Drawing.Size(387, 162);
             this.elementHost2.TabIndex = 1;
             this.elementHost2.Text = "elementHost2";
+      
             this.elementHost2.Child = this.cartesianChart1;
+            // 
+            // ResetChartTimer
+            // 
+            this.ResetChartTimer.Interval = 20;
             // 
             // StatisticsForm
             // 
@@ -72,5 +79,6 @@
         private Wpf.CartesianChart.Basic_Bars.BasicColumn basicColumn2;
         private System.Windows.Forms.Integration.ElementHost elementHost2;
         private LiveCharts.Wpf.CartesianChart cartesianChart1;
+        private System.Windows.Forms.Timer ResetChartTimer;
     }
 }
