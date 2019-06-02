@@ -75,10 +75,5 @@ namespace MapLayout
             }
             
         }
-
-        private void loadSelectMapBtn_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

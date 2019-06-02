@@ -141,21 +141,11 @@ namespace ClassLibrary
         public static MySqlDataReader ExecuteReader(string sql)
         {
             MySqlDataReader reader = null;
+
             if (OpenConnection() == true)
             {
-                try
-                {
-                    MySqlCommand cmd = new MySqlCommand(sql, connection);
-                    reader = cmd.ExecuteReader();
-                }
-                catch(MySqlException ex)
-                {
-                    Console.WriteLine(ex.Code);
-                }
-                finally
-                {
-                    CloseConnection();
-                }
+                MySqlCommand cmd = new MySqlCommand(sql, connection);
+                reader = cmd.ExecuteReader();
             }
             return reader;
         }
