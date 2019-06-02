@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace ClassLibrary
 {
@@ -774,6 +775,53 @@ namespace ClassLibrary
             {
                 road.Save(Id);
             }
+        }
+   
+        public static Map Load(string id)
+        {
+            Map m = null;
+            Cell[,] cells;
+            List<Cell> allCells = new List<Cell>();
+            int numOfCells = 0;
+            int cellSize = 0;
+            
+            string sql = $"SELECT * FROM MAPS WHERE MapId = {id}";
+            MySqlDataReader reader = DataBase.ExecuteReader(sql);
+            if(reader != null)
+            {
+                while(reader.Read())
+                {
+                    numOfCells = reader.GetInt32(1);
+                    cellSize = reader.GetInt32(2);
+                }
+            }
+
+            reader.Close();
+            string sql2 = $"SELECT * FROM FROM CELLS WHERE MapId = {id}";
+            MySqlDataReader reader2 = DataBase.ExecuteReader(sql);
+            if (reader2 != null)
+            {
+                Location l;
+                while(reader2.Read())
+                {
+                    int rowIndex = reader2.GetInt32(1);
+                    int columnIndex = reader2.GetInt32(2);
+                    int demand = reader2.GetInt32(3);
+                    int demandGrowthPerTick = reader2.GetInt32(4);
+                    string discriminator = reader2.GetString(5);
+                    if(discriminator.Contains("Location"))
+                    {
+                        //Create a location on that cell
+                    }
+                    int radius = reader2.GetInt32(6);
+                    Cell c = new Cell(columnIndex, rowIndex, demand);
+                    c.SetDemandGrow(demand);
+
+                    allCells.Add(c);
+                }
+            }
+
+           
         }
     }
 }

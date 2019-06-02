@@ -143,8 +143,19 @@ namespace ClassLibrary
             MySqlDataReader reader = null;
             if (OpenConnection() == true)
             {
-                MySqlCommand cmd = new MySqlCommand(sql, connection);
-                reader = cmd.ExecuteReader();
+                try
+                {
+                    MySqlCommand cmd = new MySqlCommand(sql, connection);
+                    reader = cmd.ExecuteReader();
+                }
+                catch(MySqlException ex)
+                {
+                    Console.WriteLine(ex.Code);
+                }
+                finally
+                {
+                    CloseConnection();
+                }
             }
             return reader;
         }

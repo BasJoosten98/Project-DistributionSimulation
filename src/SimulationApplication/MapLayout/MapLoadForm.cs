@@ -52,5 +52,10 @@ namespace MapLayout
                 availableMapsListBox.Items.Add(record);
             }
         }
+
+        private void loadSelectMapBtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
