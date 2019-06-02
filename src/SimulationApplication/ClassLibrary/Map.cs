@@ -801,7 +801,7 @@ namespace ClassLibrary
             MySqlDataReader reader2 = DataBase.ExecuteReader(sql);
             if (reader2 != null)
             {
-                Location l;
+                Location location;
                 while(reader2.Read())
                 {
                     int rowIndex = reader2.GetInt32(1);
@@ -809,14 +809,15 @@ namespace ClassLibrary
                     int demand = reader2.GetInt32(3);
                     int demandGrowthPerTick = reader2.GetInt32(4);
                     string discriminator = reader2.GetString(5);
-                    if(discriminator.Contains("Location"))
-                    {
-                        //Create a location on that cell
-                    }
                     int radius = reader2.GetInt32(6);
                     Cell c = new Cell(columnIndex, rowIndex, demand);
                     c.SetDemandGrow(demand);
 
+                    if (discriminator.Contains("Location"))
+                    {
+                        location = m.ChangeCellIntoLocation(c, radius);
+                        //Create a location on that cell
+                    }
                     allCells.Add(c);
                 }
             }
