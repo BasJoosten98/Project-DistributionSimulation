@@ -817,6 +817,7 @@ namespace MapLayout
 
         private void LoadMap(int mapId)
         {
+            this.map.RemoveAllBuildings();
             Console.WriteLine($"Map to be loaded: {mapId}");
             Map map = Map.Load(mapId);
             this.map = map;
@@ -841,7 +842,7 @@ namespace MapLayout
                     {
                         location.Building.picBox.Image = Properties.Resources.warehouseIcon;
                     }
-                    // map.AddNewBuilding(map.Locations[i]);
+                    map.AddNewBuilding(location);
                     splitContainer1.Panel1.Controls.Add(picBox);
                     picBox.BringToFront();
                 }    
