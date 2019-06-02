@@ -52,7 +52,7 @@ namespace MapLayout
             }
 
             //disable the statistics at the begining to avoid errors of missing statistics.
-            btnStatistics.Enabled = false;
+         //   btnStatistics.Enabled = false;
         }
 
 

@@ -61,6 +61,7 @@
             this.Controls.Add(this.elementHost1);
             this.Name = "StatisticsForm";
             this.Text = "StatisticsForm";
+            this.Load += new System.EventHandler(this.StatisticsForm_Load);
             this.ResumeLayout(false);
 
         }
