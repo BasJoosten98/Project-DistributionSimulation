@@ -15,9 +15,10 @@ namespace MapLayout
 {
     public partial class MapLoadForm : Form
     {
-        private List<LoadMapRecord> records;
+        public delegate void LoadMapHandler(int selectedMapId);
+        public event LoadMapHandler LoadMapEvent;
 
-        public Map SelectedMap { get; private set; }
+        private List<LoadMapRecord> records;
         public MapLoadForm()
         {
             InitializeComponent();
@@ -41,8 +42,11 @@ namespace MapLayout
             }
             catch (Exception ex)
             {
-                DataBase.CloseConnection();
                 Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                DataBase.CloseConnection();
             }
 
             // Sort descending
@@ -51,6 +55,25 @@ namespace MapLayout
             {
                 availableMapsListBox.Items.Add(record);
             }
+        }
+
+        private void loadSelectMapBtn_Click(object sender, EventArgs e)
+        {
+            if (availableMapsListBox.SelectedItem != null)
+            {
+                LoadMapRecord record = (LoadMapRecord)availableMapsListBox.SelectedItem;
+                // Invoke the event MapLoadedEvent to pass the map object to the parent form.
+                if (LoadMapEvent != null)
+                {
+                    LoadMapEvent.Invoke(record.Id);
+                }
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Please select a map.");
+            }
+            
         }
 
         private void loadSelectMapBtn_Click(object sender, EventArgs e)
