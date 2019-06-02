@@ -56,10 +56,9 @@ namespace ClassLibrary
             vehicles = new List<Vehicle>();
         }
 
-        public Warehouse(PictureBox PicBox)
-            :base(PicBox)
+        public Warehouse(PictureBox PicBox) : this()
         {
-            //Roads = new List<Road>();
+            picBox = PicBox;
         }
         public Warehouse(PictureBox PicBox, int totalVehicles)
             : base(PicBox)
