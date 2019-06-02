@@ -28,48 +28,55 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.availableMapListBox = new System.Windows.Forms.ListBox();
+            this.availableMapsListBox = new System.Windows.Forms.ListBox();
             this.availableMapsGroupBox = new System.Windows.Forms.GroupBox();
             this.loadSelectMapBtn = new System.Windows.Forms.Button();
             this.availableMapsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // availableMapListBox
+            // availableMapsListBox
             // 
-            this.availableMapListBox.FormattingEnabled = true;
-            this.availableMapListBox.Location = new System.Drawing.Point(6, 19);
-            this.availableMapListBox.Name = "availableMapListBox";
-            this.availableMapListBox.Size = new System.Drawing.Size(444, 186);
-            this.availableMapListBox.TabIndex = 0;
+            this.availableMapsListBox.FormattingEnabled = true;
+            this.availableMapsListBox.ItemHeight = 25;
+            this.availableMapsListBox.Location = new System.Drawing.Point(12, 37);
+            this.availableMapsListBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.availableMapsListBox.Name = "availableMapsListBox";
+            this.availableMapsListBox.Size = new System.Drawing.Size(884, 354);
+            this.availableMapsListBox.TabIndex = 0;
             // 
             // availableMapsGroupBox
             // 
             this.availableMapsGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.availableMapsGroupBox.Controls.Add(this.loadSelectMapBtn);
-            this.availableMapsGroupBox.Controls.Add(this.availableMapListBox);
-            this.availableMapsGroupBox.Location = new System.Drawing.Point(12, 12);
+            this.availableMapsGroupBox.Controls.Add(this.availableMapsListBox);
+            this.availableMapsGroupBox.Location = new System.Drawing.Point(24, 23);
+            this.availableMapsGroupBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.availableMapsGroupBox.Name = "availableMapsGroupBox";
-            this.availableMapsGroupBox.Size = new System.Drawing.Size(462, 237);
+            this.availableMapsGroupBox.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.availableMapsGroupBox.Size = new System.Drawing.Size(924, 456);
             this.availableMapsGroupBox.TabIndex = 1;
             this.availableMapsGroupBox.TabStop = false;
             this.availableMapsGroupBox.Text = "Available Maps";
             // 
             // loadSelectMapBtn
             // 
-            this.loadSelectMapBtn.Location = new System.Drawing.Point(6, 208);
+            this.loadSelectMapBtn.Location = new System.Drawing.Point(12, 400);
+            this.loadSelectMapBtn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.loadSelectMapBtn.Name = "loadSelectMapBtn";
-            this.loadSelectMapBtn.Size = new System.Drawing.Size(131, 23);
+            this.loadSelectMapBtn.Size = new System.Drawing.Size(262, 44);
             this.loadSelectMapBtn.TabIndex = 1;
             this.loadSelectMapBtn.Text = "Load Selected Map";
             this.loadSelectMapBtn.UseVisualStyleBackColor = true;
+            this.loadSelectMapBtn.Click += new System.EventHandler(this.loadSelectMapBtn_Click);
             // 
             // MapLoadForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.ClientSize = new System.Drawing.Size(486, 259);
+            this.ClientSize = new System.Drawing.Size(972, 498);
             this.Controls.Add(this.availableMapsGroupBox);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "MapLoadForm";
             this.Text = "Load Map";
             this.availableMapsGroupBox.ResumeLayout(false);
@@ -79,7 +86,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox availableMapListBox;
+        private System.Windows.Forms.ListBox availableMapsListBox;
         private System.Windows.Forms.GroupBox availableMapsGroupBox;
         private System.Windows.Forms.Button loadSelectMapBtn;
     }

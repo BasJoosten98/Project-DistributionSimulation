@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace ClassLibrary
 {
@@ -20,7 +21,7 @@ namespace ClassLibrary
         private List<Road> edges = new List<Road>();
         private Random rng;
         private Random rng2;
-        public Cell[,] cells;
+        public Cell[,] Cells { get; set; }
         public static PictureBox mapPicBox;
         private DistributionManager distributionManager;
 
@@ -35,6 +36,18 @@ namespace ClassLibrary
         public List<Location> Locations { get { return locations; } }
         public List<Road> Edges { get { return edges; } }
 
+        public Map(int numberOfCells, int cellSize)
+        {
+            NumberOfCells = numberOfCells;
+            Cell.CellSize = cellSize;
+            CellSize = cellSize;
+            Cells = new Cell[NumberOfCells, NumberOfCells];
+
+            // Seed the random generator to get reproducable results.
+            rng = new Random(0);
+            rng2 = new Random();
+        }
+
         /// <summary>
         /// Creates a map objects and initializes with the given values
         /// </summary>
@@ -42,33 +55,25 @@ namespace ClassLibrary
         /// <param name="numberOfCells"></param>
         /// <param name="cellSize"></param>
         /// <param name="MapBox"></param>
-        public Map(int numberOfLocations, int numberOfCells, int cellSize, PictureBox MapBox)
+        public Map(int numberOfCells, int cellSize, PictureBox MapBox, int numberOfLocations = 10) : this(numberOfCells, cellSize)
         {
             NumberOfLocations = numberOfLocations;
             mapPicBox = MapBox;
-            NumberOfCells = numberOfCells;
-            Cell.CellSize = cellSize;
-            cells = new Cell[NumberOfCells, NumberOfCells];
             for (int rowCount = 0; rowCount < NumberOfCells; rowCount++)
             {
                 for (int columnCount = 0; columnCount < NumberOfCells; columnCount++)
                 {
                     Cell c = new Cell(columnCount, rowCount);
-                    cells[columnCount, rowCount] = c;
+                    Cells[columnCount, rowCount] = c;
                 }
             }
 
-            // Seed the random generator to get reproducable results.
-            rng = new Random(0);
-            rng2 = new Random();
-
             int demand;
-            foreach (Cell c in cells)
+            foreach (Cell c in Cells)
             {
                 demand = rng2.Next(2, 5);
                 c.SetDemandGrow(demand);
             }
-
 
             while (numberOfLocations > 0)
             {
@@ -115,91 +120,12 @@ namespace ClassLibrary
             Edges.Add(r);
         }
 
-        public Map(int numberOfLocations, int numberOfCells, int cellSize)
-        {
-            // Construct the map entity.
-            NumberOfLocations = numberOfLocations;
-            NumberOfCells = numberOfCells;
-            CellSize = cellSize;
-            Cell.CellSize = cellSize;
-            cells = new Cell[NumberOfCells, NumberOfCells];
-            for (int rowCount = 0; rowCount < NumberOfCells; rowCount++)
-            {
-                for (int columnCount = 0; columnCount < NumberOfCells; columnCount++)
-                {
-                    Cell c = new Cell(columnCount, rowCount);
-                    cells[columnCount, rowCount] = c;
-                }
-            }
-
-            // Seed the random generator to get reproducable results.
-            rng = new Random(0);
-            rng2 = new Random();
-
-            int demand;
-            foreach (Cell c in cells)
-            {
-                demand = rng2.Next(2, 5);
-                c.SetDemandGrow(demand);
-            }
-
-
-            while (numberOfLocations > 0)
-            {
-                Cell c = GenerateRandomLocation();
-                if (!(c is Location))
-                {
-                    // and decrement number of locations to be added to the cells/map.
-                    Location newLocation = ChangeCellIntoLocation(c, 2);
-                    Locations.Add(newLocation);
-                    numberOfLocations--;
-                }
-            }
-            // Prints the count property of the List of location objects.
-
-            // Create and add roads to the map entity
-            // 1 -> 2, weight: 3
-            Road r = new Road(Locations[0], Locations[1]);
-            Edges.Add(r);
-            // 2 -> 3, weight: 1
-            r = new Road(Locations[1], Locations[2]);
-            Edges.Add(r);
-            // 1 -> 3, weight: 1
-            r = new Road(Locations[0], Locations[2]);
-            Edges.Add(r);
-            // 3 -> 6, weight: 1
-            r = new Road(Locations[2], Locations[5]);
-            Edges.Add(r);
-            // 6 -> 7, weight: 1
-            r = new Road(Locations[5], Locations[6]);
-            Edges.Add(r);
-            // 1 -> 9, weight: 1
-            r = new Road(Locations[0], Locations[8]);
-            Edges.Add(r);
-            // 4 -> 9, weight: 1
-            r = new Road(Locations[3], Locations[8]);
-            Edges.Add(r);
-            // 4 -> 5, weight: 1
-            r = new Road(Locations[3], Locations[4]);
-            Edges.Add(r);
-            // 5 -> 8, weight: 1
-            r = new Road(Locations[4], Locations[7]);
-            Edges.Add(r);
-            // 10 -> 8, weight: 1
-            r = new Road(Locations[9], Locations[7]);
-            Edges.Add(r);
-            // 10 -> 5, weight: 1
-            r = new Road(Locations[9], Locations[4]);
-            Edges.Add(r);
-        }
-
-
         public void ResetMap()
         {
             statistics.Clear();
             createDistributionManager();
             Cell.Reset();
-            foreach(Cell c in cells)
+            foreach(Cell c in Cells)
             {
                 c.CellReset();
             }
@@ -216,7 +142,7 @@ namespace ClassLibrary
         }
         public void RandomizeDemand()
         {
-            foreach (Cell c in cells)
+            foreach (Cell c in Cells)
             {
                 c.SetDemandGrow(rng2.Next(2, 5));
             }
@@ -239,7 +165,7 @@ namespace ClassLibrary
 
             //place new loactions
             List<Cell> tempCells = new List<Cell>();
-            foreach(Cell c in cells)
+            foreach(Cell c in Cells)
             {
                 tempCells.Add(c);
             }
@@ -274,7 +200,7 @@ namespace ClassLibrary
             mapLocationID++;
             Location l = new Location(mapLocationID, c.Index.Column, c.Index.Row, radius);
             l.SetDemandGrow(c.Demand);
-            cells[c.Index.Column, c.Index.Row] = l;
+            Cells[c.Index.Column, c.Index.Row] = l;
 
             return l;
         }
@@ -287,7 +213,7 @@ namespace ClassLibrary
         {
             Cell c = new Cell(l.Index.Column, l.Index.Row);
             c.SetDemandGrow(l.Demand);
-            cells[l.Index.Column, l.Index.Row] = c;
+            Cells[l.Index.Column, l.Index.Row] = c;
             Locations.Remove(l);
 
             // Remove the roads from the road collection.
@@ -316,7 +242,7 @@ namespace ClassLibrary
         public void NextTick(int timeStamp)
         {
             List<Cell> tempList = new List<Cell>();
-            foreach(Cell c in cells)
+            foreach(Cell c in Cells)
             {
                 tempList.Add(c);
             }
@@ -404,7 +330,7 @@ namespace ClassLibrary
         }
         private Cell getCellByIndex(int column, int row)
         {
-            foreach(Cell c in cells)
+            foreach(Cell c in Cells)
             {
                 if(c.Index.Column == column && c.Index.Row == row)
                 {
@@ -447,7 +373,7 @@ namespace ClassLibrary
 
         private void removeShopRadiusFromCells(Shop s)
         {
-            foreach(Cell c in cells)
+            foreach(Cell c in Cells)
             {
                 c.RemoveShopRadius(s);
             }
@@ -494,7 +420,7 @@ namespace ClassLibrary
         public Cell[,] GetCells()
         {
             // Preferably this will be a copy, and perhaps not a shallow one.
-            return cells;
+            return Cells;
         }
 
         /// <summary>
@@ -538,7 +464,7 @@ namespace ClassLibrary
         private Cell GenerateRandomLocation()
         {
             // Return a cell at index [x, y] where x and y are numbers between 0 and NumOfCells (exclusive)
-            return cells[rng.Next(0, NumberOfCells), rng.Next(0, NumberOfCells)]; 
+            return Cells[rng.Next(0, NumberOfCells), rng.Next(0, NumberOfCells)]; 
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -765,7 +691,7 @@ namespace ClassLibrary
             }
             Console.WriteLine(Id);
             // Save Cells
-            foreach (Cell c in cells)
+            foreach (Cell c in Cells)
             {
                 c.Save(Id);
             }
@@ -774,6 +700,164 @@ namespace ClassLibrary
             {
                 road.Save(Id);
             }
+        }
+   
+        public static Map Load(int mapId)
+        {
+            #region Map
+            int numberOfCells = 0;
+            int cellSize = 0;
+            Map map = null;
+            MySqlDataReader reader;
+            string sql = $"SELECT * FROM MAPS WHERE MapId = {mapId}";
+            try
+            {
+                reader = DataBase.ExecuteReader(sql);
+                // Since we only load in one map we only need to call it on the reader.
+                reader.Read();
+
+                numberOfCells = reader.GetInt32(1);
+                cellSize = reader.GetInt32(2);
+
+                map = new Map(numberOfCells, cellSize);
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                DataBase.CloseConnection();
+            }
+            #endregion
+
+            #region Cells
+            Cell[,] cells = new Cell[numberOfCells, numberOfCells];
+            sql = $"SELECT * FROM CELLS WHERE MapId = {mapId}";
+            try
+            {
+                reader = DataBase.ExecuteReader(sql);
+                if (reader != null)
+                {
+                    int rowIndex;
+                    int columnIndex;
+                    int demand;
+                    int demandGrowthPerTick;
+                    string discriminator;
+                    int radius;
+                    Cell c;
+                    while (reader.Read())
+                    {
+                        rowIndex = reader.GetInt32(1);
+                        columnIndex = reader.GetInt32(2);
+                        demand = reader.GetInt32(3);
+                        demandGrowthPerTick = reader.GetInt32(4);
+                        discriminator = reader.IsDBNull(5) == false ? reader.GetString(5) : string.Empty;
+                        radius = reader.IsDBNull(6) == false ? reader.GetInt32(6) : 0;
+                        c = new Cell(columnIndex, rowIndex, demand);
+                        if (discriminator.Contains("Location"))
+                        {
+                            c = map.ChangeCellIntoLocation(c, radius);
+                            map.Locations.Add((Location)c);
+                        }
+                        // Assign the cell to its rightful position in the cell array.
+                        cells[rowIndex, columnIndex] = c;
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                DataBase.CloseConnection();
+            }
+            map.Cells = cells;
+            #endregion
+
+
+            #region Roads
+            sql = $"SELECT * FROM ROADS WHERE Location1MapId = {mapId} AND Location2MapId = {mapId}";
+            try
+            {
+                reader = DataBase.ExecuteReader(sql);
+
+                Location source;
+                int sourceRowIndex;
+                int sourceColumnIndex;
+                Location destination;
+                int destinationRowIndex;
+                int destinationColumnIndex;
+                int initialCost;
+
+                while(reader.Read())
+                {
+                    sourceRowIndex = reader.GetInt32(1);
+                    sourceColumnIndex = reader.GetInt32(2);
+                    destinationRowIndex = reader.GetInt32(4);
+                    destinationColumnIndex = reader.GetInt32(5);
+                    initialCost = reader.GetInt32(6);
+                    source = (Location)map.Cells[sourceRowIndex, sourceColumnIndex];
+                    destination = (Location)map.Cells[destinationRowIndex, destinationColumnIndex];
+                    map.Edges.Add(new Road(source, destination, initialCost));
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                DataBase.CloseConnection();
+            }
+            #endregion
+
+            // Finally the buildings
+            #region Buildings
+            sql = $"SELECT * FROM BUILDINGS WHERE MapId = {mapId}";
+            try
+            {
+                reader = DataBase.ExecuteReader(sql);
+
+                Building building;
+                int rowIndex;
+                int columnIndex;
+                string discriminator;
+                int stock;
+                int restockAmount;
+
+                while (reader.Read())
+                {
+                    rowIndex = reader.GetInt32(1);
+                    columnIndex = reader.GetInt32(2);
+                    discriminator = reader.IsDBNull(3) == false ? reader.GetString(3) : string.Empty;
+                    if (discriminator.Contains("Shop"))
+                    {
+                        stock = reader.GetInt32(4);
+                        restockAmount = reader.GetInt32(5);
+                        building = new Shop(stock, restockAmount);
+                        map.Shops.Add(((Location)map.Cells[rowIndex, columnIndex]));
+                    }
+                    else
+                    {
+                        building = new Warehouse();
+                        map.Warehouses.Add(((Location)map.Cells[rowIndex, columnIndex]));
+                    }
+                    ((Location)map.Cells[rowIndex, columnIndex]).Building = building;
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                DataBase.CloseConnection();
+            }
+            #endregion
+            map.Id = mapId;
+            return map;
         }
     }
 }

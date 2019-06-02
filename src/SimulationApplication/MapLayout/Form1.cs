@@ -41,7 +41,7 @@ namespace MapLayout
             int numberOfCells;
             if (mapPictureBox.Width <= mapPictureBox.Height) { numberOfCells = mapPictureBox.Width / CELLSIZE; }
             else { numberOfCells = mapPictureBox.Height / CELLSIZE; }
-            map = new Map(numberOfLocations: 10, numberOfCells: numberOfCells, cellSize: CELLSIZE, MapBox: mapPictureBox);
+            map = new Map(numberOfCells: numberOfCells, cellSize: CELLSIZE, MapBox: mapPictureBox);
             // This loop is for debugging purposes such that we can check which cells have a location added to them.
             foreach (Cell cell in map.GetCells())
             {
@@ -810,8 +810,44 @@ namespace MapLayout
             if (loadMapForm == null || loadMapForm.IsDisposed)
             {
                 loadMapForm = new MapLoadForm();
+                loadMapForm.LoadMapEvent += LoadMap;
             }
             loadMapForm.Show();
+        }
+
+        private void LoadMap(int mapId)
+        {
+            this.map.RemoveAllBuildings();
+            Console.WriteLine($"Map to be loaded: {mapId}");
+            Map map = Map.Load(mapId);
+            this.map = map;
+            foreach (Location location in map.Locations)
+            {
+                if (location.Building != null)
+                {
+                    PictureBox picBox = new PictureBox();
+                    Point ImagePosition = new Point((location.Index.Column * Cell.CellSize) + 4, (location.Index.Row * Cell.CellSize) + 4);
+                    picBox.Location = ImagePosition;
+                    picBox.Size = new Size(Cell.CellSize - 1, Cell.CellSize - 1);
+                    picBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                    picBox.MouseClick += mapPictureBox_MouseClick;
+                    picBox.MouseEnter += mapPictureBox_MouseEnter;
+
+                    location.Building.picBox = picBox;
+                    if (location.Building is Shop)
+                    {
+                        location.Building.picBox.Image = Properties.Resources.shopIcon;
+                    }
+                    else
+                    {
+                        location.Building.picBox.Image = Properties.Resources.warehouseIcon;
+                    }
+                    map.AddNewBuilding(location);
+                    splitContainer1.Panel1.Controls.Add(picBox);
+                    picBox.BringToFront();
+                }    
+            }
+            Map.RedrawMap();
         }
 
         private void btnRandomHeatMap_Click(object sender, EventArgs e)
