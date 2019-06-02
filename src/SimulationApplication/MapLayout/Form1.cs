@@ -820,13 +820,33 @@ namespace MapLayout
             Console.WriteLine($"Map to be loaded: {mapId}");
             Map map = Map.Load(mapId);
             this.map = map;
-            Map.RedrawMap();
-            Console.WriteLine(map.Cells.GetLength(0) * map.Cells.GetLength(1));
-            Console.WriteLine(map.Edges.Count);
-            foreach (Road r in map.Edges)
+            foreach (Location location in map.Locations)
             {
-                Console.WriteLine(r);
+                if (location.Building != null)
+                {
+                    PictureBox picBox = new PictureBox();
+                    Point ImagePosition = new Point((location.Index.Column * Cell.CellSize) + 4, (location.Index.Row * Cell.CellSize) + 4);
+                    picBox.Location = ImagePosition;
+                    picBox.Size = new Size(Cell.CellSize - 1, Cell.CellSize - 1);
+                    picBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                    picBox.MouseClick += mapPictureBox_MouseClick;
+                    picBox.MouseEnter += mapPictureBox_MouseEnter;
+
+                    location.Building.picBox = picBox;
+                    if (location.Building is Shop)
+                    {
+                        location.Building.picBox.Image = Properties.Resources.shopIcon;
+                    }
+                    else
+                    {
+                        location.Building.picBox.Image = Properties.Resources.warehouseIcon;
+                    }
+                    // map.AddNewBuilding(map.Locations[i]);
+                    splitContainer1.Panel1.Controls.Add(picBox);
+                    picBox.BringToFront();
+                }    
             }
+            Map.RedrawMap();
         }
 
         private void btnRandomHeatMap_Click(object sender, EventArgs e)

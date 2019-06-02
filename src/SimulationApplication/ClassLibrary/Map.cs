@@ -120,85 +120,6 @@ namespace ClassLibrary
             Edges.Add(r);
         }
 
-        public Map(int numberOfCells, int cellSize, int numberOfLocations = 10)
-        {
-            // Construct the map entity.
-            NumberOfLocations = numberOfLocations;
-            NumberOfCells = numberOfCells;
-            CellSize = cellSize;
-            Cell.CellSize = cellSize;
-            Cells = new Cell[NumberOfCells, NumberOfCells];
-            for (int rowCount = 0; rowCount < NumberOfCells; rowCount++)
-            {
-                for (int columnCount = 0; columnCount < NumberOfCells; columnCount++)
-                {
-                    Cell c = new Cell(columnCount, rowCount);
-                    Cells[columnCount, rowCount] = c;
-                }
-            }
-
-            // Seed the random generator to get reproducable results.
-            rng = new Random(0);
-            rng2 = new Random();
-
-            int demand;
-            foreach (Cell c in Cells)
-            {
-                demand = rng2.Next(2, 5);
-                c.SetDemandGrow(demand);
-            }
-
-
-            while (numberOfLocations > 0)
-            {
-                Cell c = GenerateRandomLocation();
-                if (!(c is Location))
-                {
-                    // and decrement number of locations to be added to the cells/map.
-                    Location newLocation = ChangeCellIntoLocation(c, 2);
-                    Locations.Add(newLocation);
-                    numberOfLocations--;
-                }
-            }
-            // Prints the count property of the List of location objects.
-
-            // Create and add roads to the map entity
-            // 1 -> 2, weight: 3
-            Road r = new Road(Locations[0], Locations[1]);
-            Edges.Add(r);
-            // 2 -> 3, weight: 1
-            r = new Road(Locations[1], Locations[2]);
-            Edges.Add(r);
-            // 1 -> 3, weight: 1
-            r = new Road(Locations[0], Locations[2]);
-            Edges.Add(r);
-            // 3 -> 6, weight: 1
-            r = new Road(Locations[2], Locations[5]);
-            Edges.Add(r);
-            // 6 -> 7, weight: 1
-            r = new Road(Locations[5], Locations[6]);
-            Edges.Add(r);
-            // 1 -> 9, weight: 1
-            r = new Road(Locations[0], Locations[8]);
-            Edges.Add(r);
-            // 4 -> 9, weight: 1
-            r = new Road(Locations[3], Locations[8]);
-            Edges.Add(r);
-            // 4 -> 5, weight: 1
-            r = new Road(Locations[3], Locations[4]);
-            Edges.Add(r);
-            // 5 -> 8, weight: 1
-            r = new Road(Locations[4], Locations[7]);
-            Edges.Add(r);
-            // 10 -> 8, weight: 1
-            r = new Road(Locations[9], Locations[7]);
-            Edges.Add(r);
-            // 10 -> 5, weight: 1
-            r = new Road(Locations[9], Locations[4]);
-            Edges.Add(r);
-        }
-
-
         public void ResetMap()
         {
             statistics.Clear();
@@ -879,7 +800,7 @@ namespace ClassLibrary
                     initialCost = reader.GetInt32(6);
                     source = (Location)map.Cells[sourceRowIndex, sourceColumnIndex];
                     destination = (Location)map.Cells[destinationRowIndex, destinationColumnIndex];
-                    map.Edges.Add(new Road(source, destination));
+                    map.Edges.Add(new Road(source, destination, initialCost));
                 }
             }
             catch (MySqlException ex)
@@ -916,10 +837,12 @@ namespace ClassLibrary
                         stock = reader.GetInt32(4);
                         restockAmount = reader.GetInt32(5);
                         building = new Shop(stock, restockAmount);
+                        map.Shops.Add(((Location)map.Cells[rowIndex, columnIndex]));
                     }
                     else
                     {
                         building = new Warehouse();
+                        map.Warehouses.Add(((Location)map.Cells[rowIndex, columnIndex]));
                     }
                     ((Location)map.Cells[rowIndex, columnIndex]).Building = building;
                 }
@@ -933,7 +856,7 @@ namespace ClassLibrary
                 DataBase.CloseConnection();
             }
             #endregion
-
+            map.Id = mapId;
             return map;
         }
     }

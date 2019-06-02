@@ -104,5 +104,10 @@ namespace ClassLibrary
                             $" AND Location2MapId = '{mapId}';";
                 DataBase.ExecuteNonQuery(sql);
         }
+
+        public override string ToString()
+        {
+            return $"From {Vertex1} to {Vertex2}, costs {InitialCost}";
+        }
     }
 }

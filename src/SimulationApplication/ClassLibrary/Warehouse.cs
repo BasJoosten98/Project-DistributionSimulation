@@ -40,22 +40,26 @@ namespace ClassLibrary
         }
         public void RemoveAllvehicles()
         {
-            foreach(Vehicle v in vehicles)
+            if (vehicles != null)
             {
-                v.picBox.Dispose();
+                foreach (Vehicle v in vehicles)
+                {
+                    v.picBox.Dispose();
+                }
+                vehicles.Clear();
             }
-            vehicles.Clear();
         }
 
         public Warehouse() : base()
-        { }
+        {
+            TotalVehiclesAtStart = 1;
+            vehicles = new List<Vehicle>();
+        }
 
         public Warehouse(PictureBox PicBox)
             :base(PicBox)
         {
             //Roads = new List<Road>();
-            TotalVehiclesAtStart = 1;
-            vehicles = new List<Vehicle>();
         }
         public Warehouse(PictureBox PicBox, int totalVehicles)
             : base(PicBox)
