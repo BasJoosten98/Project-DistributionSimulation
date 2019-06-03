@@ -29,43 +29,49 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this.basicColumn2 = new Wpf.CartesianChart.Basic_Bars.BasicColumn();
-            this.elementHost2 = new System.Windows.Forms.Integration.ElementHost();
-            this.cartesianChart1 = new LiveCharts.Wpf.CartesianChart();
             this.ResetChartTimer = new System.Windows.Forms.Timer(this.components);
+            this.myChart = new LiveCharts.WinForms.CartesianChart();
+            this.myChart2 = new LiveCharts.WinForms.CartesianChart();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
-            // 
-            // elementHost1
-            // 
-            this.elementHost1.Location = new System.Drawing.Point(12, 12);
-            this.elementHost1.Name = "elementHost1";
-            this.elementHost1.Size = new System.Drawing.Size(384, 214);
-            this.elementHost1.TabIndex = 0;
-            this.elementHost1.Text = "elementHost1";
-            this.elementHost1.Child = this.basicColumn2;
-            // 
-            // elementHost2
-            // 
-            this.elementHost2.Location = new System.Drawing.Point(12, 259);
-            this.elementHost2.Name = "elementHost2";
-            this.elementHost2.Size = new System.Drawing.Size(387, 162);
-            this.elementHost2.TabIndex = 1;
-            this.elementHost2.Text = "elementHost2";
-      
-            this.elementHost2.Child = this.cartesianChart1;
             // 
             // ResetChartTimer
             // 
             this.ResetChartTimer.Interval = 20;
             // 
+            // myChart
+            // 
+            this.myChart.Location = new System.Drawing.Point(527, 12);
+            this.myChart.Name = "myChart";
+            this.myChart.Size = new System.Drawing.Size(411, 260);
+            this.myChart.TabIndex = 2;
+            this.myChart.Text = "cartesianChart2";
+            // 
+            // myChart2
+            // 
+            this.myChart2.Location = new System.Drawing.Point(12, 12);
+            this.myChart2.Name = "myChart2";
+            this.myChart2.Size = new System.Drawing.Size(440, 260);
+            this.myChart2.TabIndex = 3;
+            this.myChart2.Text = "cartesianChart2";
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 16;
+            this.listBox1.Location = new System.Drawing.Point(374, 308);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(347, 116);
+            this.listBox1.TabIndex = 4;
+            // 
             // StatisticsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(746, 522);
-            this.Controls.Add(this.elementHost2);
-            this.Controls.Add(this.elementHost1);
+            this.ClientSize = new System.Drawing.Size(1215, 522);
+            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.myChart2);
+            this.Controls.Add(this.myChart);
             this.Name = "StatisticsForm";
             this.Text = "StatisticsForm";
             this.Load += new System.EventHandler(this.StatisticsForm_Load);
@@ -75,10 +81,9 @@
 
         #endregion
         private Wpf.CartesianChart.Basic_Bars.BasicColumn basicColumn1;
-        private System.Windows.Forms.Integration.ElementHost elementHost1;
-        private Wpf.CartesianChart.Basic_Bars.BasicColumn basicColumn2;
-        private System.Windows.Forms.Integration.ElementHost elementHost2;
-        private LiveCharts.Wpf.CartesianChart cartesianChart1;
         private System.Windows.Forms.Timer ResetChartTimer;
+        private LiveCharts.WinForms.CartesianChart myChart;
+        private LiveCharts.WinForms.CartesianChart myChart2;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }

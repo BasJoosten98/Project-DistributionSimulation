@@ -55,6 +55,13 @@ namespace MapLayout
         }
 
 
+        public Timer Timer
+        {
+            get
+            {
+                return this.timer1;
+            }
+        }
         private void pictureBox1_Paint_1(object sender, PaintEventArgs e)
         {
             //change to Graphics.FromImage(bmp) for redraw 
@@ -509,6 +516,9 @@ namespace MapLayout
            // shortesRoutesRichTbx.Text += holder;
             if (drawHeatMap) { Map.RedrawMap(); }
             btnStatistics.Enabled = true;
+        //    myStats.Add(selectedLocations);
+
+
 
         }
 
@@ -594,7 +604,7 @@ namespace MapLayout
             // enables the button only after choosing all the shops and warehouses.
             btnStatistics.Enabled = true;
             //initializes a statistics form to which we can add shops and warehouses as we add them to the form.
-            myStats = new StatisticsForm(map.Shops);
+            myStats = new StatisticsForm(map.Shops,this,map);
 
             if (!simulationIsPlaying)
             {
@@ -1072,7 +1082,10 @@ namespace MapLayout
         private void btnStatistics_Click(object sender, EventArgs e)
         {
             //StatisticsForm myStats = new StatisticsForm();
-            myStats.Show();
+            
+            try { myStats.Show(); }
+            catch { myStats.Close(); }
+            finally {  }
         }
 
         private void Form1_Load(object sender, EventArgs e)
