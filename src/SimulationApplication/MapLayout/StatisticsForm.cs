@@ -18,24 +18,29 @@ namespace MapLayout
     public partial class StatisticsForm : Form
     {
 
-  
+
         List<Location> MyShops;
+        List<Location> MyWarehouses;
         List<int> MyShopsStock;
         Form1 parentForm;
         private Map map;
 
 
 
-        public StatisticsForm(List<Location> selectedLocations, Form1 form, Map map)
+        public StatisticsForm(List<Location> shops, List<Location> MyWarehouses, Form1 form, Map map)
         {
-            
+
             InitializeComponent();
             this.parentForm = form;
             parentForm.Timer.Tick += new EventHandler(Timer_Tick);
             //The locations are given at the begining, that is why the statistics button is enabled only after starting the simulation
-            this.MyShops = selectedLocations;
+            this.MyShops = shops;
+            this.MyWarehouses = MyWarehouses;
+            this.map = map;
+            // map.Statistics.ForEach(x => ((StatisticsShop)x).AverageStock);
             InitializeBarChart();
             InitializeLineChart();
+            InitializePieChart();
 
         }
         ColumnSeries col = new ColumnSeries()
@@ -57,7 +62,6 @@ namespace MapLayout
         {
             myShopValues = new ChartValues<int>();
 
-
             ColumnSeries col = new ColumnSeries()
             {
                 Title = "Stock",
@@ -65,7 +69,6 @@ namespace MapLayout
                 Values = myShopValues,
                 LabelPoint = point => point.Y.ToString()
             };
-
             Axis ax = new Axis()
             //changing the separator values will change the strings of the Labels for the items that we put in
             {
@@ -97,9 +100,79 @@ namespace MapLayout
             }
                 );
 
-           // myChart2.Series[0].Values[2];
+            // myChart2.Series[0].Values[2];
 
         }
+
+        // Will need this to change the Movement of the piechart 
+        List<ChartValues<int>> myPieChartsValues;
+        List<Statistics> myWarehouseStatistics;
+        public void InitializePieChart()
+        {
+            Func<ChartPoint, string> labelPoint = chartPoint =>
+                string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+
+            myPieChartsValues = new List<ChartValues<int>>();
+
+            List<ChartValues<double>> myCharts = new List<ChartValues<double>>();
+
+
+
+
+            pieChart1.Series = new SeriesCollection
+            {
+
+            };
+
+
+
+            //put all the titles in a list so I can add them in the pieChart chart
+            List<string> warehouseTitles = new List<string>();
+            foreach (var warehouse in MyWarehouses)
+            {
+                warehouseTitles.Add("Warehouse" + warehouse.LocationID.ToString());
+            }
+
+            myWarehouseStatistics = map.Statistics.Where(x => x is StatisticsWarehouse).ToList();
+
+
+        
+
+
+            // not sure what this does, should make sure that this represents the statistics of all the vehicles that have given deliveries.
+            foreach (Warehouse warehouse in MyWarehouses.Select(v => v.Building).Where(v => v is Warehouse).ToList())
+            {
+                int sum = 0;
+                warehouse.MakeStatistics(count).Vehicles.ForEach(vehicle => sum += vehicle.TotalDrivenTimeUnits);
+                count++;
+                myPieChartsValues.Add(new ChartValues<int> { sum });
+
+            }
+
+            // add a new pieChartSeries for each warehouse.
+            for (int i = 0; i < MyWarehouses.Count; i++)
+            {
+                pieChart1.Series.Add
+                    (
+                        new PieSeries()
+                        {
+
+                            Title = warehouseTitles[i],
+                            Values = myPieChartsValues[i],
+                            DataLabels = true,
+                            LabelPoint = labelPoint
+                        }
+                    );
+            }
+
+            //.ForEach(x => ((StatisticsWarehouse)x).Vehicles.
+            //ForEach(x=>x.TotalFinishedDeliveries) );
+
+            // statistics that are of type warehouse
+
+            pieChart1.LegendLocation = LegendLocation.Bottom;
+        }
+
 
         public void InitializeLineChart()
         {
@@ -158,7 +231,7 @@ namespace MapLayout
 
         }
 
-       
+
         /// <summary>
         /// Used to Refresh the selectedLocations recommended to be called at each tick of the form.
         /// </summary>
@@ -168,24 +241,40 @@ namespace MapLayout
             this.MyShops = selectedLocations;
         }
 
-    
+
         private void StatisticsForm_Load(object sender, EventArgs e)
         {
 
         }
 
-
+        int count = 0;
         private void Timer_Tick(object sender, EventArgs e)
         {
 
-            // Here I remove all the values and then add them again.
+            // Removing and adding the new values of  the shop barChart
 
-            foreach(var value in myShopValues)
+            foreach (var value in myShopValues)
                 myShopValues.Remove(value);
 
             foreach (var shop in MyShops.Select(v => v.Building).Where(v => v is Shop).ToList())
             {
-                   myShopValues.Add(((Shop)shop).Stock);
+                myShopValues.Add(((Shop)shop).Stock);
+            }
+
+            //Removing and adding the new values for the PieChartWarehouses.
+
+            foreach (var value in myPieChartsValues.ToList())
+            {
+                myPieChartsValues.Remove(value);
+            }
+         
+            foreach (Warehouse warehouse in MyWarehouses.Select(v => v.Building).Where(v => v is Warehouse).ToList())
+            {
+                int sum = 0;
+                warehouse.MakeStatistics(count).Vehicles.ForEach(vehicle => sum += vehicle.TotalDrivenTimeUnits);
+                count++;
+                myPieChartsValues.Add(new ChartValues<int> { sum });
+               
             }
         }
     }

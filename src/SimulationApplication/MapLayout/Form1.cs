@@ -52,6 +52,8 @@ namespace MapLayout
                 }
             }
 
+        //    btnStatistics.Enabled = false;
+
         }
 
 
@@ -501,6 +503,10 @@ namespace MapLayout
         private void timer1_Tick(object sender, EventArgs e)
         {
             timeStampCounter++;
+            if (timeStampCounter == 5 && btnStatMakeSure == true)
+            {
+                myStats = new StatisticsForm(map.Shops, map.Warehouses, this, map);
+            }
             map.NextTick(timeStampCounter);
             string holder = "";
             foreach (Location s in map.Shops)
@@ -515,8 +521,8 @@ namespace MapLayout
            // shortesRoutesRichTbx.Clear();
            // shortesRoutesRichTbx.Text += holder;
             if (drawHeatMap) { Map.RedrawMap(); }
-            btnStatistics.Enabled = true;
-        //    myStats.Add(selectedLocations);
+           // btnStatistics.Enabled = true;
+           // myStats.Add(selectedLocations);
 
 
 
@@ -592,19 +598,21 @@ namespace MapLayout
             timer1.Enabled = true;
             btnReset.Enabled = true;
             Console.WriteLine("Simulation has started");
-            btnStatistics.Enabled = true;
+         //   btnStatistics.Enabled = true;
         }
 
         private int timeStampCounter = 0;
         private bool simulationHasStarted = false;
         private bool simulationIsPlaying = false;
+        bool btnStatMakeSure = false;
         private void btnPlay_Click(object sender, EventArgs e)
         {
 
             // enables the button only after choosing all the shops and warehouses.
-            btnStatistics.Enabled = true;
+            // btnStatistics.Enabled = true;
             //initializes a statistics form to which we can add shops and warehouses as we add them to the form.
-            myStats = new StatisticsForm(map.Shops,this,map);
+            btnStatMakeSure = true;
+           
 
             if (!simulationIsPlaying)
             {
@@ -1082,7 +1090,9 @@ namespace MapLayout
         private void btnStatistics_Click(object sender, EventArgs e)
         {
             //StatisticsForm myStats = new StatisticsForm();
-            
+            if (timeStampCounter == 20 && map.Statistics.Count() >=1)
+                btnStatistics.Enabled = true;
+
             try { myStats.Show(); }
             catch { myStats.Close(); }
             finally {  }

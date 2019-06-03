@@ -13,10 +13,16 @@ namespace ClassLibrary
 		private List<Vehicle> vehicles;
 		private List<Shop> shops;
         private int totalvehiclesAtStart;
+        private int id;
 
         public List<Road> Roads { get; }
         public List<Vehicle> Vehicles { get {return vehicles; } }
         public int TotalVehiclesAtStart { get { return totalvehiclesAtStart; } set { if (value >= 1) { totalvehiclesAtStart = value; } else { throw new Exception("Total Vehicles per Warehouse should be greater than 0"); } } }
+
+        public int ID {
+            get { return id; }
+            set { id = value; }
+                      }
 
         public List<Shop> Shops
         {

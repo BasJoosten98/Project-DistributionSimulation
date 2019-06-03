@@ -32,7 +32,7 @@
             this.ResetChartTimer = new System.Windows.Forms.Timer(this.components);
             this.myChart = new LiveCharts.WinForms.CartesianChart();
             this.myChart2 = new LiveCharts.WinForms.CartesianChart();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.pieChart1 = new LiveCharts.WinForms.PieChart();
             this.SuspendLayout();
             // 
             // ResetChartTimer
@@ -55,21 +55,20 @@
             this.myChart2.TabIndex = 3;
             this.myChart2.Text = "cartesianChart2";
             // 
-            // listBox1
+            // pieChart1
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(374, 308);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(347, 116);
-            this.listBox1.TabIndex = 4;
+            this.pieChart1.Location = new System.Drawing.Point(273, 261);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(549, 212);
+            this.pieChart1.TabIndex = 4;
+            this.pieChart1.Text = "pieChart1";
             // 
             // StatisticsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1215, 522);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.pieChart1);
             this.Controls.Add(this.myChart2);
             this.Controls.Add(this.myChart);
             this.Name = "StatisticsForm";
@@ -84,6 +83,6 @@
         private System.Windows.Forms.Timer ResetChartTimer;
         private LiveCharts.WinForms.CartesianChart myChart;
         private LiveCharts.WinForms.CartesianChart myChart2;
-        private System.Windows.Forms.ListBox listBox1;
+        private LiveCharts.WinForms.PieChart pieChart1;
     }
 }

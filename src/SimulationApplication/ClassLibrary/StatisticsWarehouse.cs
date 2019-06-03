@@ -11,6 +11,7 @@ namespace ClassLibrary
         private List<StatisticsVehicle> vehicles;
         private Warehouse warehouse;
 
+
         public List<StatisticsVehicle> Vehicles { get { return vehicles; } }
         public Warehouse Warehouse { get { return warehouse; } } 
         public int TotalGivenDeliveries
@@ -37,6 +38,8 @@ namespace ClassLibrary
                 return sum;
             }
         }
+
+
         public double AverageDeliveryWaitingTime
         {
             get
@@ -49,6 +52,7 @@ namespace ClassLibrary
                 return sum/counter;
             }
         }
+
         public double VehicleBeingUsedTimePercentage
         {
             get
@@ -77,4 +81,5 @@ namespace ClassLibrary
             }
         }
     }
+
 }
