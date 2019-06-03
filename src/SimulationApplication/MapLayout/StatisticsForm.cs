@@ -114,7 +114,7 @@ namespace MapLayout
 
             myPieChartsValues = new List<ChartValues<int>>();
 
-            List<ChartValues<double>> myCharts = new List<ChartValues<double>>();
+           // List<ChartValues<double>> myCharts = new List<ChartValues<double>>();
 
 
 
@@ -136,18 +136,31 @@ namespace MapLayout
             myWarehouseStatistics = map.Statistics.Where(x => x is StatisticsWarehouse).ToList();
 
 
-        
 
 
-            // not sure what this does, should make sure that this represents the statistics of all the vehicles that have given deliveries.
-            foreach (Warehouse warehouse in MyWarehouses.Select(v => v.Building).Where(v => v is Warehouse).ToList())
+
+            foreach (var warehouse in MyWarehouses)
             {
                 int sum = 0;
-                warehouse.MakeStatistics(count).Vehicles.ForEach(vehicle => sum += vehicle.TotalDrivenTimeUnits);
-                count++;
+                foreach (var warStatistic in map.Statistics.Where(x => x is StatisticsWarehouse))
+                {
+                    if (((StatisticsWarehouse)warStatistic).Warehouse == warehouse.Building)
+                    {
+                        ((StatisticsWarehouse)warStatistic).Vehicles.ForEach(vehicle => sum += vehicle.TotalDrivenTimeUnits);                      
+                    }
+                }
                 myPieChartsValues.Add(new ChartValues<int> { sum });
-
             }
+
+            // not sure what this does, should make sure that this represents the statistics of all the vehicles that have given deliveries.
+            //foreach (Warehouse warehouse in MyWarehouses.Select(v => v.Building).Where(v => v is Warehouse).ToList())
+            //{
+            //    int sum = 0;
+            //    warehouse.MakeStatistics(count).Vehicles.ForEach(vehicle => sum += vehicle.TotalGivenDeliveries);
+            //    count++;
+            //    myPieChartsValues.Add(new ChartValues<int> { sum });
+
+            //}
 
             // add a new pieChartSeries for each warehouse.
             for (int i = 0; i < MyWarehouses.Count; i++)
@@ -267,15 +280,29 @@ namespace MapLayout
             {
                 myPieChartsValues.Remove(value);
             }
-         
-            foreach (Warehouse warehouse in MyWarehouses.Select(v => v.Building).Where(v => v is Warehouse).ToList())
+
+            //foreach (Warehouse warehouse in MyWarehouses.Select(v => v.Building).Where(v => v is Warehouse).ToList())
+            //{
+            //    int sum = 0;
+            //    warehouse.MakeStatistics(count).Vehicles.ForEach(vehicle => sum += vehicle.TotalDrivenTimeUnits);
+            //    count++;
+            //    myPieChartsValues.Add(new ChartValues<int> { sum });
+
+            //}
+
+            foreach (var warehouse in MyWarehouses)
             {
                 int sum = 0;
-                warehouse.MakeStatistics(count).Vehicles.ForEach(vehicle => sum += vehicle.TotalDrivenTimeUnits);
-                count++;
+                foreach (var warStatistic in map.Statistics.Where(x => x is StatisticsWarehouse))
+                {
+                    if (((StatisticsWarehouse)warStatistic).Warehouse == warehouse.Building)
+                    {
+                        ((StatisticsWarehouse)warStatistic).Vehicles.ForEach(vehicle => sum += vehicle.TotalGivenDeliveries);
+                    }
+                }
                 myPieChartsValues.Add(new ChartValues<int> { sum });
-               
             }
+
         }
     }
 }
