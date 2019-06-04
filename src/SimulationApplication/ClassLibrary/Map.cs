@@ -39,9 +39,10 @@ namespace ClassLibrary
 
         public Map(int numberOfCells, int cellSize)
         {
-            NumberOfCells = numberOfCells;
+            NumberOfCells = numberOfCells > 0 ? numberOfCells : 0;
             Cell.CellSize = cellSize;
             CellSize = cellSize;
+
             Cells = new Cell[NumberOfCells, NumberOfCells];
 
             // Seed the random generator to get reproducable results.
@@ -76,7 +77,7 @@ namespace ClassLibrary
         /// <param name="MapBox"></param>
         public Map(int numberOfCells, int cellSize, PictureBox MapBox, int numberOfLocations = 10) : this(numberOfCells, cellSize)
         {
-            NumberOfLocations = numberOfLocations;
+            NumberOfLocations = numberOfLocations > 0 ? numberOfLocations : 0;
             mapPicBox = MapBox;
             for (int rowCount = 0; rowCount < NumberOfCells; rowCount++)
             {
@@ -94,19 +95,30 @@ namespace ClassLibrary
                 c.SetDemandGrow(demand);
             }
 
-            while (numberOfLocations > 0)
+            numberOfLocations = numberOfLocations > (numberOfCells * numberOfCells) ? (numberOfCells * numberOfCells) : numberOfLocations;
+            if (numberOfCells > 0)
             {
-                Cell c = GenerateRandomLocation();
-                if (!(c is Location))
+                while (numberOfLocations > 0)
                 {
-                    // and decrement number of locations to be added to the cells/map.
-                    Location newLocation = ChangeCellIntoLocation(c, 2);
-                    Locations.Add(newLocation);
-                    numberOfLocations--;
+                    Cell c = GenerateRandomLocation();
+                    if (!(c is Location))
+                    {
+                        // and decrement number of locations to be added to the cells/map.
+                        Location newLocation = ChangeCellIntoLocation(c, 2);
+                        Locations.Add(newLocation);
+                        numberOfLocations--;
+                    }
+                }
+
+                if (NumberOfLocations == 10)
+                {
+                    CreateFixedRoads();
                 }
             }
-            // Prints the count property of the List of location objects.
+        }
 
+        private void CreateFixedRoads()
+        {
             // Create and add roads to the map entity
             // 1 -> 2, weight: 3
             AddRoadWithRandomWeight(Locations[0], Locations[1]);
