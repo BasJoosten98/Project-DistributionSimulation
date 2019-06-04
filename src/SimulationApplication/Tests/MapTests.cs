@@ -43,13 +43,13 @@ namespace ClassLibrary.Tests
                 if (numberOfLocations <= numberOfCells * numberOfCells)
                 {
                     // Make sure the locationCount is equal to the input number of locations.
-                    Assert.True(locationCount == numberOfLocations);
+                    Assert.Equal(locationCount, numberOfLocations);
                 }
                 else
                 {
                     // Make sure the number of locations the map holds is equal to the
                     // maximum possible, which is the 4x4 square or 16.
-                    Assert.True(locationCount == numberOfCells * numberOfCells);
+                    Assert.Equal(locationCount, numberOfCells * numberOfCells);
                 }
             }
         }
