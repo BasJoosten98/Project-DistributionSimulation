@@ -67,14 +67,14 @@ namespace ClassLibrary
         }
 
 
-            /// <summary>
-            /// Creates a map objects and initializes with the given values
-            /// </summary>
-            /// <param name="numberOfLocations"></param>
-            /// <param name="numberOfCells"></param>
-            /// <param name="cellSize"></param>
-            /// <param name="MapBox"></param>
-            public Map(int numberOfCells, int cellSize, PictureBox MapBox, int numberOfLocations = 10) : this(numberOfCells, cellSize)
+        /// <summary>
+        /// Creates a map objects and initializes with the given values
+        /// </summary>
+        /// <param name="numberOfLocations"></param>
+        /// <param name="numberOfCells"></param>
+        /// <param name="cellSize"></param>
+        /// <param name="MapBox"></param>
+        public Map(int numberOfCells, int cellSize, PictureBox MapBox, int numberOfLocations = 10) : this(numberOfCells, cellSize)
         {
             NumberOfLocations = numberOfLocations;
             mapPicBox = MapBox;
@@ -144,16 +144,16 @@ namespace ClassLibrary
             statistics.Clear();
             createDistributionManager();
             Cell.Reset();
-            foreach(Cell c in Cells)
+            foreach (Cell c in Cells)
             {
                 c.CellReset();
             }
-            foreach(Location l in shops)
+            foreach (Location l in shops)
             {
                 Shop s = (Shop)l.Building;
                 s.ShopReset();
             }
-            foreach(Location l in warehouses)
+            foreach (Location l in warehouses)
             {
                 Warehouse w = (Warehouse)l.Building;
                 w.ResetWarehouse();
@@ -168,13 +168,13 @@ namespace ClassLibrary
         }
         public void RandomizeLocationsAndRoads()
         {
-            
-            int numberOfLocations = rng2.Next(1, (int)Math.Floor((double)(NumberOfCells*NumberOfCells)/ 10));
+
+            int numberOfLocations = rng2.Next(1, (int)Math.Floor((double)(NumberOfCells * NumberOfCells) / 10));
 
             //remove all locations
-            for(int i = 0; i < locations.Count; i++)
+            for (int i = 0; i < locations.Count; i++)
             {
-                if(locations[i].Building != null)
+                if (locations[i].Building != null)
                 {
                     RemoveBuilding(locations[i]);
                 }
@@ -184,18 +184,18 @@ namespace ClassLibrary
 
             //place new loactions
             List<Cell> tempCells = new List<Cell>();
-            foreach(Cell c in Cells)
+            foreach (Cell c in Cells)
             {
                 tempCells.Add(c);
             }
 
             int nextCell;
             double nextMax = (double)tempCells.Count / numberOfLocations;
-            for(int i = 1; i <= numberOfLocations; i++)
+            for (int i = 1; i <= numberOfLocations; i++)
             {
-                nextCell = rng2.Next((int)Math.Floor((i-1) * nextMax), (int)Math.Floor(i * nextMax));
+                nextCell = rng2.Next((int)Math.Floor((i - 1) * nextMax), (int)Math.Floor(i * nextMax));
                 Cell c = tempCells[nextCell];
-                if(!(c is Location))
+                if (!(c is Location))
                 {
                     Location l = ChangeCellIntoLocation(c, 2);
                     locations.Add(l);
@@ -238,7 +238,7 @@ namespace ClassLibrary
             // Remove the roads from the road collection.
             for (int i = 0; i < Edges.Count; i++)
             {
-                if(Edges[i].Vertex1 == l || Edges[i].Vertex2 == l)
+                if (Edges[i].Vertex1 == l || Edges[i].Vertex2 == l)
                 {
                     Edges.RemoveAt(i);
                     i--;
@@ -261,11 +261,11 @@ namespace ClassLibrary
         public void NextTick(int timeStamp)
         {
             List<Cell> tempList = new List<Cell>();
-            foreach(Cell c in Cells)
+            foreach (Cell c in Cells)
             {
                 tempList.Add(c);
             }
-            while(tempList.Count > 0)
+            while (tempList.Count > 0)
             {
                 int r = rng2.Next(0, tempList.Count);
                 tempList[r].NextTick(timeStamp);
@@ -280,7 +280,7 @@ namespace ClassLibrary
         }
         private void updateStatistics(int timeStamp)
         {
-            foreach(Location s in Shops)
+            foreach (Location s in Shops)
             {
                 Statistics.Add(((Shop)s.Building).MakeStatistics(timeStamp));
             }
@@ -328,7 +328,7 @@ namespace ClassLibrary
         public bool RemoveRoad(Location l1, Location l2)
         {
             Road r = getRoadByLocations(l1, l2);
-            if(r != null)
+            if (r != null)
             {
                 Edges.Remove(r);
                 return true;
@@ -337,7 +337,7 @@ namespace ClassLibrary
         }
         public void AddNewBuilding(Location l)
         {
-            if(l.Building is Warehouse)
+            if (l.Building is Warehouse)
             {
                 Warehouses.Add(l);
             }
@@ -349,9 +349,9 @@ namespace ClassLibrary
         }
         private Cell getCellByIndex(int column, int row)
         {
-            foreach(Cell c in Cells)
+            foreach (Cell c in Cells)
             {
-                if(c.Index.Column == column && c.Index.Row == row)
+                if (c.Index.Column == column && c.Index.Row == row)
                 {
                     return c;
                 }
@@ -366,15 +366,15 @@ namespace ClassLibrary
         {
             Shop shop = (Shop)shopLocation.Building;
             int downPerDistance = (int)Math.Floor((double)100 / (shopLocation.Radius + 1));
-            for(int col = shopLocation.Index.Column - shopLocation.Radius; col <= shopLocation.Index.Column + shopLocation.Radius; col++)
+            for (int col = shopLocation.Index.Column - shopLocation.Radius; col <= shopLocation.Index.Column + shopLocation.Radius; col++)
             {
                 for (int row = shopLocation.Index.Row - shopLocation.Radius; row <= shopLocation.Index.Row + shopLocation.Radius; row++)
                 {
                     Cell c = getCellByIndex(col, row);
-                    if(c != null)
+                    if (c != null)
                     {
                         int distance;
-                        if(Math.Abs(row - shopLocation.Index.Row) > Math.Abs(col - shopLocation.Index.Column))
+                        if (Math.Abs(row - shopLocation.Index.Row) > Math.Abs(col - shopLocation.Index.Column))
                         {
                             distance = Math.Abs(row - shopLocation.Index.Row);
                         }
@@ -392,7 +392,7 @@ namespace ClassLibrary
 
         private void removeShopRadiusFromCells(Shop s)
         {
-            foreach(Cell c in Cells)
+            foreach (Cell c in Cells)
             {
                 c.RemoveShopRadius(s);
             }
@@ -404,7 +404,7 @@ namespace ClassLibrary
             {
                 Warehouses.Remove(l);
                 l.Building.picBox.Dispose();
-                ((Warehouse)l.Building).RemoveAllvehicles();                
+                ((Warehouse)l.Building).RemoveAllvehicles();
             }
             else if (l.Building is Shop)
             {
@@ -414,7 +414,7 @@ namespace ClassLibrary
             }
             l.Building = null;
             // Set the entity's building to null as well.
-//            l.LocationEntity.Building = null; //------------------------------------------------------------------------------
+            //            l.LocationEntity.Building = null; //------------------------------------------------------------------------------
         }
 
         /// <summary>
@@ -449,9 +449,9 @@ namespace ClassLibrary
         /// <returns>Location</returns>
         public Location GetLocationByID(int id)
         {
-            foreach(Location l in Locations)
+            foreach (Location l in Locations)
             {
-                if(l.LocationID == id)
+                if (l.LocationID == id)
                 {
                     return l;
                 }
@@ -466,9 +466,9 @@ namespace ClassLibrary
         /// <returns>Location</returns>
         public Location getCellByLocation(Location l)
         {
-            foreach(Location loc in Locations)
+            foreach (Location loc in Locations)
             {
-                if(loc.LocationPoint == l.LocationPoint)
+                if (loc.LocationPoint == l.LocationPoint)
                 {
                     return loc;
                 }
@@ -483,7 +483,7 @@ namespace ClassLibrary
         private Cell GenerateRandomLocation()
         {
             // Return a cell at index [x, y] where x and y are numbers between 0 and NumOfCells (exclusive)
-            return Cells[rng.Next(0, NumberOfCells), rng.Next(0, NumberOfCells)]; 
+            return Cells[rng.Next(0, NumberOfCells), rng.Next(0, NumberOfCells)];
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -574,7 +574,7 @@ namespace ClassLibrary
 
             if (this.V < 10) // instead of 10 here we should put the vertex limit
                 this.Locations.Add(v);
-           
+
 
             //else
             //    System.Windows.Forms.MessageBox.Show("Vertex limit reached!", "Warning");
@@ -720,7 +720,7 @@ namespace ClassLibrary
                 road.Save(Id);
             }
         }
-   
+
         public static Map Load(int mapId)
         {
             #region Map
@@ -749,7 +749,6 @@ namespace ClassLibrary
                 DataBase.CloseConnection();
             }
             #endregion
-
             #region Cells
             Cell[,] cells = new Cell[numberOfCells, numberOfCells];
             sql = $"SELECT * FROM CELLS WHERE MapId = {mapId}";
@@ -794,8 +793,6 @@ namespace ClassLibrary
             }
             map.Cells = cells;
             #endregion
-
-
             #region Roads
             sql = $"SELECT * FROM ROADS WHERE Location1MapId = {mapId} AND Location2MapId = {mapId}";
             try
@@ -810,7 +807,7 @@ namespace ClassLibrary
                 int destinationColumnIndex;
                 int initialCost;
 
-                while(reader.Read())
+                while (reader.Read())
                 {
                     sourceRowIndex = reader.GetInt32(1);
                     sourceColumnIndex = reader.GetInt32(2);
@@ -831,8 +828,6 @@ namespace ClassLibrary
                 DataBase.CloseConnection();
             }
             #endregion
-
-            // Finally the buildings
             #region Buildings
             sql = $"SELECT * FROM BUILDINGS WHERE MapId = {mapId}";
             try
@@ -877,6 +872,26 @@ namespace ClassLibrary
             #endregion
             map.Id = mapId;
             return map;
+        }
+
+        public void ReAssignMaxDemandAndGrowth()
+        {
+            int newMaxDemand = int.MinValue;
+            int newMaxDemandGrowth = int.MinValue;
+            foreach (Cell c in Cells)
+            {
+                if (c.Demand > newMaxDemand)
+                {
+                    newMaxDemand = c.Demand;
+                }
+
+                if (c.DemandGrow > newMaxDemandGrowth)
+                {
+                    newMaxDemandGrowth = c.DemandGrow;
+                }
+            }
+            Cell.maxDemand = newMaxDemand;
+            Cell.maxDemandGrow = newMaxDemandGrowth;
         }
     }
 }

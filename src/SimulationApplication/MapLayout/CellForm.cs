@@ -13,6 +13,8 @@ namespace MapLayout
 {
     public partial class CellForm : Form
     {
+        public delegate void ReAssignMaxDemandHandler();
+        public event ReAssignMaxDemandHandler MapInNeedOfReAssignmentOfMaximum;
 
         private Location location;
         private Cell cell;
@@ -93,6 +95,10 @@ namespace MapLayout
             if (growth >= 0 && radius >= 0)
             {
                 cell.SetDemandGrow(growth);
+                if (MapInNeedOfReAssignmentOfMaximum != null)
+                {
+                    MapInNeedOfReAssignmentOfMaximum();
+                }
                 if (location != null)
                 {
                     location.Radius = radius;
@@ -102,7 +108,6 @@ namespace MapLayout
             {
                 MessageBox.Show("Demand cannot be less than 0");
             }
-
 
             switch (lbBuilding.Text)
             {

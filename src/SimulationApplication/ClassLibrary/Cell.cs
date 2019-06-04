@@ -15,8 +15,8 @@ namespace ClassLibrary
         public int CellLineWidth = 1;
 
         //Cell fields
-        private static int maxDemand = 0; 
-        private static int maxDemandGrow = 0;
+        public static int maxDemand = 0; 
+        public static int maxDemandGrow = 0;
         private static Random rand = new Random();
 
         private int demand; //Current demand of the cell

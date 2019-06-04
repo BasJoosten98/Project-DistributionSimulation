@@ -389,7 +389,8 @@ namespace MapLayout
                                 }
 
                                 CellForm cForm = new CellForm(location, c);
-                                if(simulationHasStarted)
+                                cForm.MapInNeedOfReAssignmentOfMaximum += map.ReAssignMaxDemandAndGrowth;
+                                if (simulationHasStarted)
                                     cForm.disableFields();
                                 cForm.Show();
                             }
@@ -819,9 +820,9 @@ namespace MapLayout
         {
             this.map.RemoveAllBuildings();
             Console.WriteLine($"Map to be loaded: {mapId}");
-            Cell.Reset();
             Map map = Map.Load(mapId);
             this.map = map;
+            map.ReAssignMaxDemandAndGrowth();
             foreach (Location location in map.Locations)
             {
                 if (location.Building != null)
