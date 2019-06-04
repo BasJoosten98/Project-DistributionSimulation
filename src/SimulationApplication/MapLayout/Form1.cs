@@ -612,6 +612,8 @@ namespace MapLayout
             // btnStatistics.Enabled = true;
             //initializes a statistics form to which we can add shops and warehouses as we add them to the form.
             btnStatMakeSure = true;
+            
+          //  if(startedTheSimulation)
            
 
             if (!simulationIsPlaying)
