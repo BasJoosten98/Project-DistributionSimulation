@@ -11,7 +11,7 @@ namespace ClassLibrary
 	public class Warehouse : Building
 	{
 		private List<Vehicle> vehicles;
-		private List<Shop> shops;
+		private List<Shop> _shops;
         private int totalvehiclesAtStart;
 
         public List<Road> Roads { get; }
@@ -22,12 +22,12 @@ namespace ClassLibrary
         {
             get
             {
-                return new List<Shop>(shops);
+                return new List<Shop>(_shops);
             }
             set
             {
-                shops = value;
-                foreach (Shop shop in this.shops)
+                _shops = value;
+                foreach (Shop shop in this._shops)
                 {
                     shop.LowStockReached += Item_LowStockReached;
                 }
@@ -54,6 +54,10 @@ namespace ClassLibrary
         {
             TotalVehiclesAtStart = 1;
             vehicles = new List<Vehicle>();
+        }
+        public Warehouse(List<Shop> shops) : base()
+        {
+            Shops = shops;
         }
 
         public Warehouse(PictureBox PicBox) : this()
@@ -113,7 +117,7 @@ namespace ClassLibrary
 
         public Shop GetShop(int ID)
         {
-            return shops.Find(shop => shop.ID == ID);
+            return Shops.Find(shop => shop.ID == ID);
         }
         public void NextTick(int timeStamp)
         {
