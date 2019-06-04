@@ -24,8 +24,7 @@ namespace MapLayout
         List<int> MyShopsStock;
         Form1 parentForm;
         private Map map;
-
-
+        int numberOfVehiclesInTotal;
 
         public StatisticsForm(List<Location> shops, List<Location> MyWarehouses, Form1 form, Map map)
         {
@@ -33,13 +32,17 @@ namespace MapLayout
             InitializeComponent();
             this.parentForm = form;
             parentForm.Timer.Tick += new EventHandler(Timer_Tick);
+            numberOfVehiclesInTotal = 0;
             //The locations are given at the begining, that is why the statistics button is enabled only after starting the simulation
             this.MyShops = shops;
             this.MyWarehouses = MyWarehouses;
             this.map = map;
-            // map.Statistics.ForEach(x => ((StatisticsShop)x).AverageStock);
+            //set the total number of vehicles
+     
+            MyWarehouses.ForEach(warehouse => numberOfVehiclesInTotal += ((Warehouse)warehouse.Building).Vehicles.Count);
+
             InitializeBarChart();
-            InitializeLineChart();
+         //   InitializeLineChart();
             InitializePieChart();
 
         }
@@ -187,62 +190,9 @@ namespace MapLayout
         }
 
 
-        public void InitializeLineChart()
-        {
+        
 
-            myChart.Series = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Title = "Series 1",
-                    Values = new ChartValues<double> {4, 6, 5, 2, 7}
-                },
-                new LineSeries
-                {
-                    Title = "Series 2",
-                    Values = new ChartValues<double> {6, 7, 3, 4, 6},
-                    PointGeometry = null
-                },
-                new LineSeries
-                {
-                    Title = "Series 3",
-                    Values = new ChartValues<double> {5, 2, 8, 3},
-                    PointGeometry = DefaultGeometries.Square,
-                    PointGeometrySize = 15
-                }
-            };
-
-            myChart.AxisX.Add(new Axis
-            {
-                Title = "Month",
-                Labels = new[] { "Jan", "Feb", "Mar", "Apr", "May" }
-            });
-
-            myChart.AxisY.Add(new Axis
-            {
-                Title = "Sales",
-                LabelFormatter = value => value.ToString("C")
-            });
-
-            myChart.LegendLocation = LegendLocation.Right;
-            myChart.Series[2].Values.Add(100d);
-            myChart.Series[2].Values.Add(100d);
-            myChart.Series[2].Values.Add(100d);
-            myChart.Series[2].Values.Add(100d);
-            //modifying the series collection will animate and update the chart
-            //myChart.Series.Add(new LineSeries
-            //{
-            //    Values = new ChartValues<double> { 5, 3, 2, 4, 5 },
-            //    LineSmoothness = 0, //straight lines, 1 really smooth lines
-            //    PointGeometry = Geometry.Parse("m 25 70.36218 20 -28 -20 22 -8 -6 z"),
-            //    PointGeometrySize = 50,
-            //    PointForeground = Brushes.Gray
-            //});
-
-            //modifying any series values will also animate and update the chart
-            myChart.Series[2].Values.Add(5d);
-
-        }
+        
 
 
         /// <summary>
@@ -257,7 +207,7 @@ namespace MapLayout
 
         private void StatisticsForm_Load(object sender, EventArgs e)
         {
-
+         
         }
 
         int count = 0;
@@ -303,6 +253,50 @@ namespace MapLayout
                 myPieChartsValues.Add(new ChartValues<int> { sum });
             }
 
+            //Trying to update all the labels
+
+            double AverageDeliveryWaitTime = 0;
+            double DrivingTimePercentage = 0;
+            double NonDrivingTimePercentage = 0;
+            double TotalDeliveryWaitTime = 0;
+            double TotalDrivenTimeUnits = 0;
+            double TotalFinishedDeliveries = 0;
+            double TotalGivenDelivers = 0;
+            double TotalNonDrivenTimeUnits = 0;
+
+            foreach (var warehouse in MyWarehouses)
+            {
+                
+                foreach (var warStatistic in map.Statistics.Where(x => x is StatisticsWarehouse))
+                {
+                    ((StatisticsWarehouse)warStatistic).Vehicles.ForEach(vehicle => 
+                    {
+                       
+
+                        AverageDeliveryWaitTime += vehicle.AverageDeliveryWaitTime;
+                        DrivingTimePercentage += vehicle.DrivingTimePercentage;
+                        NonDrivingTimePercentage += vehicle.NonDrivingTimePercentage;
+                        TotalDeliveryWaitTime += vehicle.TotalDeliveryWaitTime;
+                        TotalDrivenTimeUnits += vehicle.TotalDrivenTimeUnits;
+                        TotalFinishedDeliveries += vehicle.TotalFinishedDeliveries;
+                        TotalGivenDelivers += vehicle.TotalGivenDeliveries;
+                        TotalNonDrivenTimeUnits += vehicle.TotalGivenDeliveries;
+                    });
+                }
+             
+            }
+
+            lbAverageDeliveryWaitTime.Text = (AverageDeliveryWaitTime / numberOfVehiclesInTotal).ToString();
+            lbDrivingTimePercentage.Text = (DrivingTimePercentage / numberOfVehiclesInTotal).ToString();
+            lbNonDrivingTimePercentage.Text = (NonDrivingTimePercentage / numberOfVehiclesInTotal).ToString();
+            lbTotalDeliveryWaitTime.Text = (TotalNonDrivenTimeUnits / numberOfVehiclesInTotal).ToString();
+            lbTotalDrivenTimeUnits.Text = (TotalDrivenTimeUnits / numberOfVehiclesInTotal).ToString();
+            lbTotalFinishedDeliveries.Text = (TotalFinishedDeliveries / numberOfVehiclesInTotal).ToString();
+            lbTotalGivenDeliveries.Text = (TotalGivenDelivers / numberOfVehiclesInTotal).ToString();
+            lbTotalNonDrivenTimeUnits.Text = (TotalNonDrivenTimeUnits / numberOfVehiclesInTotal).ToString();
+
         }
+
+
     }
 }
