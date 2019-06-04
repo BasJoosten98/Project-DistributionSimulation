@@ -17,12 +17,14 @@ namespace ClassLibrary
         //Cell fields
         private static int maxDemand = 0; 
         private static int maxDemandGrow = 0;
+        private static int maxAllowedDemand = 100;
         private static Random rand = new Random();
 
         private int demand; //Current demand of the cell
         private int demandGrow; //Demand grow per tick
         private List<ShopRadius> shopRadiuses = new List<ShopRadius>(); 
 
+        public static int MaxAllowedDemand { get { return maxAllowedDemand; } set { if (value > 0) { maxAllowedDemand = value; } } }
         public static int MaxDemand { get { return maxDemand; } }
         public static int MaxDemandGrow { get { return maxDemandGrow;  } }
         public int Demand { get { return this.demand; } }
@@ -84,6 +86,10 @@ namespace ClassLibrary
 
             //APPLY DEMAND GROW
             demand += DemandGrow;
+            if(demand > maxAllowedDemand)
+            {
+                demand = maxAllowedDemand;
+            }
             if(demand > maxDemand)
             {
                 maxDemand = demand;
