@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.gbInfo = new System.Windows.Forms.GroupBox();
+            this.tbMax = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tbRaduis = new System.Windows.Forms.TextBox();
             this.lbBuilding = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tbGrowth = new System.Windows.Forms.TextBox();
@@ -50,12 +54,11 @@
             this.lbStock = new System.Windows.Forms.Label();
             this.tbReStock = new System.Windows.Forms.TextBox();
             this.gbWarehouse = new System.Windows.Forms.GroupBox();
+            this.tbCapacity = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.tbVehicles = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.tbRaduis = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.tbCapacity = new System.Windows.Forms.TextBox();
+            this.tbApply = new System.Windows.Forms.Button();
             this.gbInfo.SuspendLayout();
             this.gbBInfo.SuspendLayout();
             this.gbWarehouse.SuspendLayout();
@@ -63,6 +66,8 @@
             // 
             // gbInfo
             // 
+            this.gbInfo.Controls.Add(this.tbMax);
+            this.gbInfo.Controls.Add(this.label11);
             this.gbInfo.Controls.Add(this.label8);
             this.gbInfo.Controls.Add(this.tbRaduis);
             this.gbInfo.Controls.Add(this.lbBuilding);
@@ -79,15 +84,47 @@
             this.gbInfo.Controls.Add(this.lbLocation);
             this.gbInfo.Location = new System.Drawing.Point(13, 13);
             this.gbInfo.Name = "gbInfo";
-            this.gbInfo.Size = new System.Drawing.Size(125, 154);
+            this.gbInfo.Size = new System.Drawing.Size(125, 185);
             this.gbInfo.TabIndex = 0;
             this.gbInfo.TabStop = false;
             this.gbInfo.Text = "Cell";
             // 
+            // tbMax
+            // 
+            this.tbMax.Location = new System.Drawing.Point(55, 77);
+            this.tbMax.Name = "tbMax";
+            this.tbMax.Size = new System.Drawing.Size(60, 20);
+            this.tbMax.TabIndex = 13;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(11, 80);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(30, 13);
+            this.label11.TabIndex = 12;
+            this.label11.Text = "Max:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(9, 134);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(43, 13);
+            this.label8.TabIndex = 11;
+            this.label8.Text = "Radius:";
+            // 
+            // tbRaduis
+            // 
+            this.tbRaduis.Location = new System.Drawing.Point(55, 131);
+            this.tbRaduis.Name = "tbRaduis";
+            this.tbRaduis.Size = new System.Drawing.Size(60, 20);
+            this.tbRaduis.TabIndex = 10;
+            // 
             // lbBuilding
             // 
             this.lbBuilding.AutoSize = true;
-            this.lbBuilding.Location = new System.Drawing.Point(52, 133);
+            this.lbBuilding.Location = new System.Drawing.Point(56, 161);
             this.lbBuilding.Name = "lbBuilding";
             this.lbBuilding.Size = new System.Drawing.Size(33, 13);
             this.lbBuilding.TabIndex = 2;
@@ -97,7 +134,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(9, 133);
+            this.label6.Location = new System.Drawing.Point(9, 161);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(47, 13);
             this.label6.TabIndex = 1;
@@ -105,7 +142,7 @@
             // 
             // tbGrowth
             // 
-            this.tbGrowth.Location = new System.Drawing.Point(55, 76);
+            this.tbGrowth.Location = new System.Drawing.Point(55, 104);
             this.tbGrowth.Name = "tbGrowth";
             this.tbGrowth.Size = new System.Drawing.Size(60, 20);
             this.tbGrowth.TabIndex = 9;
@@ -113,7 +150,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(10, 79);
+            this.label7.Location = new System.Drawing.Point(10, 107);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(44, 13);
             this.label7.TabIndex = 8;
@@ -194,9 +231,9 @@
             // 
             // bSave
             // 
-            this.bSave.Location = new System.Drawing.Point(144, 119);
+            this.bSave.Location = new System.Drawing.Point(144, 160);
             this.bSave.Name = "bSave";
-            this.bSave.Size = new System.Drawing.Size(126, 48);
+            this.bSave.Size = new System.Drawing.Size(124, 38);
             this.bSave.TabIndex = 2;
             this.bSave.Text = "Save";
             this.bSave.UseVisualStyleBackColor = true;
@@ -276,10 +313,26 @@
             this.gbWarehouse.Controls.Add(this.label9);
             this.gbWarehouse.Location = new System.Drawing.Point(144, 13);
             this.gbWarehouse.Name = "gbWarehouse";
-            this.gbWarehouse.Size = new System.Drawing.Size(124, 96);
+            this.gbWarehouse.Size = new System.Drawing.Size(124, 100);
             this.gbWarehouse.TabIndex = 4;
             this.gbWarehouse.TabStop = false;
             this.gbWarehouse.Text = "Warehouse Info";
+            // 
+            // tbCapacity
+            // 
+            this.tbCapacity.Location = new System.Drawing.Point(60, 60);
+            this.tbCapacity.Name = "tbCapacity";
+            this.tbCapacity.Size = new System.Drawing.Size(58, 20);
+            this.tbCapacity.TabIndex = 4;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(7, 63);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(51, 13);
+            this.label10.TabIndex = 3;
+            this.label10.Text = "Capacity:";
             // 
             // tbVehicles
             // 
@@ -298,43 +351,22 @@
             this.label9.TabIndex = 1;
             this.label9.Text = "Vehicles:";
             // 
-            // tbRaduis
+            // tbApply
             // 
-            this.tbRaduis.Location = new System.Drawing.Point(55, 103);
-            this.tbRaduis.Name = "tbRaduis";
-            this.tbRaduis.Size = new System.Drawing.Size(60, 20);
-            this.tbRaduis.TabIndex = 10;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(9, 106);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(43, 13);
-            this.label8.TabIndex = 11;
-            this.label8.Text = "Radius:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(7, 63);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(51, 13);
-            this.label10.TabIndex = 3;
-            this.label10.Text = "Capacity:";
-            // 
-            // tbCapacity
-            // 
-            this.tbCapacity.Location = new System.Drawing.Point(60, 60);
-            this.tbCapacity.Name = "tbCapacity";
-            this.tbCapacity.Size = new System.Drawing.Size(58, 20);
-            this.tbCapacity.TabIndex = 4;
+            this.tbApply.Location = new System.Drawing.Point(144, 119);
+            this.tbApply.Name = "tbApply";
+            this.tbApply.Size = new System.Drawing.Size(124, 36);
+            this.tbApply.TabIndex = 5;
+            this.tbApply.Text = "Apply";
+            this.tbApply.UseVisualStyleBackColor = true;
+            this.tbApply.Click += new System.EventHandler(this.tbApply_Click);
             // 
             // CellForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(276, 172);
+            this.ClientSize = new System.Drawing.Size(276, 205);
+            this.Controls.Add(this.tbApply);
             this.Controls.Add(this.bSave);
             this.Controls.Add(this.gbInfo);
             this.Controls.Add(this.gbWarehouse);
@@ -381,5 +413,8 @@
         private System.Windows.Forms.TextBox tbRaduis;
         private System.Windows.Forms.TextBox tbCapacity;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox tbMax;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button tbApply;
     }
 }
