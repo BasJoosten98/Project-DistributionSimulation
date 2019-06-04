@@ -28,7 +28,7 @@ namespace ClassLibrary.Tests
             const int CELLSIZE = 40;
             PictureBox EMPTY_PICTURE_BOX = new PictureBox();
 
-            Map map = new Map(numberOfLocations, numberOfCells,EMPTY_PICTURE_BOX, CELLSIZE);
+            Map map = new Map(numberOfCells, CELLSIZE, EMPTY_PICTURE_BOX, numberOfLocations);
             int locationCount = map.Locations.Count;
             
             // Number of locations is 0 or negative.
@@ -76,7 +76,7 @@ namespace ClassLibrary.Tests
             const int CELLSIZE = 40;
             PictureBox EMPTY_PICTURE_BOX = new PictureBox();
 
-            Map map = new Map(NUMBER_OF_LOCATIONS, NUMBER_OF_CELLS,EMPTY_PICTURE_BOX, CELLSIZE);
+            Map map = new Map(NUMBER_OF_CELLS, CELLSIZE, EMPTY_PICTURE_BOX, NUMBER_OF_LOCATIONS);
 
             if (source < 0 || destination < 0 || source > map.Locations.Count - 1 || destination > map.Locations.Count - 1)
             {
