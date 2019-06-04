@@ -91,55 +91,8 @@ namespace MapLayout
 
         private void bSave_Click(object sender, EventArgs e)
         {
-            try
-            {
-                int growth = Convert.ToInt32(tbGrowth.Text);
-                int max = Convert.ToInt32(tbMax.Text);
-                if (growth >= 0 && max >= 0)
-                {
-                    cell.SetDemandGrow(growth);
-                    Cell.MaxAllowedDemand = max;
-                    MapInNeedOfReAssignmentOfMaximum?.Invoke();
-                    if (location != null)
-                    {
-                        int radius = Convert.ToInt32(tbRaduis.Text);
-
-                        if (radius >= 0)
-                            location.Radius = radius;
-                        else
-                            MessageBox.Show("Radius cannot be less than 0");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Neither Growth or Max can be less than 0");
-                }
-            } catch (FormatException)
-            {
-                MessageBox.Show("Please only use numbers.");
-            }
-            
-
-
-            switch (lbBuilding.Text)
-            {
-                case "Shop":
-                    Shop s = (Shop)location.Building;
-                    int stock = Convert.ToInt32(tbStock.Text);
-                    int reStock = Convert.ToInt32(tbReStock.Text);
-                    if (stock >= 0 && reStock >= 0)
-                    {
-                        s.SetStockAndBackup( stock);
-                        s.RestockAmount = reStock;
-                    } else
-                    {
-                        MessageBox.Show("Neither stock or restock can be less than 0");
-                    }
-                    break;
-                case "Warehouse":
-                    setVehicles(Convert.ToInt32(tbVehicles.Text), Convert.ToInt32(tbCapacity.Text));
-                    break;
-            }
+            save();
+            this.Close();
         }
 
         //Some logic that add or remove a certain amount of vehicles in the list based on what is in the textbox 
@@ -169,7 +122,65 @@ namespace MapLayout
             gbInfo.Enabled = false;
         }
 
+        private void tbApply_Click(object sender, EventArgs e)
+        {
+            save();
+        }
 
+        private void save()
+        {
+            try
+            {
+                int growth = Convert.ToInt32(tbGrowth.Text);
+                int max = Convert.ToInt32(tbMax.Text);
+                if (growth >= 0 && max >= 0)
+                {
+                    cell.SetDemandGrow(growth);
+                    Cell.MaxAllowedDemand = max;
+                    MapInNeedOfReAssignmentOfMaximum?.Invoke();
+                    if (location != null)
+                    {
+                        int radius = Convert.ToInt32(tbRaduis.Text);
+
+                        if (radius >= 0)
+                            location.Radius = radius;
+                        else
+                            MessageBox.Show("Radius cannot be less than 0");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Neither Growth or Max can be less than 0");
+                }
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Please only use numbers.");
+            }
+
+
+
+            switch (lbBuilding.Text)
+            {
+                case "Shop":
+                    Shop s = (Shop)location.Building;
+                    int stock = Convert.ToInt32(tbStock.Text);
+                    int reStock = Convert.ToInt32(tbReStock.Text);
+                    if (stock >= 0 && reStock >= 0)
+                    {
+                        s.SetStockAndBackup(stock);
+                        s.RestockAmount = reStock;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Neither stock or restock can be less than 0");
+                    }
+                    break;
+                case "Warehouse":
+                    setVehicles(Convert.ToInt32(tbVehicles.Text), Convert.ToInt32(tbCapacity.Text));
+                    break;
+            }
+        }
         //Copied vehicle picturebox creation code from form1 createNewVehicle Method. Simple to add a picturebox to vehicle constructor.
         //private Vehicle genNewVehicle(Point ImagePosition)
         //{

@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.gbInfo = new System.Windows.Forms.GroupBox();
+            this.tbMax = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.tbRaduis = new System.Windows.Forms.TextBox();
             this.lbBuilding = new System.Windows.Forms.Label();
@@ -56,8 +58,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.tbVehicles = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.tbMax = new System.Windows.Forms.TextBox();
+            this.tbApply = new System.Windows.Forms.Button();
             this.gbInfo.SuspendLayout();
             this.gbBInfo.SuspendLayout();
             this.gbWarehouse.SuspendLayout();
@@ -87,6 +88,22 @@
             this.gbInfo.TabIndex = 0;
             this.gbInfo.TabStop = false;
             this.gbInfo.Text = "Cell";
+            // 
+            // tbMax
+            // 
+            this.tbMax.Location = new System.Drawing.Point(55, 77);
+            this.tbMax.Name = "tbMax";
+            this.tbMax.Size = new System.Drawing.Size(60, 20);
+            this.tbMax.TabIndex = 13;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(11, 80);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(30, 13);
+            this.label11.TabIndex = 12;
+            this.label11.Text = "Max:";
             // 
             // label8
             // 
@@ -214,9 +231,9 @@
             // 
             // bSave
             // 
-            this.bSave.Location = new System.Drawing.Point(144, 119);
+            this.bSave.Location = new System.Drawing.Point(144, 160);
             this.bSave.Name = "bSave";
-            this.bSave.Size = new System.Drawing.Size(126, 79);
+            this.bSave.Size = new System.Drawing.Size(124, 38);
             this.bSave.TabIndex = 2;
             this.bSave.Text = "Save";
             this.bSave.UseVisualStyleBackColor = true;
@@ -334,27 +351,22 @@
             this.label9.TabIndex = 1;
             this.label9.Text = "Vehicles:";
             // 
-            // label11
+            // tbApply
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(11, 80);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(30, 13);
-            this.label11.TabIndex = 12;
-            this.label11.Text = "Max:";
-            // 
-            // tbMax
-            // 
-            this.tbMax.Location = new System.Drawing.Point(55, 77);
-            this.tbMax.Name = "tbMax";
-            this.tbMax.Size = new System.Drawing.Size(60, 20);
-            this.tbMax.TabIndex = 13;
+            this.tbApply.Location = new System.Drawing.Point(144, 119);
+            this.tbApply.Name = "tbApply";
+            this.tbApply.Size = new System.Drawing.Size(124, 36);
+            this.tbApply.TabIndex = 5;
+            this.tbApply.Text = "Apply";
+            this.tbApply.UseVisualStyleBackColor = true;
+            this.tbApply.Click += new System.EventHandler(this.tbApply_Click);
             // 
             // CellForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(276, 205);
+            this.Controls.Add(this.tbApply);
             this.Controls.Add(this.bSave);
             this.Controls.Add(this.gbInfo);
             this.Controls.Add(this.gbWarehouse);
@@ -403,5 +415,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox tbMax;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button tbApply;
     }
 }
