@@ -819,6 +819,7 @@ namespace MapLayout
         {
             this.map.RemoveAllBuildings();
             Console.WriteLine($"Map to be loaded: {mapId}");
+            Cell.Reset();
             Map map = Map.Load(mapId);
             this.map = map;
             foreach (Location location in map.Locations)
