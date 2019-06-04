@@ -57,7 +57,6 @@ namespace ClassLibrary.Tests
             map.AddNewBuilding(location2);
             mapBuild.Add(0);
             mapBuild.Add(1);
-            mapBuild.Add(-1);
 
             List<Location> Buildings = new List<Location>();
 

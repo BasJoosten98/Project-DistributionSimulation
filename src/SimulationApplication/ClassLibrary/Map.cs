@@ -21,6 +21,7 @@ namespace ClassLibrary
         private List<Road> edges = new List<Road>();
         private Random rng;
         private Random rng2;
+        public Cell[,] cells;
         public Cell[,] Cells { get; set; }
         public static PictureBox mapPicBox;
         private DistributionManager distributionManager;
@@ -48,14 +49,32 @@ namespace ClassLibrary
             rng2 = new Random();
         }
 
-        /// <summary>
-        /// Creates a map objects and initializes with the given values
-        /// </summary>
-        /// <param name="numberOfLocations"></param>
-        /// <param name="numberOfCells"></param>
-        /// <param name="cellSize"></param>
-        /// <param name="MapBox"></param>
-        public Map(int numberOfCells, int cellSize, PictureBox MapBox, int numberOfLocations = 10) : this(numberOfCells, cellSize)
+        public Map(int numberOfLocations, int numberOfCells, int cellSize)
+        {
+            // Construct the map entity.
+            NumberOfLocations = numberOfLocations;
+            NumberOfCells = numberOfCells;
+            Cell.CellSize = cellSize;
+            Cells = new Cell[NumberOfCells, NumberOfCells];
+            for (int rowCount = 0; rowCount < NumberOfCells; rowCount++)
+            {
+                for (int columnCount = 0; columnCount < NumberOfCells; columnCount++)
+                {
+                    Cell c = new Cell(columnCount, rowCount);
+                    Cells[columnCount, rowCount] = c;
+                }
+            }
+        }
+
+
+            /// <summary>
+            /// Creates a map objects and initializes with the given values
+            /// </summary>
+            /// <param name="numberOfLocations"></param>
+            /// <param name="numberOfCells"></param>
+            /// <param name="cellSize"></param>
+            /// <param name="MapBox"></param>
+            public Map(int numberOfCells, int cellSize, PictureBox MapBox, int numberOfLocations = 10) : this(numberOfCells, cellSize)
         {
             NumberOfLocations = numberOfLocations;
             mapPicBox = MapBox;
