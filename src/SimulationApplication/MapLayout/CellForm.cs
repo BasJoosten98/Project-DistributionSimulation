@@ -120,6 +120,8 @@ namespace MapLayout
             gbBInfo.Enabled = false;
             gbWarehouse.Enabled = false;
             gbInfo.Enabled = false;
+            bSave.Enabled = false;
+            tbApply.Enabled = false;
         }
 
         private void tbApply_Click(object sender, EventArgs e)
