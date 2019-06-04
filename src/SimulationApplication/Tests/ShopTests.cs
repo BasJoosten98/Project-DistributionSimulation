@@ -17,20 +17,20 @@ namespace ClassLibrary.Tests
 
 
 
-        //[Fact()]
-        //public void OnLowStockReachedTest()
-        //{
-        //    List<Shop> shops = new List<Shop>() { new Shop(10,5) };
+        [Fact()]
+        public void OnLowStockReachedTest()
+        {
+            List<Shop> shops = new List<Shop>() { new Shop(10, 5) };
 
-        //    Warehouse warehouse = new Warehouse(shops);
+            Warehouse warehouse = new Warehouse(shops);
 
-        //    //The first shop in the warehouse will have ID 1
-        //    Shop s = warehouse.GetShop(1);
-        //    s.Sell(6);
-        //    //The event gets triggered and the restock is back to the capacity it can carry
-        //    Assert.True(s.Stock == s.Capacity);
+            //The first shop in the warehouse will have ID 1
+            Shop s = warehouse.GetShop(1);
+            s.Sell(6);
+            //The event gets triggered and the restock is back to the capacity it can carry
+            Assert.True(s.Stock == s.Capacity);
 
-        //}
+        }
 
         [Fact()]
         public void SellTest()

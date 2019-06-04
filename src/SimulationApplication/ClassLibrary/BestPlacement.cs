@@ -87,6 +87,7 @@ namespace ClassLibrary
             }
             _initialMap.ResetMap();
             
+            
         }
         
         public void CheckCombinations()

@@ -53,6 +53,7 @@ namespace ClassLibrary
             if (StockAmount < 0) { throw new Exception("Stock must be greater than or equal to 0"); }
             SetStockAndBackup(StockAmount);
             restockAmount = Restock;
+            ID = ++id;
         }
 
         public void ShopReset()
