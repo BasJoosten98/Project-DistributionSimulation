@@ -36,6 +36,7 @@ namespace MapLayout
             lbCol.Text = cell.Index.Column.ToString();
             lbDemand.Text = cell.Demand.ToString();
             tbGrowth.Text = cell.DemandGrow.ToString();
+            tbMax.Text = Cell.MaxAllowedDemand.ToString();
             if (location != null)
             {
                 tbRaduis.Text = location.Radius.ToString();
@@ -90,24 +91,35 @@ namespace MapLayout
 
         private void bSave_Click(object sender, EventArgs e)
         {
-            int growth = Convert.ToInt32(tbGrowth.Text);
-            int radius = Convert.ToInt32(tbRaduis.Text);
-            if (growth >= 0 && radius >= 0)
+            try
             {
-                cell.SetDemandGrow(growth);
-                if (MapInNeedOfReAssignmentOfMaximum != null)
+                int growth = Convert.ToInt32(tbGrowth.Text);
+                int max = Convert.ToInt32(tbMax.Text);
+                if (growth >= 0 && max >= 0)
                 {
-                    MapInNeedOfReAssignmentOfMaximum();
+                    cell.SetDemandGrow(growth);
+                    Cell.MaxAllowedDemand = max;
+                    MapInNeedOfReAssignmentOfMaximum?.Invoke();
+                    if (location != null)
+                    {
+                        int radius = Convert.ToInt32(tbRaduis.Text);
+
+                        if (radius >= 0)
+                            location.Radius = radius;
+                        else
+                            MessageBox.Show("Radius cannot be less than 0");
+                    }
                 }
-                if (location != null)
+                else
                 {
-                    location.Radius = radius;
+                    MessageBox.Show("Neither Growth or Max can be less than 0");
                 }
-            }
-            else
+            } catch (FormatException)
             {
-                MessageBox.Show("Demand cannot be less than 0");
+                MessageBox.Show("Please only use numbers.");
             }
+            
+
 
             switch (lbBuilding.Text)
             {
@@ -154,8 +166,7 @@ namespace MapLayout
         {
             gbBInfo.Enabled = false;
             gbWarehouse.Enabled = false;
-            tbGrowth.Enabled = false;
-            tbRaduis.Enabled = false;
+            gbInfo.Enabled = false;
         }
 
 

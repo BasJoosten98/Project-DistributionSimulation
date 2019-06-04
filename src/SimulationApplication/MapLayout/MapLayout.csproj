@@ -67,9 +67,9 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.10.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Downloads\MySql.Data.DLL</HintPath>
+      <HintPath>..\..\..\..\MySql.Data.DLL</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
@@ -186,6 +186,7 @@
     <None Include="Resources\Play.png" />
     <None Include="Resources\Pause.png" />
     <None Include="Resources\Reset.png" />
+    <Content Include="MySql.Data.DLL" />
     <Content Include="Resources\vehicleIcon.png" />
   </ItemGroup>
   <ItemGroup>

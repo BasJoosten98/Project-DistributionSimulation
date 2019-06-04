@@ -17,6 +17,7 @@ namespace ClassLibrary
         //Cell fields
         public static int maxDemand = 0; 
         public static int maxDemandGrow = 0;
+        private static int maxAllowedDemand = 100;
         private static Random rand = new Random();
 
         private int demand; //Current demand of the cell
@@ -25,6 +26,7 @@ namespace ClassLibrary
 
         public static int MaxDemand { get { return maxDemand; } }
         public static int MaxDemandGrow { get { return maxDemandGrow;  } }
+        public static int MaxAllowedDemand { get { return maxAllowedDemand; } set { if (value > 0) { maxAllowedDemand = value; } } }
         public int Demand { get { return this.demand; } }
         public int DemandGrow { get { return this.demandGrow; } }
         public static int CellSize { get; set; }
@@ -84,7 +86,11 @@ namespace ClassLibrary
 
             //APPLY DEMAND GROW
             demand += DemandGrow;
-            if(demand > maxDemand)
+            if (demand > maxAllowedDemand)
+            {
+                demand = maxAllowedDemand;
+            }
+            if (demand > maxDemand)
             {
                 maxDemand = demand;
             }
