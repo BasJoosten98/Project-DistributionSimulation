@@ -186,7 +186,6 @@
     <None Include="Resources\Play.png" />
     <None Include="Resources\Pause.png" />
     <None Include="Resources\Reset.png" />
-    <Content Include="MySql.Data.DLL" />
     <Content Include="Resources\vehicleIcon.png" />
   </ItemGroup>
   <ItemGroup>

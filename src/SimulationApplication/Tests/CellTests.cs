@@ -38,5 +38,21 @@ namespace SimulationApplicationTests
             Assert.Equal(5, Cell.maxDemand);
         }
 
+        [Fact]
+        public void TestResetMaxDemand()
+        {
+            const int MAX_DEMAND = 200;
+
+            const int NUMBER_OF_CELLS = 13;
+            const int CELLSIZE = 40;
+            PictureBox EMPTY_PICTURE_BOX = new PictureBox();
+            Map map = new Map(NUMBER_OF_CELLS, CELLSIZE, EMPTY_PICTURE_BOX);
+
+            Assert.True(Cell.maxDemand >= 2 && Cell.MaxDemand < 5);
+            Cell.Reset();
+            Assert.Equal(0, Cell.maxDemand);
+            map.Locations[0].SetDemandGrow(MAX_DEMAND);
+            Assert.Equal(MAX_DEMAND, Cell.maxDemand);
+        }
     }
 }
