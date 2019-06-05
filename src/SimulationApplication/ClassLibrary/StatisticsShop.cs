@@ -36,7 +36,11 @@ namespace ClassLibrary
             }
         }
 
-        private int calculateZeroStockTime()
+        /// <summary>
+        /// Returns the value of time units that the shops had 0 stock
+        /// </summary>
+        /// <returns></returns>
+        public int calculateZeroStockTime()
         {
             int sum = 0;
             if(previous != null)
@@ -46,7 +50,9 @@ namespace ClassLibrary
             if(stock == 0) { sum++; }
             return sum;
         }
-        private double calculateAverageStock()
+
+        //
+        public double calculateAverageStock()
         {
             double sum = 0;
             if (previous != null)
@@ -57,7 +63,7 @@ namespace ClassLibrary
             }           
             return Stock;
         }
-        private double calculateAverageSold()
+        public double calculateAverageSold()
         {
             double sum = 0;
             if (previous != null)

@@ -71,6 +71,7 @@
     <Compile Include="MapTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShopTests.cs" />
+    <Compile Include="StatisticShopTests.cs" />
     <Compile Include="WarehouseTests.cs" />
   </ItemGroup>
   <ItemGroup>
