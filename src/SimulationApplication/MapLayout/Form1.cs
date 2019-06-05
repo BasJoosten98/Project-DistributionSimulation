@@ -52,7 +52,7 @@ namespace MapLayout
                 }
             }
 
-        //    btnStatistics.Enabled = false;
+            btnStatistics.Enabled = false;
 
         }
 
@@ -612,8 +612,10 @@ namespace MapLayout
             // btnStatistics.Enabled = true;
             //initializes a statistics form to which we can add shops and warehouses as we add them to the form.
             btnStatMakeSure = true;
-            
-          //  if(startedTheSimulation)
+            btnStatistics.Enabled = true;
+            openOnce = true;
+
+         
            
 
             if (!simulationIsPlaying)
@@ -807,6 +809,7 @@ namespace MapLayout
                 panelMapBuilder.Enabled = true;
                 Map.RedrawMap();
                 btnReset.Enabled = false;
+                btnStatistics.Enabled = false;
             }
         }
 
@@ -1089,6 +1092,7 @@ namespace MapLayout
 
         }
 
+        public bool openOnce = false;
         private void btnStatistics_Click(object sender, EventArgs e)
         {
             //StatisticsForm myStats = new StatisticsForm();
@@ -1097,7 +1101,11 @@ namespace MapLayout
 
             try { myStats.Show(); }
             catch { myStats.Close(); }
-            finally {  }
+
+            if (openOnce == true)
+            {
+                myStats = new StatisticsForm(map.Shops, map.Warehouses, this, map);
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)

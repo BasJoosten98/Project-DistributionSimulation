@@ -274,7 +274,7 @@ namespace MapLayout
                        
 
                         AverageDeliveryWaitTime += vehicle.AverageDeliveryWaitTime;
-                        DrivingTimePercentage += vehicle.DrivingTimePercentage;
+                     //   DrivingTimePercentage += vehicle.DrivingTimePercentage;
                         NonDrivingTimePercentage += vehicle.NonDrivingTimePercentage;
                         TotalDeliveryWaitTime += vehicle.TotalDeliveryWaitTime;
                         TotalDrivenTimeUnits += vehicle.TotalDrivenTimeUnits;
@@ -287,7 +287,7 @@ namespace MapLayout
             }
 
             lbAverageDeliveryWaitTime.Text = (AverageDeliveryWaitTime / numberOfVehiclesInTotal).ToString();
-            lbDrivingTimePercentage.Text = (DrivingTimePercentage / numberOfVehiclesInTotal).ToString();
+          //  lbDrivingTimePercentage.Text = (DrivingTimePercentage / numberOfVehiclesInTotal).ToString();
             lbNonDrivingTimePercentage.Text = (NonDrivingTimePercentage / numberOfVehiclesInTotal).ToString();
             lbTotalDeliveryWaitTime.Text = (TotalNonDrivenTimeUnits / numberOfVehiclesInTotal).ToString();
             lbTotalDrivenTimeUnits.Text = (TotalDrivenTimeUnits / numberOfVehiclesInTotal).ToString();
@@ -296,7 +296,5 @@ namespace MapLayout
             lbTotalNonDrivenTimeUnits.Text = (TotalNonDrivenTimeUnits / numberOfVehiclesInTotal).ToString();
 
         }
-
-
     }
 }
