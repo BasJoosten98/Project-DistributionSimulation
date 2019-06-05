@@ -89,18 +89,25 @@ namespace MapLayout
         private void bSave_Click(object sender, EventArgs e)
         {
             int growth = Convert.ToInt32(tbGrowth.Text);
-            int radius = Convert.ToInt32(tbRaduis.Text);
-            if (growth >= 0 && radius >= 0)
+
+            if (growth >= 0)
             {
                 cell.SetDemandGrow(growth);
-                if (location != null)
-                {
-                    location.Radius = radius;
-                }
             }
             else
             {
                 MessageBox.Show("Demand cannot be less than 0");
+            }
+
+            if (location != null)
+            {
+                int radius = Convert.ToInt32(tbRaduis.Text);
+
+                if (radius >= 0)
+                    location.Radius = radius;
+                else
+                    MessageBox.Show("Radius cannot be less than 0");
+
             }
 
 
