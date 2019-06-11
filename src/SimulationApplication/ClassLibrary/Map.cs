@@ -290,16 +290,42 @@ namespace ClassLibrary
             }
             updateStatistics(timeStamp);
         }
+
+        bool firstLoop = true;
         private void updateStatistics(int timeStamp)
         {
-            foreach (Location s in Shops)
-            {
-                Statistics.Add(((Shop)s.Building).MakeStatistics(timeStamp));
-            }
-            foreach (Location w in Warehouses)
-            {
-                Statistics.Add(((Warehouse)w.Building).MakeStatistics(timeStamp));
-            }
+            //if (firstLoop == true)
+            //{
+                foreach (Location s in Shops)
+                {  
+                    Statistics.Add(((Shop)s.Building).MakeStatistics(timeStamp));
+                }
+                foreach (Location w in Warehouses)
+                {
+                    Statistics.Add(((Warehouse)w.Building).MakeStatistics(timeStamp));
+                }
+            //    firstLoop = false;
+            //}
+            //else // added this to ensure that the statistics don't overlap and you only have statistics for the current 4 warehouses not more.
+            //{
+            //    foreach (var stats in Statistics.Where(x => x is StatisticsShop))
+            //    {
+            //        Statistics.Remove(stats);
+            //    }
+            //    foreach (var stats in Statistics.Where(x => x is StatisticsWarehouse))
+            //    {
+            //        Statistics.Remove(stats);
+            //    }
+
+            //    foreach (Location s in Shops)
+            //    {                    
+            //        Statistics.Add(((Shop)s.Building).MakeStatistics(timeStamp));
+            //    }
+            //    foreach (Location w in Warehouses)
+            //    {
+            //        Statistics.Add(((Warehouse)w.Building).MakeStatistics(timeStamp));
+            //    }
+            //}
         }
         private void createDistributionManager() //should be called when map is forseen with warehouses and shops!
         {

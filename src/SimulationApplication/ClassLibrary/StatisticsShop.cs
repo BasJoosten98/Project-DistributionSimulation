@@ -11,14 +11,14 @@ namespace ClassLibrary
         private Shop shop;
         private int stock;
         private int sold;
-        private StatisticsShop previous;
+        private StatisticsShop previous; // what does this represent?
 
         public Shop Shop { get { return shop; } }
         public int Stock { get { return stock; } }
         public int Sold { get { return sold; } }
         public int TotalZeroStockTime { get { return calculateZeroStockTime(); } } //Total amount of time units where Stock == 0
-        public double AverageStock { get { return calculateAverageStock(); } }
-        public double AverageSold { get { return calculateAverageSold(); } }
+        public double AverageStock { get { return calculateAverageStock(); } } // display the AverageStock ? what does that mean?
+        public double AverageSold { get { return calculateAverageSold(); } } // Average sold stock I suppose.
 
         public StatisticsShop(int timeStamp, Shop me, int stock, int sold, StatisticsShop prev)
             :base(timeStamp)
@@ -36,7 +36,11 @@ namespace ClassLibrary
             }
         }
 
-        private int calculateZeroStockTime()
+        /// <summary>
+        /// Returns the value of time units that the shops had 0 stock
+        /// </summary>
+        /// <returns></returns>
+        public int calculateZeroStockTime()
         {
             int sum = 0;
             if(previous != null)
@@ -46,7 +50,9 @@ namespace ClassLibrary
             if(stock == 0) { sum++; }
             return sum;
         }
-        private double calculateAverageStock()
+
+        //
+        public double calculateAverageStock()
         {
             double sum = 0;
             if (previous != null)
@@ -57,7 +63,7 @@ namespace ClassLibrary
             }           
             return Stock;
         }
-        private double calculateAverageSold()
+        public double calculateAverageSold()
         {
             double sum = 0;
             if (previous != null)

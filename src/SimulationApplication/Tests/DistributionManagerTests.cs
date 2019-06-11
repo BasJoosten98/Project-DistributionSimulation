@@ -60,6 +60,7 @@ namespace SimulationApplication
                 }
             }
 
+            //populate the new locations with buildings 
             foreach (var l in locations)
             {
                 int id = l.LocationID;
@@ -93,11 +94,8 @@ namespace SimulationApplication
               
 
             }
-            //List<Location> myWarehouses = new List<Location>();
-            //foreach (var l in warehouses)
-            //{
-            //    myWarehouses.add
-            //}
+     
+            // create a new distribution manager to test, it is supposed to make 3 deliveries for 3 shops that i created
             Dijkstra d = new Dijkstra(roads);
             DistributionManager dm = new DistributionManager(d,warehouses,shops);
             //Commented this out because it is giving an error.

@@ -87,6 +87,12 @@ namespace ClassLibrary
                 picBox.Location = position;
             }
         }
+
+        /// <summary>
+        /// What does this do?
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        /// <returns></returns>
         public StatisticsVehicle MakeStatistics(int timeStamp)
         {
             DeliveryStatus stat = DeliveryStatus.NOTSTARTED;
