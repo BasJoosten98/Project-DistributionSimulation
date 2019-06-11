@@ -72,7 +72,7 @@ namespace ClassLibrary
             vehicles = vehiclesStat;
             warehouse = me;
 
-            if (false) //testing
+            if (true) //testing
             {
                 Console.WriteLine("current id: " + ID);
                 Console.WriteLine("TGD: " + TotalGivenDeliveries + " TFD: " + TotalFinishedDeliveries);

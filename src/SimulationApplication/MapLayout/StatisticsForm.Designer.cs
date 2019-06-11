@@ -217,7 +217,7 @@
             this.groupBox1.Size = new System.Drawing.Size(339, 256);
             this.groupBox1.TabIndex = 22;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Vehicle";
+            this.groupBox1.Text = "Average Vehicle";
             // 
             // StatisticsForm
             // 

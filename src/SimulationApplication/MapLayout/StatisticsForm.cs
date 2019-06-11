@@ -210,6 +210,19 @@ namespace MapLayout
          
         }
 
+        public int getLastTime()
+        {
+            int temp = 0;
+            foreach(Statistics s in map.Statistics)
+            {
+                if(s.Time > temp)
+                {
+                    temp = s.Time;
+                }
+            }
+            return temp;
+        }
+
         int count = 0;
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -266,8 +279,10 @@ namespace MapLayout
 
             foreach (var warehouse in MyWarehouses)
             {
-                
-                foreach (var warStatistic in map.Statistics.Where(x => x is StatisticsWarehouse))
+
+                foreach (var warStatistic in map.Statistics.Where(x =>
+                    (x is StatisticsWarehouse) &&
+                        ((((StatisticsWarehouse)x).Time) == getLastTime())))
                 {
                     ((StatisticsWarehouse)warStatistic).Vehicles.ForEach(vehicle => 
                     {
