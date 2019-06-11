@@ -125,7 +125,7 @@
             // 
             this.progressBestPlacement.Location = new System.Drawing.Point(3, 636);
             this.progressBestPlacement.Name = "progressBestPlacement";
-            this.progressBestPlacement.Size = new System.Drawing.Size(602, 29);
+            this.progressBestPlacement.Size = new System.Drawing.Size(804, 29);
             this.progressBestPlacement.TabIndex = 3;
             this.progressBestPlacement.Visible = false;
             // 
@@ -297,7 +297,7 @@
             this.gbDijkstraTool.Size = new System.Drawing.Size(311, 234);
             this.gbDijkstraTool.TabIndex = 26;
             this.gbDijkstraTool.TabStop = false;
-            this.gbDijkstraTool.Text = "Dijkstra Tool";
+            this.gbDijkstraTool.Text = "Supportive Tools";
             // 
             // DrawAllClosests
             // 

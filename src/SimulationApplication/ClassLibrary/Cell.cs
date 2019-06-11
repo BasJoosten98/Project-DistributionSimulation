@@ -92,7 +92,7 @@ namespace ClassLibrary
             }
             if(demand > maxDemand)
             {
-                demand = maxAllowedDemand;
+                maxDemand = demand;
             }
             if (demand > maxDemand)
             {

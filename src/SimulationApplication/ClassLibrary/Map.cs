@@ -194,6 +194,7 @@ namespace ClassLibrary
                 i = -1;
             }
 
+
             //place new loactions
             List<Cell> tempCells = new List<Cell>();
             foreach (Cell c in Cells)
@@ -817,7 +818,7 @@ namespace ClassLibrary
                             map.Locations.Add((Location)c);
                         }
                         // Assign the cell to its rightful position in the cell array.
-                        cells[rowIndex, columnIndex] = c;
+                        cells[columnIndex, rowIndex] = c;
                     }
                 }
             }
@@ -852,8 +853,8 @@ namespace ClassLibrary
                     destinationRowIndex = reader.GetInt32(4);
                     destinationColumnIndex = reader.GetInt32(5);
                     initialCost = reader.GetInt32(6);
-                    source = (Location)map.Cells[sourceRowIndex, sourceColumnIndex];
-                    destination = (Location)map.Cells[destinationRowIndex, destinationColumnIndex];
+                    source = (Location)map.Cells[sourceColumnIndex, sourceRowIndex];
+                    destination = (Location)map.Cells[destinationColumnIndex, destinationRowIndex];
                     map.Edges.Add(new Road(source, destination, initialCost));
                 }
             }
@@ -894,8 +895,8 @@ namespace ClassLibrary
                     {
                         building = new Warehouse();
                     }
-                    ((Location)map.Cells[rowIndex, columnIndex]).Building = building;
-                    map.AddNewBuilding(((Location)map.Cells[rowIndex, columnIndex]));
+                    ((Location)map.Cells[columnIndex, rowIndex]).Building = building;
+                    map.AddNewBuilding(((Location)map.Cells[columnIndex, rowIndex]));
                 }
             }
             catch (MySqlException ex)
