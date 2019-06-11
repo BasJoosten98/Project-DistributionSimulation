@@ -809,7 +809,6 @@ namespace MapLayout
                     {
                         location.Building.picBox.Image = Properties.Resources.warehouseIcon;
                     }
-                    map.AddNewBuilding(location);
                     splitContainer1.Panel1.Controls.Add(picBox);
                     picBox.BringToFront();
                 }    

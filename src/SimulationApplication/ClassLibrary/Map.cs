@@ -889,14 +889,13 @@ namespace ClassLibrary
                         stock = reader.GetInt32(4);
                         restockAmount = reader.GetInt32(5);
                         building = new Shop(stock, restockAmount);
-                        map.Shops.Add(((Location)map.Cells[rowIndex, columnIndex]));
                     }
                     else
                     {
                         building = new Warehouse();
-                        map.Warehouses.Add(((Location)map.Cells[rowIndex, columnIndex]));
                     }
                     ((Location)map.Cells[rowIndex, columnIndex]).Building = building;
+                    map.AddNewBuilding(((Location)map.Cells[rowIndex, columnIndex]));
                 }
             }
             catch (MySqlException ex)

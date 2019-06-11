@@ -30,17 +30,19 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.mapPictureBox = new System.Windows.Forms.PictureBox();
             this.progressBestPlacement = new System.Windows.Forms.ProgressBar();
             this.panelPlayer = new System.Windows.Forms.Panel();
+            this.btnStatistics = new System.Windows.Forms.Button();
             this.lblSpeed = new System.Windows.Forms.Label();
             this.btnSlowDown = new System.Windows.Forms.Button();
             this.btnSpeedUp = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnPlay = new System.Windows.Forms.Button();
             this.btnHeatMap = new System.Windows.Forms.Button();
-            this.mapPictureBox = new System.Windows.Forms.PictureBox();
             this.panelMapBuilder = new System.Windows.Forms.Panel();
-            this.btnStatistics = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblTime = new System.Windows.Forms.Label();
             this.AmTicks = new System.Windows.Forms.TextBox();
             this.btnGetBestPlacement = new System.Windows.Forms.Button();
             this.gbDijkstraTool = new System.Windows.Forms.GroupBox();
@@ -71,20 +73,17 @@
             this.lbLocationLog = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.lblTime = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.panelPlayer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).BeginInit();
+            this.panelPlayer.SuspendLayout();
             this.panelMapBuilder.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.gbDijkstraTool.SuspendLayout();
             this.gbImportExport.SuspendLayout();
             this.gbMapEditor.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -97,9 +96,9 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.splitContainer1.Panel1.Controls.Add(this.mapPictureBox);
             this.splitContainer1.Panel1.Controls.Add(this.progressBestPlacement);
             this.splitContainer1.Panel1.Controls.Add(this.panelPlayer);
+            this.splitContainer1.Panel1.Controls.Add(this.mapPictureBox);
             // 
             // splitContainer1.Panel2
             // 
@@ -110,9 +109,21 @@
             this.splitContainer1.SplitterDistance = 822;
             this.splitContainer1.TabIndex = 0;
             // 
+            // mapPictureBox
+            // 
+            this.mapPictureBox.Location = new System.Drawing.Point(4, 4);
+            this.mapPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.mapPictureBox.Name = "mapPictureBox";
+            this.mapPictureBox.Size = new System.Drawing.Size(803, 662);
+            this.mapPictureBox.TabIndex = 1;
+            this.mapPictureBox.TabStop = false;
+            this.mapPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint_1);
+            this.mapPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mapPictureBox_MouseClick);
+            this.mapPictureBox.MouseEnter += new System.EventHandler(this.mapPictureBox_MouseEnter);
+            // 
             // progressBestPlacement
             // 
-            this.progressBestPlacement.Location = new System.Drawing.Point(3, 511);
+            this.progressBestPlacement.Location = new System.Drawing.Point(3, 636);
             this.progressBestPlacement.Name = "progressBestPlacement";
             this.progressBestPlacement.Size = new System.Drawing.Size(602, 29);
             this.progressBestPlacement.TabIndex = 3;
@@ -133,6 +144,16 @@
             this.panelPlayer.Name = "panelPlayer";
             this.panelPlayer.Size = new System.Drawing.Size(803, 66);
             this.panelPlayer.TabIndex = 2;
+            // 
+            // btnStatistics
+            // 
+            this.btnStatistics.Location = new System.Drawing.Point(8, 4);
+            this.btnStatistics.Name = "btnStatistics";
+            this.btnStatistics.Size = new System.Drawing.Size(124, 54);
+            this.btnStatistics.TabIndex = 29;
+            this.btnStatistics.Text = "Statistics";
+            this.btnStatistics.UseVisualStyleBackColor = true;
+            this.btnStatistics.Click += new System.EventHandler(this.btnStatistics_Click);
             // 
             // lblSpeed
             // 
@@ -201,18 +222,6 @@
             this.btnHeatMap.UseVisualStyleBackColor = true;
             this.btnHeatMap.Click += new System.EventHandler(this.btnHeatMap_Click);
             // 
-            // mapPictureBox
-            // 
-            this.mapPictureBox.Location = new System.Drawing.Point(4, 4);
-            this.mapPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.mapPictureBox.Name = "mapPictureBox";
-            this.mapPictureBox.Size = new System.Drawing.Size(803, 662);
-            this.mapPictureBox.TabIndex = 1;
-            this.mapPictureBox.TabStop = false;
-            this.mapPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint_1);
-            this.mapPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mapPictureBox_MouseClick);
-            this.mapPictureBox.MouseEnter += new System.EventHandler(this.mapPictureBox_MouseEnter);
-            // 
             // panelMapBuilder
             // 
             this.panelMapBuilder.Controls.Add(this.groupBox1);
@@ -225,19 +234,31 @@
             this.panelMapBuilder.Size = new System.Drawing.Size(317, 734);
             this.panelMapBuilder.TabIndex = 23;
             // 
-            // btnStatistics
+            // groupBox1
             // 
-            this.btnStatistics.Location = new System.Drawing.Point(8, 4);
-            this.btnStatistics.Name = "btnStatistics";
-            this.btnStatistics.Size = new System.Drawing.Size(124, 54);
-            this.btnStatistics.TabIndex = 29;
-            this.btnStatistics.Text = "Statistics";
-            this.btnStatistics.UseVisualStyleBackColor = true;
-            this.btnStatistics.Click += new System.EventHandler(this.btnStatistics_Click);
+            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.groupBox1.Controls.Add(this.lblTime);
+            this.groupBox1.Controls.Add(this.AmTicks);
+            this.groupBox1.Controls.Add(this.btnGetBestPlacement);
+            this.groupBox1.Location = new System.Drawing.Point(4, 629);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(310, 108);
+            this.groupBox1.TabIndex = 29;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Optimizations";
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Location = new System.Drawing.Point(21, 27);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(73, 17);
+            this.lblTime.TabIndex = 29;
+            this.lblTime.Text = "Time units";
             // 
             // AmTicks
             // 
-            this.AmTicks.Location = new System.Drawing.Point(152, 663);
+            this.AmTicks.Location = new System.Drawing.Point(140, 27);
             this.AmTicks.Margin = new System.Windows.Forms.Padding(4);
             this.AmTicks.Name = "AmTicks";
             this.AmTicks.Size = new System.Drawing.Size(132, 22);
@@ -246,10 +267,10 @@
             // 
             // btnGetBestPlacement
             // 
-            this.btnGetBestPlacement.Location = new System.Drawing.Point(9, 660);
+            this.btnGetBestPlacement.Location = new System.Drawing.Point(24, 64);
             this.btnGetBestPlacement.Margin = new System.Windows.Forms.Padding(4);
             this.btnGetBestPlacement.Name = "btnGetBestPlacement";
-            this.btnGetBestPlacement.Size = new System.Drawing.Size(125, 28);
+            this.btnGetBestPlacement.Size = new System.Drawing.Size(248, 28);
             this.btnGetBestPlacement.TabIndex = 27;
             this.btnGetBestPlacement.Text = "Best Placement";
             this.btnGetBestPlacement.UseVisualStyleBackColor = true;
@@ -567,38 +588,6 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.groupBox1.Controls.Add(this.lblTime);
-            this.groupBox1.Controls.Add(this.button5);
-            this.groupBox1.Controls.Add(this.AmTicks);
-            this.groupBox1.Controls.Add(this.btnGetBestPlacement);
-            this.groupBox1.Location = new System.Drawing.Point(1, 510);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(233, 90);
-            this.groupBox1.TabIndex = 29;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Optimizations";
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(6, 163);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(221, 23);
-            this.button5.TabIndex = 17;
-            this.button5.Text = "(Re)Analyze Map";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // lblTime
-            // 
-            this.lblTime.AutoSize = true;
-            this.lblTime.Location = new System.Drawing.Point(21, 27);
-            this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(55, 13);
-            this.lblTime.TabIndex = 29;
-            this.lblTime.Text = "Time units";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -614,17 +603,17 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).EndInit();
             this.panelPlayer.ResumeLayout(false);
             this.panelPlayer.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox)).EndInit();
             this.panelMapBuilder.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.gbDijkstraTool.ResumeLayout(false);
             this.gbDijkstraTool.PerformLayout();
             this.gbImportExport.ResumeLayout(false);
             this.gbMapEditor.ResumeLayout(false);
             this.gbMapEditor.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -674,7 +663,6 @@
         private System.Windows.Forms.ProgressBar progressBestPlacement;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lblTime;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button btnStatistics;
     }
 }
