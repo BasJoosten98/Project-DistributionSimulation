@@ -1074,58 +1074,65 @@ namespace MapLayout
 
         private void btnGetBestPlacement_Click(object sender, EventArgs e)
         {
-            
-            int tick;
-            if(!int.TryParse(AmTicks.Text, out tick))
+            if(map.Shops.Count < 1 && map.Warehouses.Count < 1)
             {
-                MessageBox.Show("This field should be an int");
-                return;
+                MessageBox.Show("Must have at least 1 warehouse and shop");
             }
-            if(!(tick > 0))
+            else
             {
-                MessageBox.Show("This field should be greater than 0");
-            }
-           panelMapBuilder.Enabled = false;
-           panelPlayer.Enabled = false;
-            
-
-            bestPlacement = new BestPlacement(map, tick, progressBestPlacement);
-            bestPlacement.CheckCombinations();
-            List<int> bestBuild = bestPlacement.GetBestBuild();
-            List<Building> buildings = bestPlacement.GetBuildings();
-            for (int i = 0; i < bestBuild.Count; i++)
-            {
-                if(bestBuild[i] != -1)
+                int tick;
+                if (!int.TryParse(AmTicks.Text, out tick))
                 {
-                    PictureBox picBox = new PictureBox();
-                    Point ImagePosition = new Point((map.Locations[i].Index.Column * Cell.CellSize) + 4, (map.Locations[i].Index.Row * Cell.CellSize) + 4);
-                    picBox.Location = ImagePosition;
-                    picBox.Size = new Size(Cell.CellSize - 1, Cell.CellSize - 1);
-                    picBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                    picBox.MouseClick += mapPictureBox_MouseClick;
-                    picBox.MouseEnter += mapPictureBox_MouseEnter;
-                    if(buildings[bestBuild[i]] is Warehouse)
-                    {
-                        Warehouse w = (Warehouse)buildings[bestBuild[i]];
-                        picBox.Image = Properties.Resources.warehouseIcon;
-                        map.Locations[i].Building = new Warehouse(picBox);
-                        ((Warehouse)map.Locations[i].Building).TotalVehiclesAtStart = w.TotalVehiclesAtStart;
-                    }
-                    else if(buildings[bestBuild[i]] is Shop)
-                    {
-                        Shop s = (Shop)buildings[bestBuild[i]];
-                        picBox.Image = Properties.Resources.shopIcon;
-                        map.Locations[i].Building = new Shop(picBox, s.Stock, s.RestockAmount);
-                    }
-                    map.AddNewBuilding(map.Locations[i]);
-                    splitContainer1.Panel1.Controls.Add(picBox); //What does this do??
-                    picBox.BringToFront();
+                    MessageBox.Show("This field should be an int");
+                    return;
                 }
-                
-            }
+                if (!(tick > 0))
+                {
+                    MessageBox.Show("This field should be greater than 0");
+                }
+                panelMapBuilder.Enabled = false;
+                panelPlayer.Enabled = false;
 
-            panelMapBuilder.Enabled = true;
-            panelPlayer.Enabled = true;
+
+                bestPlacement = new BestPlacement(map, tick, progressBestPlacement);
+                bestPlacement.CheckCombinations();
+                List<int> bestBuild = bestPlacement.GetBestBuild();
+                List<Building> buildings = bestPlacement.GetBuildings();
+                for (int i = 0; i < bestBuild.Count; i++)
+                {
+                    if (bestBuild[i] != -1)
+                    {
+                        PictureBox picBox = new PictureBox();
+                        Point ImagePosition = new Point((map.Locations[i].Index.Column * Cell.CellSize) + 4, (map.Locations[i].Index.Row * Cell.CellSize) + 4);
+                        picBox.Location = ImagePosition;
+                        picBox.Size = new Size(Cell.CellSize - 1, Cell.CellSize - 1);
+                        picBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                        picBox.MouseClick += mapPictureBox_MouseClick;
+                        picBox.MouseEnter += mapPictureBox_MouseEnter;
+                        if (buildings[bestBuild[i]] is Warehouse)
+                        {
+                            Warehouse w = (Warehouse)buildings[bestBuild[i]];
+                            picBox.Image = Properties.Resources.warehouseIcon;
+                            map.Locations[i].Building = new Warehouse(picBox);
+                            ((Warehouse)map.Locations[i].Building).TotalVehiclesAtStart = w.TotalVehiclesAtStart;
+                        }
+                        else if (buildings[bestBuild[i]] is Shop)
+                        {
+                            Shop s = (Shop)buildings[bestBuild[i]];
+                            picBox.Image = Properties.Resources.shopIcon;
+                            map.Locations[i].Building = new Shop(picBox, s.Stock, s.RestockAmount);
+                        }
+                        map.AddNewBuilding(map.Locations[i]);
+                        splitContainer1.Panel1.Controls.Add(picBox); //What does this do??
+                        picBox.BringToFront();
+                    }
+
+                }
+
+                panelMapBuilder.Enabled = true;
+                panelPlayer.Enabled = true;
+
+            }
 
         }
 
